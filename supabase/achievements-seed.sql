@@ -1,0 +1,36 @@
+-- CultureDAQ Achievement Seed Data
+-- Run after achievements.sql
+
+INSERT INTO achievements (code, name, description, category, points, icon, requirement_type, requirement_value, is_hidden) VALUES
+  ('FIRST_TRADE', 'First Trade', 'Complete your first trade', 'Getting Started', 10, '📊', 'trade_count', '{"count": 1}', false),
+  ('FIRST_BUY', 'First Buy', 'Buy your first asset', 'Getting Started', 10, '🛒', 'buy_count', '{"count": 1}', false),
+  ('FIRST_PROFIT', 'First Profit', 'Hold an asset with positive profit', 'Getting Started', 25, '💰', 'profitable_holding', '{"count": 1}', false),
+  ('ACTIVE_TRADER', 'Active Trader', 'Complete 10 trades', 'Trading', 50, '⚡', 'trade_count', '{"count": 10}', false),
+  ('MARKET_REGULAR', 'Market Regular', 'Complete 50 trades', 'Trading', 100, '📈', 'trade_count', '{"count": 50}', false),
+  ('POWER_TRADER', 'Power Trader', 'Complete 100 trades', 'Trading', 250, '🔥', 'trade_count', '{"count": 100}', false),
+  ('PORTFOLIO_BUILDER', 'Portfolio Builder', 'Own 5 different assets', 'Portfolio', 50, '🧱', 'unique_assets', '{"count": 5}', false),
+  ('DIVERSIFIED', 'Diversified', 'Own assets in 3 different categories', 'Portfolio', 75, '🎨', 'unique_categories', '{"count": 3}', false),
+  ('CULTURE_FUND', 'Culture Fund', 'Own assets in 6 different categories', 'Portfolio', 150, '🏛️', 'unique_categories', '{"count": 6}', false),
+  ('BIG_PORTFOLIO', 'Big Portfolio', 'Build a seven-figure cultural portfolio.', 'Portfolio', 250, '💼', 'portfolio_value', '{"value": 1000000}', false),
+  ('MARKET_MOGUL', 'Market Mogul', 'Join the elite ranks of CultureDAQ''s wealthiest traders.', 'Portfolio', 500, '👑', 'portfolio_value', '{"value": 5000000}', false),
+  ('CULTURE_TITAN', 'Culture Titan', 'Build a cultural empire worth 10 million DAQ.', 'Portfolio', 1000, '👑', 'portfolio_value', '{"value": 10000000}', false),
+  ('TREND_SPOTTER', 'Trend Spotter', 'Own an asset before it reaches the Top 50', 'Discovery', 75, '🔭', 'discovery_rank', '{"rank": 50}', false),
+  ('TALENT_SCOUT', 'Talent Scout', 'Own an asset before it reaches the Top 25', 'Discovery', 150, '🎯', 'discovery_rank', '{"rank": 25}', false),
+  ('CULTURAL_ORACLE', 'Cultural Oracle', 'Predict a cultural breakout before the market notices.', 'Discovery', 500, '🔮', 'discovery_rank', '{"rank": 10}', false),
+  ('KINGMAKER', 'Kingmaker', 'Back a future market leader before anyone else.', 'Discovery', 1000, '👑', 'discovery_rank', '{"rank": 1}', false),
+  ('TOP_100_TRADER', 'Top 100 Trader', 'Reach the Top 100', 'Rankings', 100, '🏅', 'leaderboard_rank', '{"rank": 100}', false),
+  ('TOP_25_TRADER', 'Top 25 Trader', 'Reach the Top 25', 'Rankings', 250, '🥈', 'leaderboard_rank', '{"rank": 25}', false),
+  ('TOP_10_TRADER', 'Top 10 Trader', 'Reach the Top 10', 'Rankings', 500, '🥇', 'leaderboard_rank', '{"rank": 10}', false),
+  ('NUMBER_ONE', 'Number One', 'Become the highest ranked trader in CultureDAQ.', 'Rankings', 1500, '🏆', 'leaderboard_rank', '{"rank": 1}', false),
+  ('MOVIE_BUFF', 'Movie Buff', 'Own 5 movie assets', 'Categories', 75, '🎬', 'category_holdings', '{"category": "movies", "count": 5}', false),
+  ('MUSIC_MOGUL', 'Music Mogul', 'Own 5 musician assets', 'Categories', 75, '🎵', 'category_holdings', '{"category": "musicians", "count": 5}', false),
+  ('SPORTS_FANATIC', 'Sports Fanatic', 'Own 5 sports team assets', 'Categories', 75, '⚽', 'category_holdings', '{"category": "sports_teams", "count": 5}', false),
+  ('BRAND_BUILDER', 'Brand Builder', 'Own 5 brand assets', 'Categories', 75, '🏷️', 'category_holdings', '{"category": "brands", "count": 5}', false),
+  ('STAR_COLLECTOR', 'Star Collector', 'Own 5 actor assets', 'Categories', 75, '⭐', 'category_holdings', '{"category": "actors", "count": 5}', false),
+  ('HOT_STREAK', 'Hot Streak', 'Have 3 profitable holdings at once', 'Streaks', 150, '🔥', 'profitable_holdings', '{"count": 3}', false),
+  ('GREEN_PORTFOLIO', 'Green Portfolio', 'Have every holding in profit', 'Streaks', 200, '💚', 'all_holdings_profitable', '{}', false),
+  ('EARLY_ADOPTER', 'Early Adopter', 'Unlocked for early CultureDAQ users', 'Special', 100, '🎯', 'early_adopter', '{}', false),
+  ('DIAMOND_HANDS', 'Diamond Hands', 'Hold the same asset for 30 days', 'Special', 250, '💎', 'hold_days', '{"days": 30}', false),
+  ('CONTRARIAN', 'Contrarian', 'Buy an asset while it is down and later profit from it', 'Special', 300, '🔄', 'contrarian', '{}', false),
+  ('PERFECT_TIMING', 'Perfect Timing', 'Buy an asset within 24 hours before it becomes a Top 10 asset', 'Special', 500, '⏱️', 'perfect_timing', '{}', false)
+ON CONFLICT (code) DO NOTHING;

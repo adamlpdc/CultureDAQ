@@ -7,6 +7,7 @@ import { PortfolioEmptyState } from "@/components/portfolio/portfolio-empty-stat
 import { PortfolioHeader } from "@/components/portfolio/portfolio-header";
 import { PortfolioInsights } from "@/components/portfolio/portfolio-insights";
 import { PortfolioStats } from "@/components/portfolio/portfolio-stats";
+import { PortfolioAchievementsSummary } from "@/components/portfolio/portfolio-achievements-summary";
 import { PortfolioWatchlist } from "@/components/portfolio/portfolio-watchlist";
 import { SHOWCASE_SLUGS } from "@/lib/asset-visual";
 import { computePortfolioAnalytics } from "@/lib/portfolio-analytics";
@@ -15,6 +16,7 @@ import {
   getCurrentUser,
   getPortfolioHistory,
   getPortfolioSummary,
+  getUserAchievementStats,
   getUserHoldings,
   getUserPortfolioRank,
   getUserTrades,
@@ -24,7 +26,7 @@ export default async function PortfolioPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?redirect=/portfolio");
 
-  const [summary, holdings, trades, history, watchlistAssets, portfolioRank] =
+  const [summary, holdings, trades, history, watchlistAssets, portfolioRank, achievementStats] =
     await Promise.all([
       getPortfolioSummary(user.id),
       getUserHoldings(user.id),
@@ -32,6 +34,7 @@ export default async function PortfolioPage() {
       getPortfolioHistory(user.id),
       getAssetsBySlugs([...SHOWCASE_SLUGS].slice(0, 3)),
       getUserPortfolioRank(user.id),
+      getUserAchievementStats(user.id),
     ]);
 
   if (!summary) redirect("/login");
@@ -61,6 +64,8 @@ export default async function PortfolioPage() {
             : null
         }
       />
+
+      <PortfolioAchievementsSummary stats={achievementStats} />
 
       {hasHoldings ? (
         <section>

@@ -68,3 +68,19 @@ export function NewBadge() {
     </Badge>
   );
 }
+
+export function TrendingBadge() {
+  return (
+    <Badge className="shrink-0 border-gold-muted bg-gold-subtle px-1.5 py-0 text-[9px] text-gold">
+      Trending
+    </Badge>
+  );
+}
+
+export function MomentumBadge() {
+  return (
+    <Badge className="shrink-0 border-primary-muted bg-primary-light px-1.5 py-0 text-[9px] text-primary">
+      High Momentum
+    </Badge>
+  );
+}

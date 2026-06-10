@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { annotateBuyTrade, checkAndUnlockAchievements } from "@/lib/achievements/unlock";
 import { createClient } from "@/lib/supabase/server";
+import type { UnlockedAchievement } from "@/types/database";
 
 const tradeSchema = z.object({
   assetId: z.string().uuid(),
@@ -10,7 +12,7 @@ const tradeSchema = z.object({
 });
 
 export type TradeResult =
-  | { success: true; message: string }
+  | { success: true; message: string; unlockedAchievements: UnlockedAchievement[] }
   | { success: false; error: string };
 
 export async function buyShares(
@@ -46,13 +48,22 @@ export async function buyShares(
     return { success: false, error: message };
   }
 
+  if (data?.trade_id) {
+    await annotateBuyTrade(supabase, data.trade_id, parsed.data.assetId);
+  }
+
+  const unlockedAchievements = await checkAndUnlockAchievements(supabase, user.id);
+
   revalidatePath("/portfolio");
   revalidatePath("/market");
+  revalidatePath("/achievements");
+  revalidatePath("/leaderboard");
   revalidatePath(`/asset`);
 
   return {
     success: true,
     message: `Bought ${parsed.data.shares} shares for ${data?.total_cost ?? ""} DAQ`,
+    unlockedAchievements,
   };
 }
 
@@ -89,12 +100,17 @@ export async function sellShares(
     return { success: false, error: message };
   }
 
+  const unlockedAchievements = await checkAndUnlockAchievements(supabase, user.id);
+
   revalidatePath("/portfolio");
   revalidatePath("/market");
+  revalidatePath("/achievements");
+  revalidatePath("/leaderboard");
   revalidatePath(`/asset`);
 
   return {
     success: true,
     message: `Sold ${parsed.data.shares} shares for ${data?.total_proceeds ?? ""} DAQ`,
+    unlockedAchievements,
   };
 }

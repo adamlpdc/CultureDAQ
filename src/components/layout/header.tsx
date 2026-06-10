@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, LogOut, Menu, Newspaper, Trophy, User, Wallet, X } from "lucide-react";
+import { Award, BarChart3, LogOut, Menu, Trophy, User, Wallet, X } from "lucide-react";
 import { useState } from "react";
 import { cn, formatDaq } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ const navLinks = [
   { href: "/market", label: "Market", icon: BarChart3 },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
-  { href: "#", label: "News", icon: Newspaper, placeholder: true },
+  { href: "/achievements", label: "Achievements", icon: Award },
 ];
 
 export function Header({ user, profile }: HeaderProps) {
@@ -30,33 +30,21 @@ export function Header({ user, profile }: HeaderProps) {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-6">
         <Logo size="md" />
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-0.5 md:flex lg:gap-1">
           {navLinks.map((link) => {
-            const isActive = !link.placeholder && pathname.startsWith(link.href);
-            if (link.placeholder) {
-              return (
-                <span
-                  key={link.label}
-                  className="flex cursor-default items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold text-muted-light"
-                  title="Coming soon"
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </span>
-              );
-            }
+            const isActive = pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200",
+                  "flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 lg:gap-2 lg:px-3.5",
                   isActive
                     ? "bg-primary-light text-primary shadow-card"
                     : "text-muted hover:bg-surface-muted hover:text-foreground"
                 )}
               >
-                <link.icon className="h-4 w-4" />
+                <link.icon className="h-4 w-4 shrink-0" />
                 {link.label}
               </Link>
             );
@@ -65,7 +53,7 @@ export function Header({ user, profile }: HeaderProps) {
             <Link
               href="/admin"
               className={cn(
-                "rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200",
+                "rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 lg:px-3.5",
                 pathname.startsWith("/admin")
                   ? "bg-gold-subtle text-gold shadow-card"
                   : "text-muted hover:bg-surface-muted hover:text-foreground"
@@ -120,31 +108,35 @@ export function Header({ user, profile }: HeaderProps) {
       {mobileOpen && (
         <div className="border-t border-border bg-surface px-4 py-4 shadow-card md:hidden">
           <nav className="flex flex-col gap-1">
-            {navLinks.map((link) =>
-              link.placeholder ? (
-                <span
-                  key={link.label}
-                  className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-muted-light"
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </span>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold",
-                    pathname.startsWith(link.href)
-                      ? "bg-primary-light text-primary"
-                      : "text-muted"
-                  )}
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </Link>
-              )
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold",
+                  pathname.startsWith(link.href)
+                    ? "bg-primary-light text-primary"
+                    : "text-muted"
+                )}
+              >
+                <link.icon className="h-4 w-4" />
+                {link.label}
+              </Link>
+            ))}
+            {profile?.is_admin && (
+              <Link
+                href="/admin"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "rounded-xl px-3 py-2.5 text-sm font-semibold",
+                  pathname.startsWith("/admin")
+                    ? "bg-gold-subtle text-gold"
+                    : "text-muted"
+                )}
+              >
+                Admin
+              </Link>
             )}
             {user && profile ? (
               <div className="mt-3 border-t border-border pt-3">

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { buyShares, sellShares } from "@/actions/trading";
+import { useAchievementToast } from "@/components/achievements/achievement-provider";
 import type { Asset } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,7 @@ export function TradeForm({
   const [shares, setShares] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { showUnlocks } = useAchievementToast();
 
   const shareCount = parseInt(shares) || 0;
   const totalCost = shareCount * asset.current_price;
@@ -67,6 +69,9 @@ export function TradeForm({
       if (result.success) {
         setMessage({ type: "success", text: result.message });
         setShares("");
+        if (result.unlockedAchievements.length > 0) {
+          showUnlocks(result.unlockedAchievements);
+        }
       } else {
         setMessage({ type: "error", text: result.error });
       }

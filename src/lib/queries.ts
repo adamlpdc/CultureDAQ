@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, hasSupabaseAdminCredentials } from "@/lib/supabase/admin";
 import type {
+  Achievement,
   Asset,
   AssetCategory,
   HoldingWithAsset,
@@ -12,6 +13,40 @@ import type {
   TradeWithAsset,
 } from "@/types/database";
 import { getPriceChange } from "@/lib/utils";
+import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
+import {
+  buildAchievementHighlights,
+  type AchievementHighlight,
+} from "@/lib/achievements";
+import {
+  buildAchievementCard,
+  buildStatsFromCards,
+  findUserAchievementRow,
+  indexUserAchievements,
+  resolveAchievementState,
+} from "@/lib/achievements/achievement-state";
+import {
+  checkAndUnlockAchievements,
+  loadAchievementCheckContext,
+} from "@/lib/achievements/unlock";
+import { filterVisibleAchievements, loadAchievementsCatalog } from "@/lib/achievements/catalog";
+import type { AchievementProgressDetail } from "@/lib/achievements/progress-detail";
+import { ACHIEVEMENT_SEED_COUNT } from "@/lib/achievements/seed-data";
+import type { AchievementCategory } from "@/types/database";
+import {
+  assignLeaderboardBadges,
+  buildHallOfFame,
+  buildLeaderboardStats,
+  computePeriodChange,
+  enrichLeaderboardEntry,
+  getPeriodMs,
+  sortEntriesByPeriod,
+  type EnrichedLeaderboardEntry,
+  type HallOfFameEntry,
+  type LeaderboardPeriod,
+  type LeaderboardStats,
+  type UserLeaderboardPosition,
+} from "@/lib/leaderboard-analytics";
 
 export async function getCurrentUser() {
   const supabase = await createClient();
@@ -48,13 +83,29 @@ export async function getAssets(options?: {
     query = query.eq("featured", true);
   }
   if (options?.search) {
-    query = query.ilike("name", `%${options.search}%`);
+    const q = options.search.trim().toLowerCase();
+    const matchedCategory = ALL_CATEGORIES.find(
+      (c) =>
+        CATEGORY_LABELS[c].toLowerCase().includes(q) ||
+        c.replace(/_/g, " ").includes(q)
+    );
+    if (matchedCategory && q.length >= 3) {
+      query = query.eq("category", matchedCategory);
+    } else {
+      query = query.ilike("name", `%${options.search}%`);
+    }
   }
 
   const sort = options?.sort ?? "trending";
   switch (sort) {
     case "price_desc":
       query = query.order("current_price", { ascending: false });
+      break;
+    case "price_asc":
+      query = query.order("current_price", { ascending: true });
+      break;
+    case "new_listings":
+      query = query.order("created_at", { ascending: false });
       break;
     case "most_traded":
       query = query.order("trade_volume_24h", { ascending: false });
@@ -224,7 +275,9 @@ export async function getPortfolioSummary(
   };
 }
 
-export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
+async function getLatestLeaderboardSnapshotEntries(
+  limit?: number
+): Promise<LeaderboardEntry[]> {
   const supabase = await createClient();
 
   const { data: latestSnapshot } = await supabase
@@ -234,20 +287,42 @@ export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
     .limit(1)
     .maybeSingle();
 
-  if (latestSnapshot) {
-    const { data } = await supabase
-      .from("leaderboard_snapshots")
-      .select("*")
-      .eq("recorded_at", latestSnapshot.recorded_at)
-      .order("rank", { ascending: true })
-      .limit(limit);
-    if (data && data.length > 0) return data;
+  if (!latestSnapshot) return [];
+
+  let query = supabase
+    .from("leaderboard_snapshots")
+    .select("*")
+    .eq("recorded_at", latestSnapshot.recorded_at)
+    .order("rank", { ascending: true });
+
+  if (limit != null) {
+    query = query.limit(limit);
   }
+
+  const { data } = await query;
+  return data ?? [];
+}
+
+export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
+  const snapshotEntries = await getLatestLeaderboardSnapshotEntries(limit);
+  if (snapshotEntries.length > 0) return snapshotEntries;
 
   return computeLiveLeaderboard(limit);
 }
 
-async function computeLiveLeaderboard(limit: number): Promise<LeaderboardEntry[]> {
+async function computeLiveLeaderboard(limit?: number): Promise<LeaderboardEntry[]> {
+  const entries = await computeAllLiveLeaderboardEntries();
+  if (limit != null) {
+    return entries.slice(0, limit);
+  }
+  return entries;
+}
+
+async function computeAllLiveLeaderboardEntries(): Promise<LeaderboardEntry[]> {
+  if (!hasSupabaseAdminCredentials()) {
+    return getLatestLeaderboardSnapshotEntries();
+  }
+
   const admin = createAdminClient();
   const { data: profiles } = await admin.from("profiles").select("*");
 
@@ -278,8 +353,196 @@ async function computeLiveLeaderboard(limit: number): Promise<LeaderboardEntry[]
 
   return entries
     .sort((a, b) => b.total_value - a.total_value)
-    .slice(0, limit)
     .map((e, i) => ({ ...e, rank: i + 1 }));
+}
+
+async function getPreviousLeaderboardRankMap(): Promise<Map<string, number>> {
+  const supabase = await createClient();
+  const { data: batches } = await supabase
+    .from("leaderboard_snapshots")
+    .select("recorded_at")
+    .order("recorded_at", { ascending: false })
+    .limit(2);
+
+  if (!batches || batches.length < 2) return new Map();
+
+  const { data } = await supabase
+    .from("leaderboard_snapshots")
+    .select("user_id, rank")
+    .eq("recorded_at", batches[1].recorded_at);
+
+  return new Map((data ?? []).map((r) => [r.user_id, r.rank]));
+}
+
+async function getTraderMetaMap(): Promise<
+  Map<string, { created_at: string; holdingsCount: number }>
+> {
+  const supabase = await createClient();
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("user_id, created_at");
+
+  const holdingsCount = new Map<string, number>();
+  if (hasSupabaseAdminCredentials()) {
+    const admin = createAdminClient();
+    const { data: holdings } = await admin.from("holdings").select("user_id");
+    for (const h of holdings ?? []) {
+      holdingsCount.set(h.user_id, (holdingsCount.get(h.user_id) ?? 0) + 1);
+    }
+  }
+
+  const meta = new Map<string, { created_at: string; holdingsCount: number }>();
+  for (const p of profiles ?? []) {
+    meta.set(p.user_id, {
+      created_at: p.created_at,
+      holdingsCount: holdingsCount.get(p.user_id) ?? 0,
+    });
+  }
+  return meta;
+}
+
+async function getPeriodChangeMap(
+  userIds: string[],
+  periodMs: number
+): Promise<Map<string, number>> {
+  const result = new Map<string, number>();
+  if (userIds.length === 0) return result;
+
+  const supabase = await createClient();
+  const cutoff = new Date(Date.now() - periodMs).toISOString();
+
+  const { data } = await supabase
+    .from("portfolio_snapshots")
+    .select("user_id, total_value, recorded_at")
+    .in("user_id", userIds)
+    .gte("recorded_at", cutoff)
+    .order("recorded_at", { ascending: true });
+
+  const byUser = new Map<string, { first: number; last: number }>();
+  for (const row of data ?? []) {
+    const val = Number(row.total_value);
+    const existing = byUser.get(row.user_id);
+    if (!existing) {
+      byUser.set(row.user_id, { first: val, last: val });
+    } else {
+      existing.last = val;
+    }
+  }
+
+  for (const [userId, { first, last }] of byUser) {
+    const change = computePeriodChange(last, first);
+    if (change != null) result.set(userId, change);
+  }
+  return result;
+}
+
+export interface LeaderboardPageData {
+  period: LeaderboardPeriod;
+  stats: LeaderboardStats;
+  entries: EnrichedLeaderboardEntry[];
+  tableEntries: EnrichedLeaderboardEntry[];
+  userPosition: UserLeaderboardPosition | null;
+  userInTable: boolean;
+  highlights: AchievementHighlight[];
+  hallOfFame: HallOfFameEntry[];
+}
+
+export async function getLeaderboardPageData(
+  period: LeaderboardPeriod = "all",
+  currentUserId?: string | null
+): Promise<LeaderboardPageData> {
+  const [rawEntries, previousRanks, traderMeta] = await Promise.all([
+    computeAllLiveLeaderboardEntries(),
+    getPreviousLeaderboardRankMap(),
+    getTraderMetaMap(),
+  ]);
+
+  const userIds = rawEntries.map((e) => e.user_id);
+  const periodMs = getPeriodMs(period);
+  const todayMs = getPeriodMs("today")!;
+  const weekMs = getPeriodMs("week")!;
+
+  const [periodChanges, todayChanges, weekChanges] = await Promise.all([
+    periodMs ? getPeriodChangeMap(userIds, periodMs) : Promise.resolve(new Map()),
+    getPeriodChangeMap(userIds, todayMs),
+    getPeriodChangeMap(userIds, weekMs),
+  ]);
+
+  const changeMap =
+    period === "all" ? todayChanges : periodChanges;
+
+  let enriched = rawEntries.map((entry) => {
+    const meta = traderMeta.get(entry.user_id);
+    return enrichLeaderboardEntry(entry, {
+      periodChangePercent: changeMap.get(entry.user_id) ?? null,
+      previousRank: previousRanks.get(entry.user_id) ?? null,
+      profileCreatedAt: meta?.created_at,
+      holdingsCount: meta?.holdingsCount ?? 0,
+    });
+  });
+
+  enriched = sortEntriesByPeriod(enriched, period);
+
+  enriched = enriched.map((e) => ({
+    ...e,
+    badges: assignLeaderboardBadges({
+      rank: e.rank,
+      totalReturnPercent: e.totalReturnPercent,
+      periodChangePercent: e.periodChangePercent,
+      holdingsCount: e.holdingsCount,
+      profileCreatedAt: e.profileCreatedAt,
+    }),
+  }));
+
+  const stats = buildLeaderboardStats(
+    enriched.map((e) => ({
+      ...e,
+      periodChangePercent: todayChanges.get(e.user_id) ?? e.periodChangePercent,
+    }))
+  );
+
+  const tableEntries = enriched.slice(0, 50);
+  const userEntry = currentUserId
+    ? enriched.find((e) => e.user_id === currentUserId)
+    : undefined;
+
+  let userPosition: UserLeaderboardPosition | null = null;
+  if (userEntry) {
+    const stats = currentUserId
+      ? await getUserAchievementStats(currentUserId)
+      : { earnedCount: 0, achievementScore: 0 };
+
+    userPosition = {
+      rank: userEntry.rank,
+      totalValue: userEntry.total_value,
+      totalReturnPercent: userEntry.totalReturnPercent,
+      changeTodayPercent: todayChanges.get(userEntry.user_id) ?? null,
+      username: userEntry.username,
+      rankChange: userEntry.rankChange,
+      badges: userEntry.badges,
+      achievementsEarned: stats.earnedCount,
+      achievementScore: stats.achievementScore,
+    };
+  }
+
+  const userInTable =
+    !!userEntry && userEntry.rank <= 50;
+
+  return {
+    period,
+    stats,
+    entries: enriched.slice(0, 50),
+    tableEntries,
+    userPosition,
+    userInTable,
+    highlights: buildAchievementHighlights(
+      enriched.map((e) => ({
+        ...e,
+        periodChangePercent: todayChanges.get(e.user_id) ?? null,
+      }))
+    ),
+    hallOfFame: buildHallOfFame(enriched, weekChanges),
+  };
 }
 
 export async function getUserPortfolioRank(userId: string): Promise<number | null> {
@@ -301,6 +564,8 @@ export async function getUserPortfolioRank(userId: string): Promise<number | nul
       .maybeSingle();
     if (entry) return entry.rank;
   }
+
+  if (!hasSupabaseAdminCredentials()) return null;
 
   const admin = createAdminClient();
   const { data: profiles } = await admin.from("profiles").select("user_id, daq_balance");
@@ -475,4 +740,209 @@ export async function getNewListings(limit = 4): Promise<Asset[]> {
     .order("created_at", { ascending: false })
     .limit(limit);
   return (data ?? []) as Asset[];
+}
+
+export async function getCategoryCounts(): Promise<Record<AssetCategory, number>> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("assets").select("category");
+  const counts = Object.fromEntries(
+    ALL_CATEGORIES.map((c) => [c, 0])
+  ) as Record<AssetCategory, number>;
+  for (const row of data ?? []) {
+    const cat = row.category as AssetCategory;
+    if (cat in counts) counts[cat]++;
+  }
+  return counts;
+}
+
+export async function getMarketRankMap(): Promise<Map<string, number>> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("assets")
+    .select("id")
+    .order("trade_volume_24h", { ascending: false });
+  const map = new Map<string, number>();
+  (data ?? []).forEach((row, i) => map.set(row.id, i + 1));
+  return map;
+}
+
+export interface MarketInsightCards {
+  trending: Asset | null;
+  topGainer: Asset | null;
+  biggestLoser: Asset | null;
+  newListing: Asset | null;
+  mostTraded: Asset | null;
+}
+
+export async function getMarketInsightCards(): Promise<MarketInsightCards> {
+  const [trending, gainers, losers, newest, traded] = await Promise.all([
+    getAssets({ sort: "trending", limit: 1 }),
+    getAssets({ sort: "gainers", limit: 1 }),
+    getAssets({ sort: "losers", limit: 1 }),
+    getNewListings(1),
+    getAssets({ sort: "most_traded", limit: 1 }),
+  ]);
+  return {
+    trending: trending[0] ?? null,
+    topGainer: gainers[0] ?? null,
+    biggestLoser: losers[0] ?? null,
+    newListing: newest[0] ?? null,
+    mostTraded: traded[0] ?? null,
+  };
+}
+
+export interface CategorySpotlight {
+  category: AssetCategory;
+  topAsset: Asset | null;
+  trending: Asset | null;
+  mostTraded: Asset | null;
+}
+
+export async function getCategorySpotlight(): Promise<CategorySpotlight> {
+  const dayIndex = new Date().getDay() % ALL_CATEGORIES.length;
+  const category = ALL_CATEGORIES[dayIndex];
+
+  const [byPrice, trending, traded] = await Promise.all([
+    getAssets({ category, sort: "price_desc", limit: 1 }),
+    getAssets({ category, sort: "trending", limit: 1 }),
+    getAssets({ category, sort: "most_traded", limit: 1 }),
+  ]);
+
+  return {
+    category,
+    topAsset: byPrice[0] ?? null,
+    trending: trending[0] ?? null,
+    mostTraded: traded[0] ?? null,
+  };
+}
+
+export interface UserAchievementStats {
+  earnedCount: number;
+  achievementScore: number;
+  totalAchievements: number;
+  completionPercent: number;
+  latestAchievement: Achievement | null;
+  latestUnlockedAt: string | null;
+}
+
+async function buildAchievementCardsForUser(
+  userId: string,
+  options?: { sync?: boolean }
+): Promise<{ cards: AchievementCardData[]; totalAchievements: number }> {
+  const supabase = await createClient();
+  const allAchievements = filterVisibleAchievements(
+    await loadAchievementsCatalog(supabase)
+  );
+  const totalAchievements = allAchievements.length || ACHIEVEMENT_SEED_COUNT;
+
+  if (options?.sync !== false) {
+    await checkAndUnlockAchievements(supabase, userId);
+  }
+
+  const [ctx, { data: userRows }] = await Promise.all([
+    loadAchievementCheckContext(supabase, userId),
+    supabase
+      .from("user_achievements")
+      .select("*, achievement:achievements(id, code)")
+      .eq("user_id", userId),
+  ]);
+
+  const maps = indexUserAchievements(userRows ?? []);
+
+  const cards = allAchievements.map((achievement) => {
+    const row = findUserAchievementRow(achievement, maps);
+    const state = resolveAchievementState(achievement, ctx, row);
+    return buildAchievementCard(achievement, state);
+  });
+
+  return { cards, totalAchievements };
+}
+
+export async function getUserAchievementStats(
+  userId: string
+): Promise<UserAchievementStats> {
+  const { cards, totalAchievements } = await buildAchievementCardsForUser(userId);
+  return buildStatsFromCards(cards, totalAchievements);
+}
+
+export interface AchievementCardData {
+  achievement: Achievement;
+  progress: number;
+  isUnlocked: boolean;
+  unlockedAt: string | null;
+  description: string;
+  howToUnlock: string;
+  progressDetail: AchievementProgressDetail;
+}
+
+export interface CategoryCollectionStat {
+  category: AchievementCategory;
+  unlocked: number;
+  total: number;
+}
+
+export interface AchievementsPageData {
+  stats: UserAchievementStats;
+  cards: AchievementCardData[];
+  collections: CategoryCollectionStat[];
+  isLoggedIn: boolean;
+}
+
+export async function getAchievementsPageData(
+  userId?: string | null
+): Promise<AchievementsPageData> {
+  const supabase = await createClient();
+  const allAchievements = filterVisibleAchievements(
+    await loadAchievementsCatalog(supabase)
+  );
+
+  const emptyStats: UserAchievementStats = {
+    earnedCount: 0,
+    achievementScore: 0,
+    totalAchievements: allAchievements.length,
+    completionPercent: 0,
+    latestAchievement: null,
+    latestUnlockedAt: null,
+  };
+
+  function buildCollections(cards: AchievementCardData[]): CategoryCollectionStat[] {
+    const map = new Map<AchievementCategory, { unlocked: number; total: number }>();
+    for (const card of cards) {
+      const cat = card.achievement.category;
+      const entry = map.get(cat) ?? { unlocked: 0, total: 0 };
+      entry.total += 1;
+      if (card.isUnlocked) entry.unlocked += 1;
+      map.set(cat, entry);
+    }
+    return Array.from(map.entries()).map(([category, { unlocked, total }]) => ({
+      category,
+      unlocked,
+      total,
+    }));
+  }
+
+  if (!userId) {
+    const cards = allAchievements.map((achievement) =>
+      buildAchievementCard(
+        achievement,
+        resolveAchievementState(achievement, null, null)
+      )
+    );
+    return {
+      stats: emptyStats,
+      cards,
+      collections: buildCollections(cards),
+      isLoggedIn: false,
+    };
+  }
+
+  const { cards, totalAchievements } = await buildAchievementCardsForUser(userId);
+  const stats = buildStatsFromCards(cards, totalAchievements);
+
+  return {
+    stats,
+    cards,
+    collections: buildCollections(cards),
+    isLoggedIn: true,
+  };
 }

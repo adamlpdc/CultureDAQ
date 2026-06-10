@@ -30,10 +30,12 @@ export type PriceEventSource =
 
 export type MarketSort =
   | "price_desc"
+  | "price_asc"
   | "gainers"
   | "losers"
   | "most_traded"
   | "trending"
+  | "new_listings"
   | "name";
 
 export interface Profile {
@@ -98,6 +100,8 @@ export interface Trade {
   shares: number;
   price_per_share: number;
   total_daq: number;
+  asset_market_rank: number | null;
+  asset_was_down: boolean;
   created_at: string;
 }
 
@@ -153,4 +157,64 @@ export interface SeedAsset {
   volatility_score?: number;
   category_weight?: number;
   featured?: boolean;
+}
+
+export type AchievementCategory =
+  | "Getting Started"
+  | "Trading"
+  | "Portfolio"
+  | "Discovery"
+  | "Rankings"
+  | "Categories"
+  | "Streaks"
+  | "Special";
+
+export type AchievementRarity = "Common" | "Rare" | "Epic" | "Legendary";
+
+/** standard = always available; seasonal/event/league reserved for future use */
+export type AchievementScope = "standard" | "seasonal" | "event" | "league";
+
+export interface Achievement {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  category: AchievementCategory;
+  points: number;
+  icon: string;
+  requirement_type: string;
+  requirement_value: Record<string, unknown>;
+  is_hidden: boolean;
+  rarity: AchievementRarity;
+  scope: AchievementScope;
+  season_id: string | null;
+  event_id: string | null;
+  league_id: string | null;
+  available_from: string | null;
+  available_until: string | null;
+  created_at: string;
+}
+
+export interface UserAchievement {
+  id: string;
+  user_id: string;
+  achievement_id: string;
+  unlocked_at: string | null;
+  progress: number;
+  is_unlocked: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserAchievementWithDetails extends UserAchievement {
+  achievement: Achievement;
+}
+
+export interface UnlockedAchievement {
+  code: string;
+  name: string;
+  icon: string;
+  points: number;
+  rarity: AchievementRarity;
+  unlockedAt: string;
 }

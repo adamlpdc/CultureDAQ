@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AchievementProvider } from "@/components/achievements/achievement-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { MarketTicker } from "@/components/market/market-ticker";
@@ -28,23 +29,25 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
-        <Header
-          user={user ? { email: user.email ?? "" } : null}
-          profile={
-            profile
-              ? {
-                  username: profile.username,
-                  daq_balance: profile.daq_balance,
-                  is_admin: profile.is_admin,
-                }
-              : null
-          }
-        />
-        <MarketTicker assets={tickerAssets} />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:py-8 lg:px-6">
-          {children}
-        </main>
-        <Footer />
+        <AchievementProvider isLoggedIn={!!user}>
+          <Header
+            user={user ? { email: user.email ?? "" } : null}
+            profile={
+              profile
+                ? {
+                    username: profile.username,
+                    daq_balance: profile.daq_balance,
+                    is_admin: profile.is_admin,
+                  }
+                : null
+            }
+          />
+          <MarketTicker assets={tickerAssets} />
+          <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:py-8 lg:px-6">
+            {children}
+          </main>
+          <Footer />
+        </AchievementProvider>
       </body>
     </html>
   );
