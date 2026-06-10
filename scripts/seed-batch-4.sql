@@ -1,0 +1,5 @@
+INSERT INTO assets (slug, name, category, description, current_price, previous_price, volatility_score, category_weight, featured, trading_paused, buy_pressure, sell_pressure, momentum_score, trade_volume_24h) VALUES
+('new-york-yankees', 'New York Yankees', 'sports_teams'::asset_category, 'MLB''s most valuable franchise.', 321, 321, 0.9, 1, false, false, 0, 0, 0, 1),
+('fc-barcelona', 'FC Barcelona', 'sports_teams'::asset_category, 'La Liga giants with global fanbase.', 345.5, 345.5, 1.1, 1, false, false, 0, 0, 0, 2),
+('dallas-cowboys', 'Dallas Cowboys', 'sports_teams'::asset_category, 'America''s Team in the NFL.', 289.25, 289.25, 1, 1, false, false, 0, 0, 0, 160),
+('liverpool-fc', 'Liverpool FC', 'sports_teams'::asset_category, 'Premier League giants with passionate support.', 334, 334, 1.1, 1, false, false, 0, 0, 0, 155) ON CONFLICT (slug) DO NOTHING;
