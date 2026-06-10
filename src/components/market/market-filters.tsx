@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
+import { CATEGORY_EMOJI } from "@/lib/asset-visual";
 import type { AssetCategory, MarketSort } from "@/types/database";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -90,7 +91,7 @@ export function MarketFilters() {
                   : "border-border bg-surface text-muted hover:border-border-light hover:text-foreground"
               )}
             >
-              {CATEGORY_LABELS[cat]}
+              {CATEGORY_EMOJI[cat]} {CATEGORY_LABELS[cat]}
             </button>
           ))}
         </div>

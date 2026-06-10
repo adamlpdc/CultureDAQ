@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import type { Asset } from "@/types/database";
-import { AssetVisualFromAsset } from "@/components/assets/asset-visual";
-import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/constants";
+import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
+import { CategoryBadge } from "@/components/ui/badge";
 import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Zap } from "lucide-react";
 
@@ -35,14 +34,16 @@ export function TrendingGrid({ assets }: TrendingGridProps) {
               <span className="text-stat w-3 shrink-0 text-[10px] font-bold text-muted">
                 {index + 1}
               </span>
-              <AssetVisualFromAsset asset={asset} size="xs" />
+              <AssetIdentityFromAsset asset={asset} size="xs" />
               <p className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground group-hover:text-primary">
                 {asset.name}
               </p>
             </div>
-            <Badge className={cn("mt-1 w-fit max-w-full truncate", CATEGORY_COLORS[asset.category])}>
-              {CATEGORY_LABELS[asset.category]}
-            </Badge>
+            <CategoryBadge
+              size="xs"
+              className="mt-1 w-fit max-w-full"
+              category={asset.category}
+            />
             <div className="mt-auto flex items-center justify-between gap-1 pt-1">
               <p className="text-stat daq-price shrink-0 text-[11px] font-bold text-foreground">
                 {formatDaq(asset.current_price)}

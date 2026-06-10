@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import type { Asset } from "@/types/database";
-import { AssetVisualFromAsset } from "@/components/assets/asset-visual";
-import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/constants";
+import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
+import { CategoryBadge, FeaturedBadge } from "@/components/ui/badge";
 import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
-import { Badge, FeaturedBadge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Star } from "lucide-react";
 
@@ -54,15 +53,13 @@ function FeaturedCard({ asset, panel }: { asset: Asset; panel?: boolean }) {
       )}
     >
       <div className="flex items-center gap-2.5">
-        <AssetVisualFromAsset asset={asset} size={panel ? "sm" : "lg"} />
+        <AssetIdentityFromAsset asset={asset} size={panel ? "sm" : "lg"} />
         <FeaturedBadge />
       </div>
       <p className="mt-2.5 line-clamp-2 text-xs font-bold leading-tight text-foreground group-hover:text-primary">
         {asset.name}
       </p>
-      <Badge className={cn("mt-1.5 w-fit", CATEGORY_COLORS[asset.category])}>
-        {CATEGORY_LABELS[asset.category]}
-      </Badge>
+      <CategoryBadge className="mt-1.5 w-fit" category={asset.category} />
       <div className="mt-auto flex items-center justify-between gap-2 pt-3">
         <p className="text-stat daq-price text-xs font-bold text-foreground">
           {formatDaq(asset.current_price)}

@@ -1,84 +1,87 @@
+import { redirect } from "next/navigation";
 import { HoldingsList } from "@/components/portfolio/holdings-list";
-import { PortfolioSummaryCard } from "@/components/portfolio/portfolio-summary";
-import { PageHeader, SectionHeader } from "@/components/ui/page-header";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { PortfolioActivity } from "@/components/portfolio/portfolio-activity";
+import { PortfolioAllocation } from "@/components/portfolio/portfolio-allocation";
+import { PortfolioChart } from "@/components/portfolio/portfolio-chart";
+import { PortfolioEmptyState } from "@/components/portfolio/portfolio-empty-state";
+import { PortfolioHeader } from "@/components/portfolio/portfolio-header";
+import { PortfolioInsights } from "@/components/portfolio/portfolio-insights";
+import { PortfolioStats } from "@/components/portfolio/portfolio-stats";
+import { PortfolioWatchlist } from "@/components/portfolio/portfolio-watchlist";
+import { SHOWCASE_SLUGS } from "@/lib/asset-visual";
+import { computePortfolioAnalytics } from "@/lib/portfolio-analytics";
 import {
+  getAssetsBySlugs,
   getCurrentUser,
   getPortfolioHistory,
   getPortfolioSummary,
   getUserHoldings,
+  getUserPortfolioRank,
   getUserTrades,
 } from "@/lib/queries";
-import { formatDaq } from "@/lib/utils";
-import { redirect } from "next/navigation";
 
 export default async function PortfolioPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?redirect=/portfolio");
 
-  const [summary, holdings, trades, history] = await Promise.all([
-    getPortfolioSummary(user.id),
-    getUserHoldings(user.id),
-    getUserTrades(user.id, 20),
-    getPortfolioHistory(user.id),
-  ]);
+  const [summary, holdings, trades, history, watchlistAssets, portfolioRank] =
+    await Promise.all([
+      getPortfolioSummary(user.id),
+      getUserHoldings(user.id),
+      getUserTrades(user.id, 10),
+      getPortfolioHistory(user.id),
+      getAssetsBySlugs([...SHOWCASE_SLUGS].slice(0, 3)),
+      getUserPortfolioRank(user.id),
+    ]);
 
   if (!summary) redirect("/login");
 
+  const analytics = computePortfolioAnalytics(holdings, summary.total_value);
+  const hasHoldings = holdings.length > 0;
+
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title="Portfolio"
-        description="Track your holdings, performance, and recent activity."
+    <div className="space-y-4 md:space-y-5">
+      <PortfolioHeader
+        summary={summary}
+        totalReturnPercent={analytics.totalReturnPercent}
+        portfolioRank={portfolioRank}
+        categoriesCount={analytics.allocation.length}
       />
 
-      <PortfolioSummaryCard summary={summary} history={history} />
+      <PortfolioChart data={history} currentValue={summary.total_value} />
 
-      <section>
-        <SectionHeader title="Holdings" />
-        <HoldingsList holdings={holdings} />
-      </section>
+      <PortfolioStats
+        summary={summary}
+        totalReturnPercent={analytics.totalReturnPercent}
+        totalReturnDaq={analytics.totalReturnDaq}
+        bestPerformer={analytics.bestPerformer}
+        worstPerformer={
+          analytics.worstPerformer && analytics.worstPerformer.returnPercent < 0
+            ? analytics.worstPerformer
+            : null
+        }
+      />
 
-      {trades.length > 0 && (
+      {hasHoldings ? (
         <section>
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Trades</CardTitle>
-            </CardHeader>
-            <div className="divide-y divide-border">
-              {trades.map((trade) => (
-                <div
-                  key={trade.id}
-                  className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
-                >
-                  <div>
-                    <p className="font-medium text-foreground">{trade.asset.name}</p>
-                    <p className="text-sm text-muted">
-                      {trade.trade_type === "buy" ? "Bought" : "Sold"}{" "}
-                      {trade.shares} shares @ {formatDaq(trade.price_per_share)}
-                    </p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p
-                      className={
-                        trade.trade_type === "buy"
-                          ? "font-semibold text-loss"
-                          : "font-semibold text-gain"
-                      }
-                    >
-                      {trade.trade_type === "buy" ? "-" : "+"}
-                      {formatDaq(trade.total_daq)}
-                    </p>
-                    <p className="text-xs text-muted-light">
-                      {new Date(trade.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+          <h2 className="mb-3 text-sm font-bold text-foreground">Your Holdings</h2>
+          <HoldingsList metrics={analytics.holdingMetrics} />
         </section>
+      ) : (
+        <PortfolioEmptyState />
       )}
+
+      <PortfolioInsights
+        metrics={analytics.holdingMetrics}
+        allocation={analytics.allocation}
+      />
+
+      <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
+        <PortfolioAllocation allocation={analytics.allocation} />
+        <PortfolioWatchlist suggestedAssets={watchlistAssets} />
+      </div>
+
+      <PortfolioActivity trades={trades} />
     </div>
   );
 }

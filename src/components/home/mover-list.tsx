@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import type { Asset } from "@/types/database";
-import { AssetVisualFromAsset } from "@/components/assets/asset-visual";
-import { CATEGORY_LABELS } from "@/lib/constants";
+import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
+import { CategoryBadge } from "@/components/ui/badge";
 import { cn, formatPercent, getPriceChange } from "@/lib/utils";
 import { EmptyState } from "@/components/ui/empty-state";
 import { BarChart3 } from "lucide-react";
@@ -37,12 +37,10 @@ export function MoverList({ assets }: MoverListProps) {
             <span className="text-stat w-4 shrink-0 text-xs font-bold text-muted">
               {index + 1}
             </span>
-            <AssetVisualFromAsset asset={asset} size="xs" />
+            <AssetIdentityFromAsset asset={asset} size="xs" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold text-foreground">{asset.name}</p>
-              <p className="truncate text-[10px] text-muted">
-                {CATEGORY_LABELS[asset.category]}
-              </p>
+              <CategoryBadge size="xs" className="mt-0.5 w-fit" category={asset.category} />
             </div>
             <p
               className={cn(

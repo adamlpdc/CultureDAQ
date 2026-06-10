@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import type { Asset } from "@/types/database";
-import { AssetVisualFromAsset } from "@/components/assets/asset-visual";
-import { CATEGORY_LABELS } from "@/lib/constants";
+import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
+import { CategoryBadge } from "@/components/ui/badge";
 import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
 
 interface HeroShowcaseProps {
@@ -36,14 +36,12 @@ export function HeroShowcase({ assets }: HeroShowcaseProps) {
                 )}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <AssetVisualFromAsset asset={asset} size="sm" />
+                  <AssetIdentityFromAsset asset={asset} size="sm" />
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-xs font-bold leading-tight text-foreground">
                       {asset.name}
                     </p>
-                    <p className="mt-0.5 text-[10px] text-muted">
-                      {CATEGORY_LABELS[asset.category]}
-                    </p>
+                    <CategoryBadge size="xs" className="mt-1 w-fit" category={asset.category} />
                   </div>
                 </div>
                 <div className="mt-auto flex items-center justify-between gap-2">

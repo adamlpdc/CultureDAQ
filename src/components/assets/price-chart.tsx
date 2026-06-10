@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -9,7 +10,27 @@ import {
   YAxis,
 } from "recharts";
 import { colors, shadows } from "@/lib/colors";
-import { formatDaq } from "@/lib/utils";
+import { cn, formatDaq } from "@/lib/utils";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+
+type ChartRange = "1d" | "7d" | "30d" | "90d" | "1y" | "all";
+
+const RANGES: { id: ChartRange; label: string; ms: number }[] = [
+  { id: "1d", label: "1D", ms: 24 * 60 * 60 * 1000 },
+  { id: "7d", label: "7D", ms: 7 * 24 * 60 * 60 * 1000 },
+  { id: "30d", label: "30D", ms: 30 * 24 * 60 * 60 * 1000 },
+  { id: "90d", label: "90D", ms: 90 * 24 * 60 * 60 * 1000 },
+  { id: "1y", label: "1Y", ms: 365 * 24 * 60 * 60 * 1000 },
+  { id: "all", label: "ALL", ms: Infinity },
+];
+
+const MAX_POINTS = 120;
+
+function downsample<T>(items: T[], maxPoints: number): T[] {
+  if (items.length <= maxPoints) return items;
+  const step = Math.ceil(items.length / maxPoints);
+  return items.filter((_, i) => i % step === 0 || i === items.length - 1);
+}
 
 interface PriceChartProps {
   data: { price: number; recorded_at: string }[];
@@ -17,66 +38,129 @@ interface PriceChartProps {
 }
 
 export function PriceChart({ data, currentPrice }: PriceChartProps) {
-  const chartData =
-    data.length > 0
-      ? data.map((d) => ({
-          time: new Date(d.recorded_at).toLocaleString("en-US", {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          price: Number(d.price),
-        }))
-      : [{ time: "Now", price: currentPrice }];
+  const [range, setRange] = useState<ChartRange>("7d");
 
-  const minPrice = Math.min(...chartData.map((d) => d.price)) * 0.98;
-  const maxPrice = Math.max(...chartData.map((d) => d.price)) * 1.02;
+  const filteredData = useMemo(() => {
+    if (data.length === 0) return [];
+
+    const rangeConfig = RANGES.find((r) => r.id === range)!;
+    const cutoff =
+      rangeConfig.ms === Infinity ? 0 : Date.now() - rangeConfig.ms;
+
+    return data.filter((d) => new Date(d.recorded_at).getTime() >= cutoff);
+  }, [data, range]);
+
+  const chartData = useMemo(() => {
+    const source =
+      filteredData.length > 0
+        ? filteredData
+        : data.length > 0
+          ? [data[data.length - 1]]
+          : [];
+
+    if (source.length === 0) {
+      return [{ time: "Now", price: currentPrice }];
+    }
+
+    const mapped = source.map((d) => ({
+      time: new Date(d.recorded_at).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: range === "1d" ? "2-digit" : undefined,
+        minute: range === "1d" ? "2-digit" : undefined,
+      }),
+      price: Number(d.price),
+      ts: new Date(d.recorded_at).getTime(),
+    }));
+
+    return downsample(mapped, MAX_POINTS);
+  }, [filteredData, data, currentPrice, range]);
+
+  const prices = chartData.map((d) => d.price);
+  const minPrice = Math.min(...prices) * 0.98;
+  const maxPrice = Math.max(...prices) * 1.02;
+  const isUp = prices.length >= 2 ? prices[prices.length - 1] >= prices[0] : true;
 
   return (
-    <div className="h-72 w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={chartData}>
-          <defs>
-            <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={colors.chartGradient} stopOpacity={0.2} />
-              <stop offset="100%" stopColor={colors.chartGradient} stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis
-            dataKey="time"
-            tick={{ fill: colors.muted, fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            interval="preserveStartEnd"
-          />
-          <YAxis
-            domain={[minPrice, maxPrice]}
-            tick={{ fill: colors.muted, fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={(v) => `${v.toFixed(0)}`}
-            width={50}
-          />
-          <Tooltip
-            contentStyle={{
-              background: colors.surface,
-              border: `1px solid ${colors.border}`,
-              borderRadius: "12px",
-              color: colors.foreground,
-              boxShadow: shadows.cardHover,
-            }}
-            formatter={(value: number) => [formatDaq(value), "Price"]}
-          />
-          <Area
-            type="monotone"
-            dataKey="price"
-            stroke={colors.chart}
-            strokeWidth={2}
-            fill="url(#priceGradient)"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
+    <Card className="!p-4 md:!p-5">
+      <CardHeader className="mb-2 flex-col items-start gap-3 sm:flex-row sm:items-center">
+        <CardTitle>Price History</CardTitle>
+        <div className="flex w-full flex-wrap gap-1 rounded-xl bg-surface-muted p-1 sm:w-auto">
+          {RANGES.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              onClick={() => setRange(r.id)}
+              className={cn(
+                "min-w-[2.5rem] rounded-lg px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wide transition-all",
+                range === r.id
+                  ? "bg-surface text-primary shadow-card ring-1 ring-border-tint"
+                  : "text-muted hover:text-foreground"
+              )}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      </CardHeader>
+
+      <div className="h-60 w-full sm:h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={chartData} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+            <defs>
+              <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="0%"
+                  stopColor={isUp ? colors.chartGradient : colors.loss}
+                  stopOpacity={0.22}
+                />
+                <stop
+                  offset="100%"
+                  stopColor={isUp ? colors.chartGradient : colors.loss}
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="time"
+              tick={{ fill: colors.muted, fontSize: 10 }}
+              axisLine={false}
+              tickLine={false}
+              interval="preserveStartEnd"
+              minTickGap={32}
+            />
+            <YAxis
+              domain={[minPrice, maxPrice]}
+              tick={{ fill: colors.muted, fontSize: 10 }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(v) => `${v.toFixed(0)}`}
+              width={44}
+            />
+            <Tooltip
+              contentStyle={{
+                background: colors.surface,
+                border: `1px solid ${colors.border}`,
+                borderRadius: "12px",
+                color: colors.foreground,
+                boxShadow: shadows.cardHover,
+                fontSize: 12,
+              }}
+              formatter={(value: number) => [formatDaq(value), "Price"]}
+              labelFormatter={(label) => String(label)}
+            />
+            <Area
+              type="monotone"
+              dataKey="price"
+              stroke={isUp ? colors.chart : colors.loss}
+              strokeWidth={2}
+              fill="url(#priceGradient)"
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
   );
 }

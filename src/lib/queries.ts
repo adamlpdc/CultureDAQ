@@ -120,7 +120,7 @@ export async function getAssetBySlug(slug: string): Promise<Asset | null> {
 
 export async function getAssetPriceHistory(
   assetId: string,
-  limit = 96
+  limit = 2880
 ): Promise<{ price: number; recorded_at: string }[]> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -282,6 +282,54 @@ async function computeLiveLeaderboard(limit: number): Promise<LeaderboardEntry[]
     .map((e, i) => ({ ...e, rank: i + 1 }));
 }
 
+export async function getUserPortfolioRank(userId: string): Promise<number | null> {
+  const supabase = await createClient();
+
+  const { data: latestSnapshot } = await supabase
+    .from("leaderboard_snapshots")
+    .select("recorded_at")
+    .order("recorded_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (latestSnapshot) {
+    const { data: entry } = await supabase
+      .from("leaderboard_snapshots")
+      .select("rank")
+      .eq("recorded_at", latestSnapshot.recorded_at)
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (entry) return entry.rank;
+  }
+
+  const admin = createAdminClient();
+  const { data: profiles } = await admin.from("profiles").select("user_id, daq_balance");
+  if (!profiles?.length) return null;
+
+  const totals = await Promise.all(
+    profiles.map(async (profile) => {
+      const { data: holdings } = await admin
+        .from("holdings")
+        .select("shares, asset:assets(current_price)")
+        .eq("user_id", profile.user_id);
+
+      const holdingsValue = (holdings ?? []).reduce((sum, h) => {
+        const asset = h.asset as unknown as { current_price: number } | null;
+        return sum + h.shares * (asset?.current_price ?? 0);
+      }, 0);
+
+      return {
+        user_id: profile.user_id,
+        total_value: profile.daq_balance + holdingsValue,
+      };
+    })
+  );
+
+  totals.sort((a, b) => b.total_value - a.total_value);
+  const index = totals.findIndex((t) => t.user_id === userId);
+  return index >= 0 ? index + 1 : null;
+}
+
 export async function getMarketStats() {
   const supabase = await createClient();
   const { count: assetCount } = await supabase
@@ -310,7 +358,7 @@ export async function getMarketStats() {
 
 export async function getPortfolioHistory(
   userId: string,
-  limit = 48
+  limit = 2880
 ): Promise<{ total_value: number; recorded_at: string }[]> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -331,6 +379,92 @@ export async function getAssetsBySlugs(slugs: string[]): Promise<Asset[]> {
   return assets.sort(
     (a, b) => (order.get(a.slug) ?? 99) - (order.get(b.slug) ?? 99)
   );
+}
+
+export type RelatedAssetReason =
+  | "same_category"
+  | "culture_moment"
+  | "trending_together";
+
+export interface RelatedAssetEntry {
+  asset: Asset;
+  reason: RelatedAssetReason;
+}
+
+export async function getAssetMarketRank(
+  assetId: string
+): Promise<{ rank: number; total: number }> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("assets")
+    .select("id")
+    .order("trade_volume_24h", { ascending: false });
+
+  const assets = data ?? [];
+  const index = assets.findIndex((a) => a.id === assetId);
+  return {
+    rank: index >= 0 ? index + 1 : assets.length,
+    total: assets.length,
+  };
+}
+
+export async function getRelatedAssets(
+  asset: Pick<Asset, "id" | "slug" | "category">,
+  options?: { cultureSlugs?: string[]; limit?: number }
+): Promise<RelatedAssetEntry[]> {
+  const limit = options?.limit ?? 6;
+  const cultureSlugs = (options?.cultureSlugs ?? []).filter((s) => s !== asset.slug);
+  const cultureSlugSet = new Set(cultureSlugs);
+
+  const supabase = await createClient();
+
+  const [{ data: categoryPeers }, { data: trending }] = await Promise.all([
+    supabase
+      .from("assets")
+      .select("*")
+      .eq("category", asset.category)
+      .neq("id", asset.id)
+      .order("trade_volume_24h", { ascending: false })
+      .limit(limit),
+    supabase
+      .from("assets")
+      .select("id, slug")
+      .neq("id", asset.id)
+      .order("trade_volume_24h", { ascending: false })
+      .limit(20),
+  ]);
+
+  const trendingSlugs = new Set((trending ?? []).map((t) => t.slug));
+  const peers = (categoryPeers ?? []) as Asset[];
+  const momentPeers =
+    cultureSlugs.length > 0 ? await getAssetsBySlugs(cultureSlugs) : [];
+
+  const seen = new Set<string>();
+  const merged: RelatedAssetEntry[] = [];
+
+  function add(candidate: Asset, reason: RelatedAssetReason) {
+    if (candidate.id === asset.id || seen.has(candidate.id)) return;
+    seen.add(candidate.id);
+    merged.push({ asset: candidate, reason });
+  }
+
+  for (const peer of momentPeers) {
+    add(peer, "culture_moment");
+    if (merged.length >= limit) return merged;
+  }
+
+  for (const peer of peers) {
+    const reason: RelatedAssetReason =
+      cultureSlugSet.has(peer.slug) && trendingSlugs.has(peer.slug)
+        ? "trending_together"
+        : trendingSlugs.has(peer.slug) && peer.category === asset.category
+          ? "trending_together"
+          : "same_category";
+    add(peer, reason);
+    if (merged.length >= limit) return merged;
+  }
+
+  return merged;
 }
 
 export async function getNewListings(limit = 4): Promise<Asset[]> {
