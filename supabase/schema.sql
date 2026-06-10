@@ -189,7 +189,11 @@ CREATE TRIGGER holdings_updated_at BEFORE UPDATE ON holdings
 
 -- Auto-create profile on signup with 100,000 DAQ
 CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 DECLARE
   base_username TEXT;
   final_username TEXT;
@@ -205,12 +209,12 @@ BEGIN
   END IF;
   final_username := base_username;
 
-  WHILE EXISTS (SELECT 1 FROM profiles WHERE username = final_username) LOOP
+  WHILE EXISTS (SELECT 1 FROM public.profiles WHERE username = final_username) LOOP
     suffix := suffix + 1;
     final_username := base_username || suffix::TEXT;
   END LOOP;
 
-  INSERT INTO profiles (user_id, username, display_name, daq_balance)
+  INSERT INTO public.profiles (user_id, username, display_name, daq_balance)
   VALUES (
     NEW.id,
     final_username,
@@ -219,7 +223,11 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
+
+GRANT USAGE ON SCHEMA public TO supabase_auth_admin;
+GRANT ALL ON public.profiles TO supabase_auth_admin;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO supabase_auth_admin;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
