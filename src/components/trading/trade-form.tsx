@@ -5,8 +5,8 @@ import { buyShares, sellShares } from "@/actions/trading";
 import type { Asset } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardHeader } from "@/components/ui/card";
-import { formatDaq } from "@/lib/utils";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn, formatDaq } from "@/lib/utils";
 
 interface TradeFormProps {
   asset: Asset;
@@ -35,10 +35,10 @@ export function TradeForm({
     return (
       <Card>
         <p className="text-center text-muted">
-          <a href="/login" className="text-accent hover:underline">
+          <a href="/login" className="font-medium text-primary hover:text-primary-hover">
             Sign in
           </a>{" "}
-          to start trading {asset.name}.
+          to trade {asset.name}.
         </p>
       </Card>
     );
@@ -47,7 +47,7 @@ export function TradeForm({
   if (asset.trading_paused) {
     return (
       <Card>
-        <p className="text-center text-gold">Trading is paused for this asset.</p>
+        <p className="text-center font-medium text-gold">Trading is paused for this asset.</p>
       </Card>
     );
   }
@@ -72,24 +72,27 @@ export function TradeForm({
   return (
     <Card>
       <CardHeader>
-        <div className="flex gap-2">
+        <CardTitle>Place Trade</CardTitle>
+        <div className="flex gap-2 rounded-xl bg-surface-muted p-1">
           <button
             onClick={() => setMode("buy")}
-            className={`flex-1 rounded-xl py-2 text-sm font-medium transition-colors ${
+            className={cn(
+              "flex-1 rounded-lg py-2 text-sm font-medium transition-colors",
               mode === "buy"
-                ? "bg-gain/20 text-gain"
+                ? "bg-gain-light text-gain shadow-card"
                 : "text-muted hover:text-foreground"
-            }`}
+            )}
           >
             Buy
           </button>
           <button
             onClick={() => setMode("sell")}
-            className={`flex-1 rounded-xl py-2 text-sm font-medium transition-colors ${
+            className={cn(
+              "flex-1 rounded-lg py-2 text-sm font-medium transition-colors",
               mode === "sell"
-                ? "bg-loss/20 text-loss"
+                ? "bg-loss-light text-loss shadow-card"
                 : "text-muted hover:text-foreground"
-            }`}
+            )}
           >
             Sell
           </button>
@@ -98,7 +101,9 @@ export function TradeForm({
 
       <div className="space-y-4">
         <div>
-          <label className="mb-1.5 block text-sm text-muted">Shares</label>
+          <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">
+            Shares
+          </label>
           <Input
             type="number"
             min={1}
@@ -111,9 +116,7 @@ export function TradeForm({
               variant="ghost"
               size="sm"
               onClick={() =>
-                setShares(
-                  String(mode === "buy" ? maxBuyShares : maxSellShares)
-                )
+                setShares(String(mode === "buy" ? maxBuyShares : maxSellShares))
               }
             >
               Max
@@ -127,18 +130,16 @@ export function TradeForm({
         </div>
 
         {shareCount > 0 && (
-          <div className="rounded-xl bg-surface-elevated p-3 text-sm">
+          <div className="rounded-xl border border-border bg-surface-muted p-4 text-sm">
             <div className="flex justify-between">
               <span className="text-muted">Total</span>
-              <span className="font-semibold">{formatDaq(totalCost)}</span>
+              <span className="font-semibold text-foreground">{formatDaq(totalCost)}</span>
             </div>
-            <div className="mt-1 flex justify-between">
+            <div className="mt-2 flex justify-between">
               <span className="text-muted">Balance after</span>
-              <span>
+              <span className="font-medium text-foreground">
                 {formatDaq(
-                  mode === "buy"
-                    ? daqBalance - totalCost
-                    : daqBalance + totalCost
+                  mode === "buy" ? daqBalance - totalCost : daqBalance + totalCost
                 )}
               </span>
             </div>
@@ -147,9 +148,10 @@ export function TradeForm({
 
         {message && (
           <p
-            className={`text-sm ${
+            className={cn(
+              "text-sm font-medium",
               message.type === "success" ? "text-gain" : "text-loss"
-            }`}
+            )}
           >
             {message.text}
           </p>

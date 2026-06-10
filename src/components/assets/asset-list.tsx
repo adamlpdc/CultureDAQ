@@ -23,7 +23,7 @@ export function AssetList({
   }
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4">
       {assets.map((asset) => (
         <AssetCard key={asset.id} asset={asset} />
       ))}

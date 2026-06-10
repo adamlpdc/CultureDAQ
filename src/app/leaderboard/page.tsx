@@ -1,5 +1,6 @@
 import { Trophy } from "lucide-react";
 import { LeaderboardTable } from "@/components/leaderboard/leaderboard-table";
+import { PageHeader } from "@/components/ui/page-header";
 import { getLeaderboard } from "@/lib/queries";
 
 export default async function LeaderboardPage() {
@@ -7,24 +8,17 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-gold/20 p-3">
-          <Trophy className="h-6 w-6 text-gold" />
+      <div className="flex items-start gap-4">
+        <div className="rounded-2xl bg-gold-subtle p-3 shadow-card">
+          <Trophy className="h-7 w-7 text-gold" />
         </div>
-        <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Leaderboard</h1>
-          <p className="text-muted">
-            Top traders ranked by total portfolio value
-          </p>
-        </div>
+        <PageHeader
+          title="Leaderboard"
+          description="Top traders ranked by total portfolio value. Updated every 15 minutes."
+        />
       </div>
 
       <LeaderboardTable entries={entries} />
-
-      <p className="text-center text-xs text-muted">
-        Rankings update every 15 minutes. DAQ has no real-world value — this is a
-        game only.
-      </p>
     </div>
   );
 }

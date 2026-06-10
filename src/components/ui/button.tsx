@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { type ButtonHTMLAttributes, forwardRef } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "danger" | "gain" | "loss";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "gain" | "loss" | "gold";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
 }
@@ -22,19 +22,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variants = {
       primary:
-        "bg-accent text-white hover:bg-accent-hover shadow-lg shadow-accent/20",
+        "bg-primary text-white hover:bg-primary-hover shadow-card",
       secondary:
-        "bg-surface-elevated text-foreground border border-border hover:border-border-light",
-      ghost: "text-muted hover:text-foreground hover:bg-surface-elevated",
-      danger: "bg-loss/20 text-loss border border-loss/30 hover:bg-loss/30",
-      gain: "bg-gain text-white hover:bg-gain/90 shadow-lg shadow-gain/20",
-      loss: "bg-loss text-white hover:bg-loss/90 shadow-lg shadow-loss/20",
+        "bg-surface text-foreground border border-border hover:bg-surface-muted hover:border-border-light shadow-card",
+      ghost: "text-muted hover:text-foreground hover:bg-surface-muted",
+      danger: "bg-loss-light text-loss border border-loss-muted hover:bg-loss-muted/50",
+      gain: "bg-gain text-white hover:bg-gain-hover shadow-card",
+      loss: "bg-loss text-white hover:bg-loss-hover shadow-card",
+      gold: "bg-gold text-white hover:bg-gold-hover shadow-card",
     };
 
     const sizes = {
-      sm: "px-3 py-1.5 text-sm",
-      md: "px-4 py-2.5 text-sm",
-      lg: "px-6 py-3 text-base",
+      sm: "px-3 py-1.5 text-sm rounded-lg",
+      md: "px-4 py-2.5 text-sm rounded-xl",
+      lg: "px-6 py-3 text-base rounded-xl",
     };
 
     return (
@@ -42,7 +43,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
           variants[variant],
           sizes[size],
           className

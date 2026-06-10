@@ -3,9 +3,17 @@ import type { LeaderboardEntry } from "@/types/database";
 import { formatDaq } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { cn } from "@/lib/utils";
 
 interface LeaderboardTableProps {
   entries: LeaderboardEntry[];
+}
+
+function rankStyle(rank: number) {
+  if (rank === 1) return "bg-gold-subtle text-gold border-gold-muted";
+  if (rank === 2) return "bg-surface-muted text-foreground-secondary border-border";
+  if (rank === 3) return "bg-gold-light text-gold-hover border-gold-muted";
+  return "bg-surface-muted text-muted border-border";
 }
 
 export function LeaderboardTable({ entries }: LeaderboardTableProps) {
@@ -14,7 +22,7 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
       <EmptyState
         icon={Trophy}
         title="No rankings yet"
-        description="Leaderboard updates every 15 minutes after users start trading."
+        description="Leaderboard updates every 15 minutes. Start trading to claim your spot."
       />
     );
   }
@@ -25,28 +33,21 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
         {entries.map((entry) => (
           <div
             key={entry.user_id}
-            className="flex items-center gap-4 px-4 py-3 md:px-6"
+            className="flex items-center gap-4 px-4 py-4 transition-colors hover:bg-surface-muted/50 md:px-6"
           >
             <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                entry.rank === 1
-                  ? "bg-gold/20 text-gold"
-                  : entry.rank === 2
-                    ? "bg-gray-400/20 text-gray-300"
-                    : entry.rank === 3
-                      ? "bg-orange-700/20 text-orange-400"
-                      : "bg-surface-elevated text-muted"
-              }`}
+              className={cn(
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-sm font-bold",
+                rankStyle(entry.rank)
+              )}
             >
               {entry.rank}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold">@{entry.username}</p>
+              <p className="truncate font-semibold text-foreground">@{entry.username}</p>
             </div>
             <div className="text-right">
-              <p className="font-semibold text-gold">
-                {formatDaq(entry.total_value)}
-              </p>
+              <p className="text-stat font-bold text-gold">{formatDaq(entry.total_value)}</p>
             </div>
           </div>
         ))}

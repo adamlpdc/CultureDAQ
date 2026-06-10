@@ -3,14 +3,15 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { getCurrentUser, getProfile } from "@/lib/queries";
+import { MarketTicker } from "@/components/market/market-ticker";
+import { getAssets, getCurrentUser, getProfile } from "@/lib/queries";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CultureDAQ — Fantasy Cultural Stock Market",
+  title: "CultureDAQ — The Cultural Exchange",
   description:
-    "Trade shares in people, brands, movies, and sports teams using fictional DAQ currency. A game for fun only.",
+    "Trade momentum in culture. Build your portfolio, compete on leaderboards, and track the assets shaping entertainment, sport, and brands.",
 };
 
 export default async function RootLayout({
@@ -19,11 +20,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
-  const profile = user ? await getProfile(user.id) : null;
+  const [profile, tickerAssets] = await Promise.all([
+    user ? getProfile(user.id) : null,
+    getAssets({ sort: "trending", limit: 10 }),
+  ]);
 
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
+      <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
         <Header
           user={user ? { email: user.email ?? "" } : null}
           profile={
@@ -36,7 +40,8 @@ export default async function RootLayout({
               : null
           }
         />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+        <MarketTicker assets={tickerAssets} />
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:py-8 lg:px-6">
           {children}
         </main>
         <Footer />

@@ -66,27 +66,39 @@ export async function getAssets(options?: {
       query = query.order("trade_volume_24h", { ascending: false });
   }
 
-  if (options?.limit) {
+  const needsMemorySort =
+    sort === "gainers" || sort === "losers" || sort === "trending";
+
+  if (options?.limit && !needsMemorySort) {
     query = query.limit(options.limit);
   }
 
   const { data } = await query;
   let assets = (data ?? []) as Asset[];
 
-  if (sort === "gainers" || sort === "losers" || sort === "trending") {
-    assets = assets
-      .map((a) => ({
-        ...a,
-        _change: getPriceChange(a.current_price, a.previous_price),
-      }))
-      .sort((a, b) => {
-        if (sort === "gainers") return b._change - a._change;
-        if (sort === "losers") return a._change - b._change;
-        return (
-          b.trade_volume_24h * Math.abs(b._change) -
-          a.trade_volume_24h * Math.abs(a._change)
-        );
-      });
+  if (needsMemorySort) {
+    type AssetWithChange = Asset & { _change: number };
+    let sorted: AssetWithChange[] = assets.map((a) => ({
+      ...a,
+      _change: getPriceChange(a.current_price, a.previous_price),
+    }));
+
+    sorted.sort((a, b) => {
+      if (sort === "gainers") return b._change - a._change;
+      if (sort === "losers") return a._change - b._change;
+      return (
+        b.trade_volume_24h * Math.abs(b._change) -
+        a.trade_volume_24h * Math.abs(a._change)
+      );
+    });
+
+    if (sort === "gainers") {
+      sorted = sorted.filter((a) => a._change > 0);
+    } else if (sort === "losers") {
+      sorted = sorted.filter((a) => a._change < 0);
+    }
+
+    assets = sorted;
   }
 
   if (options?.limit) {
@@ -272,8 +284,12 @@ async function computeLiveLeaderboard(limit: number): Promise<LeaderboardEntry[]
 
 export async function getMarketStats() {
   const supabase = await createClient();
-  const { count } = await supabase
+  const { count: assetCount } = await supabase
     .from("assets")
+    .select("*", { count: "exact", head: true });
+
+  const { count: userCount } = await supabase
+    .from("profiles")
     .select("*", { count: "exact", head: true });
 
   const { data: assets } = await supabase
@@ -286,7 +302,43 @@ export async function getMarketStats() {
   );
 
   return {
-    totalAssets: count ?? 0,
+    totalAssets: assetCount ?? 0,
     totalVolume,
+    usersTrading: userCount ?? 0,
   };
+}
+
+export async function getPortfolioHistory(
+  userId: string,
+  limit = 48
+): Promise<{ total_value: number; recorded_at: string }[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("portfolio_snapshots")
+    .select("total_value, recorded_at")
+    .eq("user_id", userId)
+    .order("recorded_at", { ascending: true })
+    .limit(limit);
+  return data ?? [];
+}
+
+export async function getAssetsBySlugs(slugs: string[]): Promise<Asset[]> {
+  if (slugs.length === 0) return [];
+  const supabase = await createClient();
+  const { data } = await supabase.from("assets").select("*").in("slug", slugs);
+  const assets = (data ?? []) as Asset[];
+  const order = new Map(slugs.map((s, i) => [s, i]));
+  return assets.sort(
+    (a, b) => (order.get(a.slug) ?? 99) - (order.get(b.slug) ?? 99)
+  );
+}
+
+export async function getNewListings(limit = 4): Promise<Asset[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("assets")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data ?? []) as Asset[];
 }

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { AssetList } from "@/components/assets/asset-list";
 import { MarketFilters } from "@/components/market/market-filters";
+import { PageHeader } from "@/components/ui/page-header";
 import { LoadingSpinner } from "@/components/ui/loading";
 import { getAssets } from "@/lib/queries";
 import type { AssetCategory, MarketSort } from "@/types/database";
@@ -35,13 +36,11 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
   const params = await searchParams;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Market</h1>
-        <p className="mt-1 text-muted">
-          Browse and trade shares in cultural assets
-        </p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Market"
+        description="Browse, filter, and trade shares across the cultural exchange."
+      />
 
       <Suspense fallback={<LoadingSpinner />}>
         <MarketFilters />

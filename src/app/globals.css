@@ -1,19 +1,111 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0e17;
-  --color-surface: #111827;
-  --color-surface-elevated: #1a2332;
-  --color-border: #1e293b;
-  --color-border-light: #334155;
-  --color-foreground: #f1f5f9;
-  --color-muted: #94a3b8;
-  --color-accent: #6366f1;
-  --color-accent-hover: #818cf8;
-  --color-gain: #22c55e;
-  --color-loss: #ef4444;
-  --color-gold: #fbbf24;
+  /* Backgrounds */
+  --color-background: #F4F2EE;
+  --color-background-warm: #EDEAE4;
+  --color-section: #FAFAF8;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F7F5F2;
+  --color-surface-hover: #F0EDE8;
+  --color-surface-inset: #EBE8E3;
+
+  /* Borders */
+  --color-border: #E4E0D8;
+  --color-border-light: #D6D1C7;
+  --color-border-tint: #D4D0F0;
+
+  /* Text */
+  --color-foreground: #1C1917;
+  --color-foreground-secondary: #44403C;
+  --color-muted: #78716C;
+  --color-muted-light: #A8A29E;
+
+  /* Primary */
+  --color-primary: #3730A3;
+  --color-primary-hover: #312E81;
+  --color-primary-light: #EEF2FF;
+  --color-primary-muted: #C7D2FE;
+  --color-primary-subtle: #F5F3FF;
+
+  /* Secondary navy */
+  --color-secondary: #1E1B4B;
+  --color-secondary-hover: #151233;
+  --color-secondary-light: #E8E7F5;
+
+  /* Market */
+  --color-gain: #15803D;
+  --color-gain-hover: #166534;
+  --color-gain-light: #ECFDF3;
+  --color-gain-muted: #BBF7D0;
+  --color-gain-subtle: #F0FDF4;
+
+  --color-loss: #B91C1C;
+  --color-loss-hover: #991B1B;
+  --color-loss-light: #FEF2F2;
+  --color-loss-muted: #FECACA;
+  --color-loss-subtle: #FFF1F2;
+
+  --color-gold: #B45309;
+  --color-gold-hover: #92400E;
+  --color-gold-light: #FFFBEB;
+  --color-gold-muted: #FDE68A;
+  --color-gold-subtle: #FEF9C3;
+
+  /* Charts */
+  --color-chart: #3730A3;
+  --color-chart-gradient: #6366F1;
+
+  /* Category badges */
+  --color-cat-actors-bg: #F5F3FF;
+  --color-cat-actors-text: #5B21B6;
+  --color-cat-actors-border: #DDD6FE;
+  --color-cat-musicians-bg: #FDF2F8;
+  --color-cat-musicians-text: #9D174D;
+  --color-cat-musicians-border: #FBCFE8;
+  --color-cat-athletes-bg: #ECFDF5;
+  --color-cat-athletes-text: #047857;
+  --color-cat-athletes-border: #A7F3D0;
+  --color-cat-influencers-bg: #FFF7ED;
+  --color-cat-influencers-text: #C2410C;
+  --color-cat-influencers-border: #FED7AA;
+  --color-cat-tv-bg: #FFFBEB;
+  --color-cat-tv-text: #B45309;
+  --color-cat-tv-border: #FDE68A;
+  --color-cat-brands-bg: #EFF6FF;
+  --color-cat-brands-text: #1D4ED8;
+  --color-cat-brands-border: #BFDBFE;
+  --color-cat-movies-bg: #FFF1F2;
+  --color-cat-movies-text: #BE123C;
+  --color-cat-movies-border: #FECDD3;
+  --color-cat-tvshows-bg: #ECFEFF;
+  --color-cat-tvshows-text: #0E7490;
+  --color-cat-tvshows-border: #A5F3FC;
+  --color-cat-sports-bg: #F7FEE7;
+  --color-cat-sports-text: #4D7C0F;
+  --color-cat-sports-border: #D9F99D;
+
+  /* Legacy aliases */
+  --color-accent: #3730A3;
+  --color-accent-hover: #312E81;
+  --color-surface-elevated: #F7F5F2;
+
+  /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-card: 1rem;
+  --radius-button: 0.75rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 4px 12px rgb(28 25 23 / 0.06);
+  --shadow-card-hover: 0 4px 8px rgb(28 25 23 / 0.06), 0 12px 28px rgb(28 25 23 / 0.08);
+  --shadow-nav: 0 1px 3px rgb(28 25 23 / 0.05), 0 8px 24px rgb(28 25 23 / 0.04);
+  --shadow-elevated: 0 8px 30px rgb(28 25 23 / 0.08);
 }
 
 * {
@@ -33,7 +125,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -44,4 +136,91 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Shadow utilities */
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.shadow-card-hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.shadow-nav {
+  box-shadow: var(--shadow-nav);
+}
+
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Typography utilities */
+.text-display {
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.text-stat {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.daq-price {
+  white-space: nowrap;
+}
+
+/* Section backgrounds */
+.bg-section {
+  background-color: var(--color-section);
+}
+
+.bg-section-gain {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-gain-subtle) 80%, var(--color-section)) 0%,
+    var(--color-section) 100%
+  );
+}
+
+.bg-section-loss {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-loss-subtle) 80%, var(--color-section)) 0%,
+    var(--color-section) 100%
+  );
+}
+
+/* Hero pattern */
+.hero-pattern {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--color-primary) 8%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
+
+/* Live pulse indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.live-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Ticker scroll */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
 }

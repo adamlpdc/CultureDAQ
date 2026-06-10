@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { AdminPanel } from "@/components/admin/admin-panel";
+import { PageHeader } from "@/components/ui/page-header";
 import { getAssets, getCurrentUser, getProfile } from "@/lib/queries";
 
 export default async function AdminPage() {
@@ -13,12 +14,10 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Admin Panel</h1>
-        <p className="mt-1 text-muted">
-          Manage featured assets, trading pauses, and price overrides
-        </p>
-      </div>
+      <PageHeader
+        title="Admin"
+        description="Manage featured assets, trading pauses, and price overrides."
+      />
 
       <AdminPanel assets={assets} />
     </div>

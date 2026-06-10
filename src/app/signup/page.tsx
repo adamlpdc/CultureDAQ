@@ -3,22 +3,28 @@ import { signUp } from "@/actions/auth";
 import { AuthForm } from "@/components/auth/auth-form";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/ui/logo";
 import { STARTING_DAQ } from "@/lib/constants";
 import { formatDaq } from "@/lib/utils";
 
 export default function SignUpPage() {
   return (
-    <div className="mx-auto max-w-md">
-      <Card>
-        <h1 className="text-2xl font-bold">Create Account</h1>
+    <div className="mx-auto flex max-w-md flex-col items-center">
+      <div className="mb-8">
+        <Logo size="lg" />
+      </div>
+      <Card className="w-full shadow-elevated">
+        <h1 className="text-display text-2xl font-bold text-foreground">Join CultureDAQ</h1>
         <p className="mt-1 text-sm text-muted">
-          Start with {formatDaq(STARTING_DAQ)} — fictional currency for fun only
+          Start with {formatDaq(STARTING_DAQ)} and build your cultural portfolio
         </p>
 
         <div className="mt-6">
-          <AuthForm action={signUp} submitLabel={`Sign Up & Get ${formatDaq(STARTING_DAQ)}`}>
+          <AuthForm action={signUp} submitLabel={`Create Account · ${formatDaq(STARTING_DAQ)}`}>
             <div>
-              <label className="mb-1.5 block text-sm text-muted">Username</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">
+                Username
+              </label>
               <Input
                 name="username"
                 required
@@ -28,11 +34,15 @@ export default function SignUpPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm text-muted">Email</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">
+                Email
+              </label>
               <Input name="email" type="email" required placeholder="you@example.com" />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm text-muted">Password</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">
+                Password
+              </label>
               <Input
                 name="password"
                 type="password"
@@ -44,14 +54,9 @@ export default function SignUpPage() {
           </AuthForm>
         </div>
 
-        <p className="mt-4 text-center text-xs text-muted">
-          DAQ is fictional virtual currency with no real-world value. This is a
-          game, not real-money trading.
-        </p>
-
-        <p className="mt-2 text-center text-sm text-muted">
+        <p className="mt-6 text-center text-sm text-muted">
           Already have an account?{" "}
-          <Link href="/login" className="text-accent hover:underline">
+          <Link href="/login" className="font-medium text-primary hover:text-primary-hover">
             Sign in
           </Link>
         </p>

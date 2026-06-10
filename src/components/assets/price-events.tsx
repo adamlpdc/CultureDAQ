@@ -15,7 +15,7 @@ export function PriceEvents({ events }: PriceEventsProps) {
         <EmptyState
           icon={MessageCircle}
           title="No price movements yet"
-          description="Price explanations will appear here after the market updates."
+          description="Explanations will appear here as the market updates."
         />
       </Card>
     );
@@ -30,22 +30,22 @@ export function PriceEvents({ events }: PriceEventsProps) {
         {events.map((event) => (
           <div
             key={event.id}
-            className="rounded-xl border border-border bg-surface-elevated p-3"
+            className="rounded-xl border border-border bg-surface-muted/50 p-4"
           >
-            <div className="mb-1 flex items-center justify-between text-sm">
+            <div className="mb-1.5 flex items-center justify-between text-sm">
               <span
                 className={
-                  event.change_percent >= 0 ? "text-gain" : "text-loss"
+                  event.change_percent >= 0 ? "font-medium text-gain" : "font-medium text-loss"
                 }
               >
                 {formatPercent(event.change_percent)}
               </span>
-              <span className="text-xs text-muted">
+              <span className="text-xs text-muted-light">
                 {new Date(event.created_at).toLocaleString()}
               </span>
             </div>
-            <p className="text-sm">{event.reason}</p>
-            <span className="mt-1 inline-block text-xs text-muted capitalize">
+            <p className="text-sm text-foreground-secondary">{event.reason}</p>
+            <span className="mt-1.5 inline-block text-xs capitalize text-muted">
               {event.source.replace(/_/g, " ")}
             </span>
           </div>
