@@ -10,6 +10,7 @@ import {
   LogOut,
   Shield,
   User,
+  Wallet,
 } from "lucide-react";
 import { signOut } from "@/actions/auth";
 import { WalletSummaryDropdown } from "@/components/layout/wallet-summary";
@@ -25,7 +26,8 @@ interface UserAccountMenuProps {
 }
 
 const menuLinks = [
-  { href: "/portfolio", label: "Profile", icon: User },
+  { href: "/profile", label: "Profile", icon: User },
+  { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/watchlist", label: "Watchlist", icon: Eye },
   { href: "/achievements", label: "Achievements", icon: Award },
 ] as const;

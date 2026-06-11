@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { getAvatarPreset, resolveAvatarEmoji, resolveAvatarHue } from "@/lib/avatars";
 
 export function getTraderInitials(username: string): string {
   const cleaned = username.replace(/^@/, "").trim();
@@ -14,38 +15,46 @@ export function getTraderHue(username: string): number {
   return Math.abs(hash) % 360;
 }
 
+const sizeClasses = {
+  sm: { outer: "h-8 w-8", emoji: "text-base" },
+  md: { outer: "h-10 w-10", emoji: "text-lg" },
+  lg: { outer: "h-12 w-12", emoji: "text-xl" },
+  hero: { outer: "h-16 w-16", emoji: "text-2xl" },
+  profile: { outer: "h-20 w-20 md:h-24 md:w-24", emoji: "text-3xl md:text-4xl" },
+};
+
 export function TraderAvatar({
   username,
+  avatarStyle,
   size = "md",
   className,
 }: {
   username: string;
-  size?: "sm" | "md" | "lg" | "hero";
+  avatarStyle?: string | null;
+  size?: "sm" | "md" | "lg" | "hero" | "profile";
   className?: string;
 }) {
-  const initials = getTraderInitials(username);
-  const hue = getTraderHue(username);
-  const sizes = {
-    sm: "h-8 w-8 text-[10px]",
-    md: "h-10 w-10 text-xs",
-    lg: "h-12 w-12 text-sm",
-    hero: "h-16 w-16 text-base",
-  };
+  const preset = getAvatarPreset(avatarStyle);
+  const emoji = resolveAvatarEmoji(avatarStyle);
+  const hue = resolveAvatarHue(avatarStyle);
+  const sizes = sizeClasses[size];
 
   return (
     <div
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full border border-border/80 font-bold shadow-card",
-        sizes[size],
+        "relative flex shrink-0 items-center justify-center rounded-full border-2 shadow-card",
+        sizes.outer,
         className
       )}
       style={{
-        background: `linear-gradient(145deg, hsl(${hue} 30% 96%) 0%, hsl(${hue} 25% 88%) 100%)`,
-        color: `hsl(${hue} 45% 28%)`,
+        borderColor: `hsl(${hue} 35% 78%)`,
+        background: `linear-gradient(145deg, hsl(${hue} 42% 97%) 0%, hsl(${hue} 38% 90%) 55%, hsl(${hue} 32% 84%) 100%)`,
+        boxShadow: `0 2px 8px hsl(${hue} 30% 40% / 0.12), inset 0 1px 0 hsl(${hue} 50% 100% / 0.5)`,
       }}
+      title={preset.label}
       aria-hidden
     >
-      {initials}
+      <span className={cn("leading-none select-none", sizes.emoji)}>{emoji}</span>
     </div>
   );
 }

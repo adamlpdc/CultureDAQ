@@ -67,6 +67,8 @@ export interface Profile {
   display_name: string | null;
   daq_balance: number;
   is_admin: boolean;
+  avatar_style: string;
+  favorite_achievement_id: string | null;
   created_at: string;
   updated_at: string;
 }

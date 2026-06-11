@@ -44,7 +44,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 CRON_SECRET=generate-a-random-secret
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3002
 ```
 
 ### 3. Set up Supabase database
@@ -103,13 +103,13 @@ UPDATE profiles SET is_admin = true WHERE username = 'your_username';
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3002](http://localhost:3002).
 
 ### 8. Test price updates locally
 
 ```bash
 curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
-  http://localhost:3000/api/cron/update-prices
+  http://localhost:3002/api/cron/update-prices
 ```
 
 ## Supabase Setup (Detailed)
@@ -143,42 +143,65 @@ curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
 
 ## Vercel Deployment
 
-### 1. Push to GitHub
+### Environment layout
 
-```bash
-git init
-git add .
-git commit -m "Initial CultureDAQ MVP"
-git remote add origin your-repo-url
-git push -u origin main
-```
+| Environment | URL | Vercel target | Branch |
+|-------------|-----|---------------|--------|
+| **Production** | https://culturedaq.com | Production domain | `main` |
+| **Staging** | https://culture-daq.vercel.app | Git branch domain | `staging` (recommended) |
+| **Local** | http://localhost:3002 | — | — |
 
-### 2. Import to Vercel
+Use **one Supabase project** for all three. Auth redirect URLs are configured in Supabase → Authentication → URL Configuration.
 
-1. Go to [vercel.com](https://vercel.com) → New Project → Import your repo
-2. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `CRON_SECRET`
-   - `NEXT_PUBLIC_APP_URL` (your Vercel domain)
+### 1. Vercel domains
 
-### 3. Cron Jobs
+1. **Project → Settings → Domains**
+2. Add `culturedaq.com` (+ `www.culturedaq.com`) → assign to **Production** (`main`)
+3. Add `culture-daq.vercel.app` → assign to **Preview** branch `staging` (create a `staging` branch and push to it)
+4. At your domain registrar, point `culturedaq.com` DNS to Vercel (A/CNAME as shown in Vercel)
+
+> By default `*.vercel.app` serves Production. Assigning it to the `staging` branch keeps production on the custom domain only.
+
+### 2. Environment variables (Vercel → Settings → Environment Variables)
+
+Set these **per environment** (Production / Preview / Development):
+
+| Variable | Production | Preview (staging) | Development (local) |
+|----------|------------|-----------------|---------------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | same | same | same |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | same | same | same |
+| `SUPABASE_SERVICE_ROLE_KEY` | same | same | same |
+| `CRON_SECRET` | prod secret | staging secret (optional) | local secret |
+| `NEXT_PUBLIC_APP_URL` | `https://culturedaq.com` | `https://culture-daq.vercel.app` | `http://localhost:3002` |
+| `NEXT_PUBLIC_APP_ENV` | `production` | `staging` | `development` |
+
+Copy `.env.example` to `.env.local` for local dev.
+
+### 3. Supabase Auth (already configured)
+
+- **Site URL:** `https://culturedaq.com`
+- **Redirect URLs:**
+  - `https://culturedaq.com/**`
+  - `https://www.culturedaq.com/**`
+  - `https://culture-daq.vercel.app/**`
+  - `http://localhost:3002/**`
+
+### 4. Cron Jobs
 
 `vercel.json` configures a cron job at `*/15 * * * *` (every 15 minutes) hitting `/api/cron/update-prices`.
 
-Vercel automatically sends the `CRON_SECRET` as a Bearer token. Make sure `CRON_SECRET` is set in your Vercel environment variables.
+Vercel automatically sends the `CRON_SECRET` as a Bearer token. Cron runs on Production deployments; staging/local can use the same endpoint manually for testing.
 
-### 4. Seed production database
+### 5. Seed production database
 
 ```bash
 # Set env vars locally pointing to production Supabase
 npm run seed
 ```
 
-### 5. Deploy
+### 6. Deploy
 
-Vercel auto-deploys on push. Verify the cron endpoint after first deploy.
+Push to `main` → deploys to **culturedaq.com**. Push to `staging` → deploys to **culture-daq.vercel.app**.
 
 ## Project Structure
 
