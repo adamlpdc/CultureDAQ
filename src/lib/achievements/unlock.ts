@@ -12,6 +12,9 @@ import { EARLY_ADOPTER_CUTOFF } from "@/lib/achievements/constants";
 import { getHowToUnlock } from "@/lib/achievements/seed-data";
 import { getAchievementRarity } from "@/lib/achievements/rarity";
 import { loadAchievementsCatalog } from "@/lib/achievements/catalog";
+import { createNotification } from "@/lib/notifications";
+import { buildAchievementNotificationInput } from "@/lib/notifications/generators";
+import { computePortfolioValueFromHoldings } from "@/lib/portfolio-value";
 
 export interface AchievementCheckContext {
   userId: string;
@@ -244,12 +247,12 @@ export async function buildAssetRankMap(
 ): Promise<Map<string, number>> {
   const { data: assets } = await supabase
     .from("assets")
-    .select("id, current_price")
-    .order("current_price", { ascending: false });
+    .select("id, current_price");
 
-  const map = new Map<string, number>();
-  (assets ?? []).forEach((a, i) => map.set(a.id, i + 1));
-  return map;
+  const { buildAssetRankMap: rankMapFromAssets } = await import(
+    "@/lib/asset-ranking"
+  );
+  return rankMapFromAssets((assets ?? []) as Pick<Asset, "id" | "current_price">[]);
 }
 
 export async function loadAchievementCheckContext(
@@ -275,11 +278,10 @@ export async function loadAchievementCheckContext(
   const typedHoldings = (holdings ?? []) as HoldingWithAsset[];
   const typedTrades = (trades ?? []) as TradeWithAsset[];
 
-  const holdingsValue = typedHoldings.reduce(
-    (sum, h) => sum + h.shares * h.asset.current_price,
-    0
+  const portfolioValue = computePortfolioValueFromHoldings(
+    Number(profile.daq_balance),
+    typedHoldings
   );
-  const portfolioValue = Number(profile.daq_balance) + holdingsValue;
 
   const assetRankMap = await buildAssetRankMap(supabase);
 
@@ -378,14 +380,28 @@ export async function checkAndUnlockAchievements(
           .eq("is_unlocked", false);
 
         if (!error) {
-          newlyUnlocked.push({
+          const unlocked: UnlockedAchievement = {
             code: achievement.code,
             name: achievement.name,
             icon: achievement.icon,
             points: achievement.points,
             rarity: achievement.rarity ?? getAchievementRarity(achievement.code),
             unlockedAt: now,
-          });
+          };
+          newlyUnlocked.push(unlocked);
+          try {
+            await createNotification(
+              supabase,
+              buildAchievementNotificationInput(
+                userId,
+                unlocked,
+                dbAchievementId,
+                achievement.description ?? getHowToUnlock(achievement.code)
+              )
+            );
+          } catch {
+            /* notifications table may not be migrated yet */
+          }
         }
       } else if (progress !== existing.progress) {
         await supabase
@@ -403,14 +419,28 @@ export async function checkAndUnlockAchievements(
       });
 
       if (!error) {
-        newlyUnlocked.push({
+        const unlocked: UnlockedAchievement = {
           code: achievement.code,
           name: achievement.name,
           icon: achievement.icon,
           points: achievement.points,
           rarity: achievement.rarity ?? getAchievementRarity(achievement.code),
           unlockedAt: now,
-        });
+        };
+        newlyUnlocked.push(unlocked);
+        try {
+          await createNotification(
+            supabase,
+            buildAchievementNotificationInput(
+              userId,
+              unlocked,
+              dbAchievementId,
+              achievement.description ?? getHowToUnlock(achievement.code)
+            )
+          );
+        } catch {
+          /* notifications table may not be migrated yet */
+        }
       }
     } else if (progress > 0) {
       await supabase.from("user_achievements").insert({

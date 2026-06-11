@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getAssetRankMovementsMap, recordAssetRankSnapshot } from "@/lib/asset-ranking";
+import { generateAssetEvents } from "@/lib/market-events";
 import {
   calculateNewPrice,
   calculateMomentumUpdate,
   decayPressure,
 } from "@/lib/price-engine";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement, HoldingWithAsset, MarketEvent } from "@/types/database";
+import type { WatchlistItemWithAsset } from "@/lib/watchlist";
+import {
+  getPreviousLeaderboardRankMap,
+  getPreviousPortfolioTotal,
+  processLeaderboardNotifications,
+  processPortfolioNotifications,
+  processWatchlistNotifications,
+} from "@/lib/notifications/generators";
+import {
+  computeHoldingsValue,
+  computeTotalPortfolioValue,
+} from "@/lib/portfolio-value";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -78,21 +92,120 @@ export async function GET(request: NextRequest) {
 
   await supabase.rpc("decay_trade_volumes");
 
+  let ranksRecorded = 0;
+  let eventsGenerated = 0;
+  let notificationsCreated = 0;
+  let rankMovements = new Map<string, AssetRankMovement>();
+  let recentMarketEvents: MarketEvent[] = [];
+  try {
+    const { data: rankedAssets } = await supabase
+      .from("assets")
+      .select("id, current_price");
+    const rankResult = await recordAssetRankSnapshot(
+      supabase,
+      (rankedAssets ?? []) as Pick<Asset, "id" | "current_price">[],
+      now.toISOString()
+    );
+    ranksRecorded = rankResult.recorded;
+  } catch (e) {
+    errors.push(
+      `rank_snapshot: ${e instanceof Error ? e.message : "Unknown error"}`
+    );
+  }
+
+  try {
+    const { data: freshAssets } = await supabase.from("assets").select("*");
+    rankMovements = await getAssetRankMovementsMap(
+      supabase,
+      (freshAssets ?? []) as Asset[]
+    );
+    const eventResult = await generateAssetEvents(supabase, {
+      assets: (freshAssets ?? []) as Asset[],
+      rankMovements,
+      createdAt: now.toISOString(),
+    });
+    eventsGenerated = eventResult.generated;
+
+    const { data: marketEvents } = await supabase
+      .from("market_events")
+      .select("*")
+      .gte("created_at", new Date(now.getTime() - 20 * 60 * 1000).toISOString());
+    recentMarketEvents = (marketEvents ?? []) as MarketEvent[];
+  } catch (e) {
+    errors.push(
+      `market_events: ${e instanceof Error ? e.message : "Unknown error"}`
+    );
+  }
+
   const { data: profiles } = await supabase.from("profiles").select("*");
 
   if (profiles) {
+    const previousLeaderboardRanks = await getPreviousLeaderboardRankMap(supabase);
+
+    const { data: watchlistRows } = await supabase
+      .from("watchlist_items")
+      .select("*, asset:assets(*)");
+    const watchlistItems = (watchlistRows ?? []).map((row) => ({
+      ...(row as WatchlistItemWithAsset),
+      asset: (row as { asset: Asset }).asset,
+    })) as WatchlistItemWithAsset[];
+
+    if (watchlistItems.length > 0) {
+      try {
+        notificationsCreated += await processWatchlistNotifications(
+          supabase,
+          watchlistItems,
+          rankMovements,
+          recentMarketEvents
+        );
+      } catch (e) {
+        errors.push(
+          `watchlist_notifications: ${e instanceof Error ? e.message : "Unknown error"}`
+        );
+      }
+    }
+
     for (const profile of profiles) {
       const { data: holdings } = await supabase
         .from("holdings")
         .select("shares, asset:assets(current_price)")
         .eq("user_id", profile.user_id);
 
-      const holdingsValue = (holdings ?? []).reduce((sum, h) => {
-        const a = h.asset as unknown as { current_price: number } | null;
-        return sum + h.shares * (a?.current_price ?? 0);
-      }, 0);
+      const holdingsValue = computeHoldingsValue(
+        (holdings ?? []).map((h) => ({
+          shares: h.shares,
+          asset: h.asset as unknown as { current_price: number },
+        }))
+      );
 
-      const totalValue = profile.daq_balance + holdingsValue;
+      const totalValue = computeTotalPortfolioValue(
+        profile.daq_balance,
+        holdingsValue
+      );
+
+      const previousTotal = await getPreviousPortfolioTotal(supabase, profile.user_id);
+
+      const { data: holdingsWithAssets } = await supabase
+        .from("holdings")
+        .select("*, asset:assets(*)")
+        .eq("user_id", profile.user_id);
+
+      try {
+        notificationsCreated += await processPortfolioNotifications(
+          supabase,
+          profile.user_id,
+          previousTotal,
+          totalValue,
+          (holdingsWithAssets ?? []).map((h) => ({
+            ...h,
+            asset: (h as { asset: Asset }).asset,
+          })) as HoldingWithAsset[]
+        );
+      } catch (e) {
+        errors.push(
+          `portfolio_notifications:${profile.username}: ${e instanceof Error ? e.message : "Unknown error"}`
+        );
+      }
 
       await supabase.from("portfolio_snapshots").insert({
         user_id: profile.user_id,
@@ -110,15 +223,17 @@ export async function GET(request: NextRequest) {
           .select("shares, asset:assets(current_price)")
           .eq("user_id", profile.user_id);
 
-        const holdingsValue = (holdings ?? []).reduce((sum, h) => {
-          const a = h.asset as unknown as { current_price: number } | null;
-          return sum + h.shares * (a?.current_price ?? 0);
-        }, 0);
+        const holdingsValue = computeHoldingsValue(
+          (holdings ?? []).map((h) => ({
+            shares: h.shares,
+            asset: h.asset as unknown as { current_price: number },
+          }))
+        );
 
         return {
           user_id: profile.user_id,
           username: profile.username,
-          total_value: profile.daq_balance + holdingsValue,
+          total_value: computeTotalPortfolioValue(profile.daq_balance, holdingsValue),
         };
       })
     );
@@ -132,6 +247,18 @@ export async function GET(request: NextRequest) {
       }));
 
     if (ranked.length > 0) {
+      try {
+        notificationsCreated += await processLeaderboardNotifications(
+          supabase,
+          ranked,
+          previousLeaderboardRanks
+        );
+      } catch (e) {
+        errors.push(
+          `leaderboard_notifications: ${e instanceof Error ? e.message : "Unknown error"}`
+        );
+      }
+
       await supabase.from("leaderboard_snapshots").insert(ranked);
     }
   }
@@ -139,6 +266,9 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     message: "Price update complete",
     updated,
+    ranksRecorded,
+    eventsGenerated,
+    notificationsCreated,
     total: assets.length,
     errors: errors.length > 0 ? errors : undefined,
     timestamp: now.toISOString(),

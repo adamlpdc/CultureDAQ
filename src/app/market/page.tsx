@@ -7,12 +7,15 @@ import { MarketFilters } from "@/components/market/market-filters";
 import { MarketHeader } from "@/components/market/market-header";
 import { LoadingSpinner } from "@/components/ui/loading";
 import { buildMarketBadgeContext, getMarketStatuses } from "@/lib/market-helpers";
+import { createClient } from "@/lib/supabase/server";
+import { getUserWatchlistAssetIds } from "@/lib/watchlist";
 import {
   getAssets,
   getCategoryCounts,
   getCategorySpotlight,
+  getCurrentUser,
   getMarketInsightCards,
-  getMarketRankMap,
+  getMarketRankMovementsMap,
   getMarketStats,
   getNewListings,
 } from "@/lib/queries";
@@ -36,7 +39,7 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
     stats,
     insights,
     categoryCounts,
-    rankMap,
+    rankMovementsMap,
     explorerAssets,
     trending,
     gainers,
@@ -45,11 +48,12 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
     mostTraded,
     spotlight,
     momentumPool,
+    user,
   ] = await Promise.all([
     getMarketStats(),
     getMarketInsightCards(),
     getCategoryCounts(),
-    getMarketRankMap(),
+    getMarketRankMovementsMap(),
     getAssets({
       category: params.category,
       sort,
@@ -62,7 +66,14 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
     getAssets({ sort: "most_traded", limit: 5 }),
     getCategorySpotlight(),
     getAssets({ sort: "trending", limit: 30 }),
+    getCurrentUser(),
   ]);
+
+  let watchedAssetIds: string[] = [];
+  if (user) {
+    const supabase = await createClient();
+    watchedAssetIds = [...(await getUserWatchlistAssetIds(supabase, user.id))];
+  }
 
   const badgeContext = buildMarketBadgeContext(
     trending,
@@ -73,11 +84,15 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
     momentumPool
   );
 
-  const explorerItems = explorerAssets.map((asset) => ({
-    asset,
-    marketRank: rankMap.get(asset.id),
-    statuses: getMarketStatuses(asset, badgeContext),
-  }));
+  const explorerItems = explorerAssets.map((asset) => {
+    const movement = rankMovementsMap.get(asset.id);
+    return {
+      asset,
+      marketRank: movement?.rank,
+      rankMovement: movement ?? null,
+      statuses: getMarketStatuses(asset, badgeContext),
+    };
+  });
 
   const hasActiveFilters = Boolean(params.category || hasSearch || sort !== "trending");
   const showDiscovery = !hasSearch && !hasActiveFilters;
@@ -97,10 +112,16 @@ export default async function MarketPage({ searchParams }: MarketPageProps) {
           losers={losers}
           newListings={newListings}
           mostTraded={mostTraded}
+          rankMovementsMap={rankMovementsMap}
         />
       )}
 
-      <MarketAssetGrid items={explorerItems} hasActiveFilters={hasActiveFilters} />
+      <MarketAssetGrid
+        items={explorerItems}
+        hasActiveFilters={hasActiveFilters}
+        watchedAssetIds={watchedAssetIds}
+        isLoggedIn={!!user}
+      />
 
       <div className="space-y-5 border-t border-border/60 pt-5 md:space-y-6">
         <MarketCategorySpotlight spotlight={spotlight} />

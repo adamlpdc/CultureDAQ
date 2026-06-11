@@ -21,6 +21,7 @@ import {
   getAssets,
   getAssetsBySlugs,
   getCurrentUser,
+  getMarketRankMovementsMap,
   getMarketStats,
   getNewListings,
 } from "@/lib/queries";
@@ -28,7 +29,7 @@ import {
 export default async function HomePage() {
   const user = await getCurrentUser();
 
-  const [trending, gainers, losers, mostTraded, newListings, showcase, stats] =
+  const [trending, gainers, losers, mostTraded, newListings, showcase, stats, rankMovementsMap] =
     await Promise.all([
       getAssets({ sort: "trending", limit: 6 }),
       getAssets({ sort: "gainers", limit: 5 }),
@@ -37,6 +38,7 @@ export default async function HomePage() {
       getNewListings(4),
       getAssetsBySlugs([...SHOWCASE_SLUGS]),
       getMarketStats(),
+      getMarketRankMovementsMap(),
     ]);
 
   return (
@@ -56,7 +58,7 @@ export default async function HomePage() {
             icon={<Zap className="h-3.5 w-3.5 text-primary" />}
             href="/market?sort=trending"
           />
-          <TrendingGrid assets={trending} />
+          <TrendingGrid assets={trending} rankMovementsMap={rankMovementsMap} />
         </DashboardPanel>
 
         <DashboardPanel className="flex flex-col md:col-span-1 lg:col-span-3">

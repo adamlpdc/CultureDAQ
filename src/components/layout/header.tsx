@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Award, BarChart3, LogOut, Menu, Trophy, User, Wallet, X } from "lucide-react";
+import { Award, BarChart3, Menu, Trophy, Wallet, X } from "lucide-react";
 import { useState } from "react";
-import { cn, formatDaq } from "@/lib/utils";
+import { NotificationBell } from "@/components/notifications/notification-bell";
+import { UserAccountMenu, UserAccountMenuMobile } from "@/components/layout/user-account-menu";
+import { WalletSummaryCompact } from "@/components/layout/wallet-summary";
+import type { UserWalletSummary } from "@/lib/portfolio-value";
+import type { Notification } from "@/types/database";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
-import { signOut } from "@/actions/auth";
 
 interface HeaderProps {
   user: { email: string } | null;
-  profile: { username: string; daq_balance: number; is_admin: boolean } | null;
+  profile: { username: string; is_admin: boolean } | null;
+  wallet: UserWalletSummary | null;
+  unreadNotificationCount?: number;
+  recentNotifications?: Notification[];
 }
 
 const navLinks = [
@@ -21,7 +28,13 @@ const navLinks = [
   { href: "/achievements", label: "Achievements", icon: Award },
 ];
 
-export function Header({ user, profile }: HeaderProps) {
+export function Header({
+  user,
+  profile,
+  wallet,
+  unreadNotificationCount = 0,
+  recentNotifications = [],
+}: HeaderProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -49,38 +62,26 @@ export function Header({ user, profile }: HeaderProps) {
               </Link>
             );
           })}
-          {profile?.is_admin && (
-            <Link
-              href="/admin"
-              className={cn(
-                "rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 lg:px-3.5",
-                pathname.startsWith("/admin")
-                  ? "bg-gold-subtle text-gold shadow-card"
-                  : "text-muted hover:bg-surface-muted hover:text-foreground"
-              )}
-            >
-              Admin
-            </Link>
-          )}
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          {user && profile ? (
+          {user && profile && wallet ? (
             <>
-              <div className="rounded-xl border border-border bg-surface-muted px-3.5 py-2 text-sm shadow-card">
-                <span className="text-muted">Balance </span>
-                <span className="text-stat font-bold text-gold">
-                  {formatDaq(profile.daq_balance)}
-                </span>
-              </div>
-              <span className="text-sm font-semibold text-foreground-secondary">
-                @{profile.username}
-              </span>
-              <form action={signOut}>
-                <Button variant="ghost" size="sm" type="submit" aria-label="Sign out">
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </form>
+              <Link
+                href="/portfolio"
+                className="rounded-xl border border-border bg-surface-muted px-3.5 py-2 shadow-card transition-colors hover:border-border-tint hover:bg-surface"
+              >
+                <WalletSummaryCompact wallet={wallet} />
+              </Link>
+              <NotificationBell
+                initialUnreadCount={unreadNotificationCount}
+                initialNotifications={recentNotifications}
+              />
+              <UserAccountMenu
+                username={profile.username}
+                isAdmin={profile.is_admin}
+                wallet={wallet}
+              />
             </>
           ) : (
             <>
@@ -96,13 +97,21 @@ export function Header({ user, profile }: HeaderProps) {
           )}
         </div>
 
-        <button
-          className="rounded-lg p-2 text-foreground hover:bg-surface-muted md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {user && profile && (
+            <NotificationBell
+              initialUnreadCount={unreadNotificationCount}
+              initialNotifications={recentNotifications}
+            />
+          )}
+          <button
+            className="rounded-lg p-2 text-foreground hover:bg-surface-muted"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
@@ -124,35 +133,13 @@ export function Header({ user, profile }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            {profile?.is_admin && (
-              <Link
-                href="/admin"
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "rounded-xl px-3 py-2.5 text-sm font-semibold",
-                  pathname.startsWith("/admin")
-                    ? "bg-gold-subtle text-gold"
-                    : "text-muted"
-                )}
-              >
-                Admin
-              </Link>
-            )}
-            {user && profile ? (
-              <div className="mt-3 border-t border-border pt-3">
-                <div className="mb-2 flex items-center gap-2 px-3 text-sm text-foreground-secondary">
-                  <User className="h-4 w-4 text-muted" />
-                  @{profile.username}
-                </div>
-                <div className="mb-3 px-3 text-sm font-bold text-gold">
-                  {formatDaq(profile.daq_balance)}
-                </div>
-                <form action={signOut}>
-                  <Button variant="ghost" size="sm" type="submit" className="w-full justify-start">
-                    <LogOut className="h-4 w-4" /> Sign Out
-                  </Button>
-                </form>
-              </div>
+            {user && profile && wallet ? (
+              <UserAccountMenuMobile
+                username={profile.username}
+                isAdmin={profile.is_admin}
+                wallet={wallet}
+                onNavigate={() => setMobileOpen(false)}
+              />
             ) : (
               <div className="mt-3 flex gap-2 border-t border-border pt-3">
                 <Link href="/login" className="flex-1" onClick={() => setMobileOpen(false)}>

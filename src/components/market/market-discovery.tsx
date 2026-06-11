@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement } from "@/types/database";
+import { RankPill } from "@/components/assets/rank-movement";
 import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
 import { CategoryBadge } from "@/components/ui/badge";
 import { MarketStatusBadge } from "@/components/market/market-status-badge";
@@ -28,7 +29,13 @@ function SectionHeader({
   );
 }
 
-function TrendingSection({ assets }: { assets: Asset[] }) {
+function TrendingSection({
+  assets,
+  rankMovementsMap,
+}: {
+  assets: Asset[];
+  rankMovementsMap: Map<string, AssetRankMovement>;
+}) {
   if (assets.length === 0) return null;
 
   return (
@@ -39,19 +46,20 @@ function TrendingSection({ assets }: { assets: Asset[] }) {
         href="/market?sort=trending"
       />
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {assets.slice(0, 6).map((asset, index) => {
+        {assets.slice(0, 6).map((asset) => {
           const change = getPriceChange(asset.current_price, asset.previous_price);
           const isPositive = change >= 0;
+          const movement = rankMovementsMap.get(asset.id);
           return (
             <Link
               key={asset.id}
               href={`/asset/${asset.slug}`}
-              className="group flex flex-col rounded-lg border border-border/80 bg-surface p-2.5 transition-all hover:border-border-tint hover:shadow-card"
+              className="group relative flex flex-col rounded-lg border border-border/80 bg-surface p-2.5 transition-all hover:border-border-tint hover:shadow-card"
             >
-              <div className="flex items-center gap-1.5">
-                <span className="text-stat w-3.5 shrink-0 text-[10px] font-bold text-gold">
-                  {index + 1}
-                </span>
+              {movement && !movement.isNewlyRanked && (
+                <RankPill rank={movement.rank} className="absolute right-2 top-2" />
+              )}
+              <div className="flex items-center gap-1.5 pr-8">
                 <AssetIdentityFromAsset asset={asset} size="xs" />
                 <p className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground group-hover:text-primary">
                   {asset.name}
@@ -114,7 +122,7 @@ function MoverLeaderboard({
             >
               <span
                 className={cn(
-                  "text-stat w-5 shrink-0 text-center text-xs font-bold",
+                  "text-stat w-4 shrink-0 text-center text-xs font-bold",
                   variant === "gain" ? "text-gain" : "text-loss"
                 )}
               >
@@ -253,6 +261,7 @@ interface MarketDiscoveryProps {
   losers: Asset[];
   newListings: Asset[];
   mostTraded: Asset[];
+  rankMovementsMap: Map<string, AssetRankMovement>;
 }
 
 export function MarketDiscovery({
@@ -261,6 +270,7 @@ export function MarketDiscovery({
   losers,
   newListings,
   mostTraded,
+  rankMovementsMap,
 }: MarketDiscoveryProps) {
   return (
     <div className="space-y-3.5">
@@ -271,7 +281,7 @@ export function MarketDiscovery({
         </p>
       </div>
 
-      <TrendingSection assets={trending} />
+      <TrendingSection assets={trending} rankMovementsMap={rankMovementsMap} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <MoverLeaderboard

@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from "react";
 import {
+  backfillCurrentAssetRanks,
+  generateCurrentMarketEvents,
   toggleAssetFeatured,
   toggleAssetTrading,
   updateAssetPrice,
@@ -43,6 +45,30 @@ export function AdminPanel({ assets }: AdminPanelProps) {
     });
   }
 
+  function handleBackfillRanks() {
+    startTransition(async () => {
+      try {
+        const result = await backfillCurrentAssetRanks();
+        setMessage(`Rank backfill complete — ${result.recorded} snapshots recorded`);
+      } catch (e) {
+        setMessage(e instanceof Error ? e.message : "Rank backfill failed");
+      }
+    });
+  }
+
+  function handleGenerateMarketEvents() {
+    startTransition(async () => {
+      try {
+        const result = await generateCurrentMarketEvents();
+        setMessage(
+          `Market events generated — ${result.generated} created, ${result.skipped} skipped`
+        );
+      } catch (e) {
+        setMessage(e instanceof Error ? e.message : "Market event generation failed");
+      }
+    });
+  }
+
   function handlePriceOverride(assetId: string, price: string) {
     const num = parseFloat(price);
     if (isNaN(num) || num <= 0) {
@@ -73,7 +99,27 @@ export function AdminPanel({ assets }: AdminPanelProps) {
         </div>
       )}
 
-      <p className="text-sm text-muted">{filtered.length} assets</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted">{filtered.length} assets</p>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={isPending}
+            onClick={handleBackfillRanks}
+          >
+            Backfill Asset Ranks
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={isPending}
+            onClick={handleGenerateMarketEvents}
+          >
+            Generate Market Events
+          </Button>
+        </div>
+      </div>
 
       <div className="space-y-3">
         {filtered.map((asset) => (

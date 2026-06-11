@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, TrendingDown, TrendingUp } from "lucide-react";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement } from "@/types/database";
+import { RankMovement } from "@/components/assets/rank-movement";
+import { WatchButton } from "@/components/watchlist/watch-button";
 import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
 import { Badge, CategoryBadge, FeaturedBadge } from "@/components/ui/badge";
 import { CATEGORY_EMOJI } from "@/lib/asset-visual";
@@ -10,9 +12,18 @@ import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
 interface AssetIdentityHeaderProps {
   asset: Asset;
   marketRank?: number;
+  rankMovement?: AssetRankMovement | null;
+  isWatched?: boolean;
+  isLoggedIn?: boolean;
 }
 
-export function AssetIdentityHeader({ asset, marketRank }: AssetIdentityHeaderProps) {
+export function AssetIdentityHeader({
+  asset,
+  marketRank,
+  rankMovement,
+  isWatched = false,
+  isLoggedIn = false,
+}: AssetIdentityHeaderProps) {
   const change = getPriceChange(asset.current_price, asset.previous_price);
   const isPositive = change >= 0;
 
@@ -43,6 +54,12 @@ export function AssetIdentityHeader({ asset, marketRank }: AssetIdentityHeaderPr
                   Trading Paused
                 </Badge>
               )}
+              <WatchButton
+                assetId={asset.id}
+                initialWatched={isWatched}
+                isLoggedIn={isLoggedIn}
+                redirectPath={`/asset/${asset.slug}`}
+              />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
               {asset.name}
@@ -51,6 +68,26 @@ export function AssetIdentityHeader({ asset, marketRank }: AssetIdentityHeaderPr
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
                 {asset.description}
               </p>
+            )}
+            {marketRank != null && (
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                <div>
+                  <span className="font-semibold text-muted">Current Rank </span>
+                  <span className="text-stat font-bold text-foreground">#{marketRank}</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-muted">Rank Movement </span>
+                  <RankMovement movement={rankMovement} size="sm" />
+                </div>
+                {rankMovement?.previousRank != null && !rankMovement.isNewlyRanked && (
+                  <div>
+                    <span className="font-semibold text-muted">Previous Rank </span>
+                    <span className="text-stat font-bold text-foreground-secondary">
+                      #{rankMovement.previousRank}
+                    </span>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

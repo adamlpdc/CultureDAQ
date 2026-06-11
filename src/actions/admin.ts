@@ -1,6 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { backfillAssetRanks, getAssetRankMovementsMap } from "@/lib/asset-ranking";
+import { generateAssetEvents } from "@/lib/market-events";
+import type { Asset } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -78,4 +81,38 @@ export async function updateAssetPrice(assetId: string, newPrice: number) {
 
   revalidatePath("/market");
   revalidatePath("/admin");
+}
+
+export async function backfillCurrentAssetRanks(): Promise<{
+  recorded: number;
+}> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const result = await backfillAssetRanks(admin);
+  revalidatePath("/");
+  revalidatePath("/market");
+  revalidatePath("/admin");
+  return result;
+}
+
+export async function generateCurrentMarketEvents(): Promise<{
+  generated: number;
+  skipped: number;
+}> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { data: assets } = await admin.from("assets").select("*");
+  const rankMovements = await getAssetRankMovementsMap(
+    admin,
+    (assets ?? []) as Asset[]
+  );
+  const result = await generateAssetEvents(admin, {
+    assets: (assets ?? []) as Asset[],
+    rankMovements,
+  });
+  revalidatePath("/");
+  revalidatePath("/market");
+  revalidatePath("/admin");
+  revalidatePath("/asset");
+  return result;
 }

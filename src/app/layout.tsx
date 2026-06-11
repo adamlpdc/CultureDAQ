@@ -5,7 +5,9 @@ import { AchievementProvider } from "@/components/achievements/achievement-provi
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { MarketTicker } from "@/components/market/market-ticker";
-import { getAssets, getCurrentUser, getProfile } from "@/lib/queries";
+import { getAssets, getCurrentUser, getPortfolioSummary, getProfile } from "@/lib/queries";
+import { getUnreadCount, getUserNotifications } from "@/lib/notifications";
+import { createClient } from "@/lib/supabase/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +23,28 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
-  const [profile, tickerAssets] = await Promise.all([
-    user ? getProfile(user.id) : null,
-    getAssets({ sort: "trending", limit: 10 }),
-  ]);
+  const supabase = user ? await createClient() : null;
+  const [profile, portfolioSummary, tickerAssets, unreadNotificationCount, recentNotifications] =
+    await Promise.all([
+      user ? getProfile(user.id) : null,
+      user ? getPortfolioSummary(user.id) : null,
+      getAssets({ sort: "trending", limit: 10 }),
+      user && supabase
+        ? getUnreadCount(supabase, user.id).catch(() => 0)
+        : Promise.resolve(0),
+      user && supabase
+        ? getUserNotifications(supabase, user.id, { limit: 8 }).catch(() => [])
+        : Promise.resolve([]),
+    ]);
+
+  const wallet =
+    portfolioSummary != null
+      ? {
+          portfolioValue: portfolioSummary.total_value,
+          cashBalance: portfolioSummary.daq_balance,
+          holdingsValue: portfolioSummary.holdings_value,
+        }
+      : null;
 
   return (
     <html lang="en">
@@ -36,11 +56,13 @@ export default async function RootLayout({
               profile
                 ? {
                     username: profile.username,
-                    daq_balance: profile.daq_balance,
                     is_admin: profile.is_admin,
                   }
                 : null
             }
+            wallet={wallet}
+            unreadNotificationCount={unreadNotificationCount}
+            recentNotifications={recentNotifications}
           />
           <MarketTicker assets={tickerAssets} />
           <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:py-8 lg:px-6">

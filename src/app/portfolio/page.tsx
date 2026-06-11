@@ -9,10 +9,12 @@ import { PortfolioInsights } from "@/components/portfolio/portfolio-insights";
 import { PortfolioStats } from "@/components/portfolio/portfolio-stats";
 import { PortfolioAchievementsSummary } from "@/components/portfolio/portfolio-achievements-summary";
 import { PortfolioWatchlist } from "@/components/portfolio/portfolio-watchlist";
-import { SHOWCASE_SLUGS } from "@/lib/asset-visual";
+import type { AssetRankMovement } from "@/types/database";
+import { getAssetRankMovementsMap } from "@/lib/asset-ranking";
 import { computePortfolioAnalytics } from "@/lib/portfolio-analytics";
+import { createClient } from "@/lib/supabase/server";
+import { getUserWatchlist } from "@/lib/watchlist";
 import {
-  getAssetsBySlugs,
   getCurrentUser,
   getPortfolioHistory,
   getPortfolioSummary,
@@ -26,18 +28,33 @@ export default async function PortfolioPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?redirect=/portfolio");
 
-  const [summary, holdings, trades, history, watchlistAssets, portfolioRank, achievementStats] =
+  const supabase = await createClient();
+
+  const [summary, holdings, trades, history, watchlistItems, portfolioRank, achievementStats] =
     await Promise.all([
       getPortfolioSummary(user.id),
       getUserHoldings(user.id),
       getUserTrades(user.id, 10),
       getPortfolioHistory(user.id),
-      getAssetsBySlugs([...SHOWCASE_SLUGS].slice(0, 3)),
+      getUserWatchlist(supabase, user.id),
       getUserPortfolioRank(user.id),
       getUserAchievementStats(user.id),
     ]);
 
   if (!summary) redirect("/login");
+
+  const rankMovementsMap = await getAssetRankMovementsMap(
+    supabase,
+    watchlistItems.map((i) => ({
+      id: i.asset_id,
+      current_price: i.asset.current_price,
+    }))
+  );
+
+  const rankMovements: Record<string, AssetRankMovement> = {};
+  for (const [id, movement] of rankMovementsMap) {
+    rankMovements[id] = movement;
+  }
 
   const analytics = computePortfolioAnalytics(holdings, summary.total_value);
   const hasHoldings = holdings.length > 0;
@@ -83,7 +100,11 @@ export default async function PortfolioPage() {
 
       <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
         <PortfolioAllocation allocation={analytics.allocation} />
-        <PortfolioWatchlist suggestedAssets={watchlistAssets} />
+        <PortfolioWatchlist
+          items={watchlistItems}
+          rankMovements={rankMovements}
+          isLoggedIn
+        />
       </div>
 
       <PortfolioActivity trades={trades} />

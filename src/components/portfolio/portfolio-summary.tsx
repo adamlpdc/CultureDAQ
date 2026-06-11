@@ -55,7 +55,7 @@ export function PortfolioSummaryCard({ summary, history = [] }: PortfolioSummary
               </div>
               <div className="rounded-xl border border-border/60 bg-surface-muted/60 p-3">
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-muted">
-                  Portfolio Value
+                  Holdings Value
                 </p>
                 <p className="text-stat mt-1 text-lg font-bold text-foreground">
                   {formatDaq(summary.holdings_value)}

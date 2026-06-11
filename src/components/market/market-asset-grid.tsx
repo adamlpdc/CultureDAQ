@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement } from "@/types/database";
 import type { MarketStatus } from "@/lib/market-helpers";
 import { MarketAssetCard } from "@/components/market/market-asset-card";
 import { Button } from "@/components/ui/button";
@@ -15,18 +15,24 @@ const LOAD_MORE_COUNT = 12;
 export interface ExplorerAssetItem {
   asset: Asset;
   marketRank?: number;
+  rankMovement?: AssetRankMovement | null;
   statuses: MarketStatus[];
 }
 
 interface MarketAssetGridProps {
   items: ExplorerAssetItem[];
   hasActiveFilters?: boolean;
+  watchedAssetIds?: string[];
+  isLoggedIn?: boolean;
 }
 
 export function MarketAssetGrid({
   items,
   hasActiveFilters = false,
+  watchedAssetIds = [],
+  isLoggedIn = false,
 }: MarketAssetGridProps) {
+  const watchedSet = new Set(watchedAssetIds);
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
 
   if (items.length === 0) {
@@ -70,12 +76,15 @@ export function MarketAssetGrid({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-4 lg:grid-cols-3">
-        {visible.map(({ asset, marketRank, statuses }) => (
+        {visible.map(({ asset, marketRank, rankMovement, statuses }) => (
           <MarketAssetCard
             key={asset.id}
             asset={asset}
             marketRank={marketRank}
+            rankMovement={rankMovement}
             statuses={statuses}
+            isWatched={watchedSet.has(asset.id)}
+            isLoggedIn={isLoggedIn}
           />
         ))}
       </div>

@@ -7,19 +7,40 @@ import type { Asset } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn, formatDaq } from "@/lib/utils";
+import { cn, formatDaq, formatPercent } from "@/lib/utils";
 
 interface TradeFormProps {
   asset: Asset;
   daqBalance: number;
   ownedShares: number;
+  avgCost: number;
   isLoggedIn: boolean;
+}
+
+function PreviewRow({
+  label,
+  value,
+  valueClassName,
+}: {
+  label: string;
+  value: React.ReactNode;
+  valueClassName?: string;
+}) {
+  return (
+    <div className="flex justify-between gap-3">
+      <span className="text-muted">{label}</span>
+      <span className={cn("text-stat font-semibold text-foreground", valueClassName)}>
+        {value}
+      </span>
+    </div>
+  );
 }
 
 export function TradeForm({
   asset,
   daqBalance,
   ownedShares,
+  avgCost,
   isLoggedIn,
 }: TradeFormProps) {
   const [mode, setMode] = useState<"buy" | "sell">("buy");
@@ -34,6 +55,12 @@ export function TradeForm({
   const maxSellShares = ownedShares;
   const balanceAfter =
     mode === "buy" ? daqBalance - totalCost : daqBalance + totalCost;
+
+  const perShareProfit = asset.current_price - avgCost;
+  const totalProfit = perShareProfit * shareCount;
+  const profitPercent = avgCost > 0 ? (perShareProfit / avgCost) * 100 : 0;
+  const isProfitable = perShareProfit >= 0;
+  const showSellProfit = mode === "sell" && shareCount > 0 && avgCost > 0;
 
   if (!isLoggedIn) {
     return (
@@ -111,7 +138,7 @@ export function TradeForm({
       <div className="space-y-3.5">
         <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/80 bg-surface-muted/30 p-3 text-xs">
           <div>
-            <p className="text-muted">Your Balance</p>
+            <p className="text-muted">Available Cash</p>
             <p className="text-stat mt-0.5 font-bold text-foreground">
               {formatDaq(daqBalance)}
             </p>
@@ -159,42 +186,95 @@ export function TradeForm({
             shareCount > 0
               ? mode === "buy"
                 ? "border-gain-muted/50 bg-gain-light/30"
-                : "border-loss-muted/50 bg-loss-light/30"
+                : showSellProfit
+                  ? isProfitable
+                    ? "border-gain-muted/50 bg-gain-light/30"
+                    : "border-loss-muted/50 bg-loss-light/30"
+                  : "border-loss-muted/50 bg-loss-light/30"
               : "border-border bg-surface-muted/30"
           )}
         >
           <p className="mb-2.5 text-[10px] font-bold uppercase tracking-wide text-muted">
-            Trade Preview
+            {mode === "sell" ? "Sell Preview" : "Trade Preview"}
           </p>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between gap-3">
-              <span className="text-muted">Shares</span>
-              <span className="text-stat font-semibold text-foreground">
-                {shareCount > 0 ? shareCount.toLocaleString() : "—"}
-              </span>
-            </div>
-            <div className="flex justify-between gap-3">
-              <span className="text-muted">
-                {mode === "buy" ? "Estimated Cost" : "Estimated Proceeds"}
-              </span>
-              <span className="text-stat daq-price font-bold text-foreground">
-                {shareCount > 0 ? formatDaq(totalCost) : "—"}
-              </span>
-            </div>
-            <div className="flex justify-between gap-3 border-t border-border/60 pt-2">
-              <span className="font-medium text-foreground-secondary">
-                Balance After Trade
-              </span>
-              <span className="text-stat daq-price font-bold text-foreground">
-                {shareCount > 0 ? formatDaq(balanceAfter) : formatDaq(daqBalance)}
-              </span>
-            </div>
-            <div className="flex justify-between gap-3 text-xs">
-              <span className="text-muted">Price per share</span>
-              <span className="text-stat daq-price text-foreground">
-                {formatDaq(asset.current_price)}
-              </span>
-            </div>
+            {mode === "sell" ? (
+              <>
+                <PreviewRow
+                  label="Average Cost"
+                  value={avgCost > 0 ? formatDaq(avgCost) : "—"}
+                />
+                <PreviewRow label="Current Price" value={formatDaq(asset.current_price)} />
+                <PreviewRow
+                  label="Estimated Proceeds"
+                  value={shareCount > 0 ? formatDaq(totalCost) : "—"}
+                  valueClassName="font-bold"
+                />
+                {showSellProfit ? (
+                  <div className="border-t border-border/60 pt-2">
+                    <div className="flex justify-between gap-3">
+                      <span className="font-medium text-foreground-secondary">
+                        Profit/Loss
+                      </span>
+                      <div className="text-right">
+                        <p
+                          className={cn(
+                            "text-stat font-bold",
+                            isProfitable ? "text-gain" : "text-loss"
+                          )}
+                        >
+                          {totalProfit >= 0 ? "+" : "-"}
+                          {formatDaq(Math.abs(totalProfit))}
+                        </p>
+                        <p
+                          className={cn(
+                            "text-xs font-semibold",
+                            isProfitable ? "text-gain" : "text-loss"
+                          )}
+                        >
+                          ({formatPercent(profitPercent)})
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : shareCount > 0 ? (
+                  <PreviewRow label="Profit/Loss" value="—" />
+                ) : null}
+                <div className="flex justify-between gap-3 border-t border-border/60 pt-2">
+                  <span className="font-medium text-foreground-secondary">
+                    Balance After Trade
+                  </span>
+                  <span className="text-stat daq-price font-bold text-foreground">
+                    {shareCount > 0 ? formatDaq(balanceAfter) : formatDaq(daqBalance)}
+                  </span>
+                </div>
+                <PreviewRow
+                  label="Shares"
+                  value={shareCount > 0 ? shareCount.toLocaleString() : "—"}
+                />
+              </>
+            ) : (
+              <>
+                <PreviewRow
+                  label="Shares"
+                  value={shareCount > 0 ? shareCount.toLocaleString() : "—"}
+                />
+                <PreviewRow
+                  label="Estimated Cost"
+                  value={shareCount > 0 ? formatDaq(totalCost) : "—"}
+                  valueClassName="font-bold"
+                />
+                <div className="flex justify-between gap-3 border-t border-border/60 pt-2">
+                  <span className="font-medium text-foreground-secondary">
+                    Balance After Trade
+                  </span>
+                  <span className="text-stat daq-price font-bold text-foreground">
+                    {shareCount > 0 ? formatDaq(balanceAfter) : formatDaq(daqBalance)}
+                  </span>
+                </div>
+                <PreviewRow label="Price per share" value={formatDaq(asset.current_price)} />
+              </>
+            )}
           </div>
         </div>
 

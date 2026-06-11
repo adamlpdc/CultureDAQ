@@ -80,7 +80,21 @@ export function PortfolioChart({ data, currentValue }: PortfolioChartProps) {
       value: Number(d.total_value),
     }));
 
-    return downsample(mapped, MAX_POINTS);
+    const withLivePoint = [...mapped];
+    const lastPoint = withLivePoint[withLivePoint.length - 1];
+    if (
+      !lastPoint ||
+      Math.abs(lastPoint.value - currentValue) > 0.01
+    ) {
+      withLivePoint.push({ time: "Now", value: currentValue });
+    } else {
+      withLivePoint[withLivePoint.length - 1] = {
+        ...lastPoint,
+        value: currentValue,
+      };
+    }
+
+    return downsample(withLivePoint, MAX_POINTS);
   }, [filteredData, data, currentValue, range]);
 
   const values = chartData.map((d) => d.value);

@@ -1,65 +1,104 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Plus } from "lucide-react";
-import { useCallback, useState } from "react";
-import type { Asset } from "@/types/database";
+import { ArrowRight, Eye } from "lucide-react";
+import type { AssetRankMovement } from "@/types/database";
+import type { WatchlistItemWithAsset } from "@/lib/watchlist";
+import { formatWatchlistCountShort } from "@/lib/watchlist-events";
 import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
+import { RankMovement } from "@/components/assets/rank-movement";
+import { WatchButton } from "@/components/watchlist/watch-button";
 import { CategoryBadge } from "@/components/ui/badge";
-import { formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
-import { cn } from "@/lib/utils";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
 
 interface PortfolioWatchlistProps {
-  suggestedAssets: Asset[];
+  items: WatchlistItemWithAsset[];
+  rankMovements: Record<string, AssetRankMovement>;
+  isLoggedIn: boolean;
 }
 
-export function PortfolioWatchlist({ suggestedAssets }: PortfolioWatchlistProps) {
-  const [showHint, setShowHint] = useState(false);
+export function PortfolioWatchlist({
+  items,
+  rankMovements,
+  isLoggedIn,
+}: PortfolioWatchlistProps) {
+  const count = items.length;
+  const preview = items.slice(0, 3);
 
-  const revealHint = useCallback(() => {
-    setShowHint(true);
-    window.setTimeout(() => setShowHint(false), 2800);
-  }, []);
+  if (count === 0) {
+    return (
+      <Card className="!p-4 md:!p-5">
+        <CardHeader className="mb-2">
+          <div className="flex items-center gap-2">
+            <Eye className="h-3.5 w-3.5 text-muted" />
+            <CardTitle className="text-sm text-foreground-secondary">Your Watchlist</CardTitle>
+          </div>
+        </CardHeader>
+        <p className="mb-3 text-[11px] leading-relaxed text-muted">
+          Track assets before you buy.
+        </p>
+        <div className="flex flex-col gap-2">
+          <Link href="/watchlist">
+            <Button variant="secondary" size="sm" className="w-full text-xs">
+              View Full Watchlist
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
+          <Link href="/market">
+            <Button variant="ghost" size="sm" className="w-full text-xs">
+              Explore Market
+            </Button>
+          </Link>
+        </div>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="!p-4 opacity-95 md:!p-5">
+    <Card className="!p-4 md:!p-5">
       <CardHeader className="mb-2">
-        <div className="flex items-center gap-2">
-          <Eye className="h-3.5 w-3.5 text-muted" />
-          <CardTitle className="text-sm text-foreground-secondary">Watchlist</CardTitle>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Eye className="h-3.5 w-3.5 text-muted" />
+            <CardTitle className="text-sm text-foreground-secondary">Your Watchlist</CardTitle>
+          </div>
+          <span className="rounded-md border border-primary/20 bg-primary-light/50 px-2 py-0.5 text-[10px] font-bold text-primary">
+            {formatWatchlistCountShort(count)}
+          </span>
         </div>
-        <span className="rounded-md border border-border/80 bg-surface-muted/50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-muted">
-          Coming Soon
-        </span>
       </CardHeader>
       <p className="mb-2.5 text-[11px] leading-relaxed text-muted">
-        Track assets before you buy. Suggested picks:
+        See what moved before you decide to trade.
       </p>
       <div className="space-y-1.5">
-        {suggestedAssets.map((asset) => {
-          const change = getPriceChange(asset.current_price, asset.previous_price);
+        {preview.map((item) => {
+          const change = getPriceChange(
+            item.asset.current_price,
+            item.asset.previous_price
+          );
           const isPositive = change >= 0;
+          const movement = rankMovements[item.asset_id] ?? null;
           return (
             <div
-              key={asset.id}
-              className="flex items-center gap-2.5 rounded-lg border border-dashed border-border/70 bg-surface-muted/15 px-2.5 py-2"
+              key={item.id}
+              className="flex items-center gap-2 rounded-lg border border-border/70 bg-surface-muted/20 px-2.5 py-2"
             >
               <Link
-                href={`/asset/${asset.slug}`}
+                href={`/asset/${item.asset.slug}`}
                 className="flex min-w-0 flex-1 items-center gap-2.5 transition-colors hover:opacity-90"
               >
-                <AssetIdentityFromAsset asset={asset} size="xs" />
+                <AssetIdentityFromAsset asset={item.asset} size="xs" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[11px] font-semibold text-foreground">
-                    {asset.name}
+                    {item.asset.name}
                   </p>
-                  <CategoryBadge size="xs" className="mt-0.5 w-fit" category={asset.category} />
+                  <CategoryBadge size="xs" className="mt-0.5 w-fit" category={item.asset.category} />
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="text-stat daq-price text-[10px] font-medium text-foreground">
-                    {formatDaq(asset.current_price)}
+                    {formatDaq(item.asset.current_price)}
                   </p>
                   <p
                     className={cn(
@@ -69,35 +108,29 @@ export function PortfolioWatchlist({ suggestedAssets }: PortfolioWatchlistProps)
                   >
                     {formatPercent(change)}
                   </p>
+                  {movement && (
+                    <div className="mt-0.5 flex justify-end">
+                      <RankMovement movement={movement} size="xs" />
+                    </div>
+                  )}
                 </div>
               </Link>
-              <button
-                type="button"
-                onClick={revealHint}
-                aria-label="Add to watchlist — coming soon"
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-border/80 bg-surface text-muted transition-colors hover:border-border-tint hover:bg-surface-muted hover:text-foreground"
-              >
-                <Plus className="h-3.5 w-3.5" />
-              </button>
+              <WatchButton
+                assetId={item.asset_id}
+                initialWatched
+                isLoggedIn={isLoggedIn}
+                variant="icon"
+              />
             </div>
           );
         })}
       </div>
-
-      {showHint && (
-        <p className="mt-2.5 text-center text-[11px] font-medium text-muted">
-          Watchlists coming soon.
-        </p>
-      )}
-
-      <Button
-        variant="secondary"
-        size="sm"
-        className="mt-2.5 w-full text-xs"
-        onClick={revealHint}
-      >
-        Add to Watchlist
-      </Button>
+      <Link href="/watchlist" className="mt-3 block">
+        <Button variant="secondary" size="sm" className="w-full text-xs font-semibold">
+          View Full Watchlist
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Button>
+      </Link>
     </Card>
   );
 }

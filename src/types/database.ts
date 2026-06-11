@@ -28,6 +28,28 @@ export type PriceEventSource =
   | "tv_ratings"
   | "ai_generated";
 
+export type MarketEventType =
+  | "category_trending"
+  | "rank_up"
+  | "rank_down"
+  | "buying_pressure"
+  | "selling_pressure"
+  | "new_listing"
+  | "market_momentum"
+  | "cultural_moment";
+
+export interface MarketEvent {
+  id: string;
+  asset_id: string;
+  event_type: MarketEventType;
+  headline: string;
+  description: string;
+  impact_score: number;
+  is_positive: boolean;
+  created_at: string;
+  expires_at: string | null;
+}
+
 export type MarketSort =
   | "price_desc"
   | "price_asc"
@@ -76,6 +98,47 @@ export interface AssetPrice {
   asset_id: string;
   price: number;
   recorded_at: string;
+}
+
+export interface AssetRankHistory {
+  id: string;
+  asset_id: string;
+  rank: number;
+  previous_rank: number | null;
+  rank_change: number | null;
+  portfolio_value_basis: number;
+  price: number;
+  recorded_at: string;
+}
+
+/** Current rank for an asset at a point in time */
+export interface AssetRank {
+  assetId: string;
+  rank: number;
+  price: number;
+  portfolioValueBasis: number;
+}
+
+/** Rank movement between the latest two snapshots */
+export interface AssetRankMovement {
+  assetId: string;
+  rank: number;
+  previousRank: number | null;
+  rankChange: number | null;
+  price: number;
+  recordedAt: string | null;
+  isNewlyRanked: boolean;
+}
+
+/** A stored rank snapshot row (application shape) */
+export interface RankSnapshot {
+  assetId: string;
+  rank: number;
+  previousRank: number | null;
+  rankChange: number | null;
+  portfolioValueBasis: number;
+  price: number;
+  recordedAt: string;
 }
 
 export interface Holding {
@@ -217,4 +280,58 @@ export interface UnlockedAchievement {
   points: number;
   rarity: AchievementRarity;
   unlockedAt: string;
+}
+
+export interface WatchlistItem {
+  id: string;
+  user_id: string;
+  asset_id: string;
+  notes: string | null;
+  created_at: string;
+}
+
+export type NotificationType =
+  | "achievement_unlocked"
+  | "watchlist_alert"
+  | "rank_event"
+  | "market_event"
+  | "portfolio_event"
+  | "leaderboard_event"
+  | "system";
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  asset_id: string | null;
+  achievement_id: string | null;
+  is_read: boolean;
+  dedupe_key: string | null;
+  created_at: string;
+}
+
+export interface NotificationPreferences {
+  user_id: string;
+  achievements_enabled: boolean;
+  watchlist_enabled: boolean;
+  leaderboard_enabled: boolean;
+  portfolio_enabled: boolean;
+  rank_events_enabled: boolean;
+  market_events_enabled: boolean;
+  email_enabled: boolean;
+  push_enabled: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateNotificationInput {
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  assetId?: string | null;
+  achievementId?: string | null;
+  dedupeKey?: string | null;
 }

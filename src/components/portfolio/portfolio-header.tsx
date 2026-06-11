@@ -64,6 +64,15 @@ export function PortfolioHeader({
         <p className="text-stat daq-price mt-1.5 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
           {formatDaq(summary.total_value)}
         </p>
+        <p className="mt-2 text-xs text-muted">
+          <span className="font-semibold text-gold">{formatDaq(summary.daq_balance)}</span>
+          <span className="mx-1.5 text-muted-light">cash</span>
+          <span className="text-muted-light">+</span>
+          <span className="mx-1.5 font-semibold text-foreground">
+            {formatDaq(summary.holdings_value)}
+          </span>
+          <span className="text-muted-light">holdings</span>
+        </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {dayChange !== null && (
             <span

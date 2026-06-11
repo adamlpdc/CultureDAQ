@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { TrendingDown, TrendingUp } from "lucide-react";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement } from "@/types/database";
+import { RankPill } from "@/components/assets/rank-movement";
 import { AssetIdentityFromAsset } from "@/components/assets/asset-identity";
 import { CategoryBadge } from "@/components/ui/badge";
 import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
@@ -9,9 +10,10 @@ import { Zap } from "lucide-react";
 
 interface TrendingGridProps {
   assets: Asset[];
+  rankMovementsMap?: Map<string, AssetRankMovement>;
 }
 
-export function TrendingGrid({ assets }: TrendingGridProps) {
+export function TrendingGrid({ assets, rankMovementsMap }: TrendingGridProps) {
   if (assets.length === 0) {
     return (
       <EmptyState icon={Zap} title="Nothing trending" description="Check back soon." />
@@ -20,20 +22,21 @@ export function TrendingGrid({ assets }: TrendingGridProps) {
 
   return (
     <div className="grid grid-cols-2 gap-2">
-      {assets.slice(0, 6).map((asset, index) => {
+      {assets.slice(0, 6).map((asset) => {
         const change = getPriceChange(asset.current_price, asset.previous_price);
         const isPositive = change >= 0;
+        const movement = rankMovementsMap?.get(asset.id);
 
         return (
           <Link
             key={asset.id}
             href={`/asset/${asset.slug}`}
-            className="group flex min-h-[88px] flex-col rounded-xl border border-border/80 bg-surface-muted/30 p-2.5 transition-all hover:border-border-tint hover:bg-surface hover:shadow-card"
+            className="group relative flex min-h-[88px] flex-col rounded-xl border border-border/80 bg-surface-muted/30 p-2.5 transition-all hover:border-border-tint hover:bg-surface hover:shadow-card"
           >
-            <div className="flex items-center gap-1.5">
-              <span className="text-stat w-3 shrink-0 text-[10px] font-bold text-muted">
-                {index + 1}
-              </span>
+            {movement && !movement.isNewlyRanked && (
+              <RankPill rank={movement.rank} className="absolute right-2 top-2" />
+            )}
+            <div className="flex items-center gap-1.5 pr-8">
               <AssetIdentityFromAsset asset={asset} size="xs" />
               <p className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground group-hover:text-primary">
                 {asset.name}

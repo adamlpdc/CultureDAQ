@@ -23,26 +23,15 @@ interface AssetIdentityProps {
   premium?: boolean;
 }
 
-function IdentityFrame({
-  className,
-  premium,
-  children,
-}: {
-  className?: string;
-  premium?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className={cn(
-        "relative shrink-0",
-        premium ? "ring-2 ring-border-tint shadow-elevated" : "shadow-card",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+function shapeClass(category: AssetCategory, box: string): string {
+  if (isPersonCategory(category)) {
+    return cn(box.replace(/\brounded-\S+/g, ""), "rounded-full");
+  }
+  return box;
+}
+
+function innerAccent(premium?: boolean, rounded?: string) {
+  return cn(premium && "ring-2 ring-border-tint/80", rounded);
 }
 
 export function AssetIdentity({
@@ -58,15 +47,17 @@ export function AssetIdentity({
   const isPoster = isPosterCategory(category);
   const isLogo = isLogoCategory(category);
   const showImage = imageUrl && !isPersonCategory(category);
+  const shaped = shapeClass(category, box);
 
   if (showImage && isPoster) {
-    const posterBox = size === "hero" && poster ? poster : box;
+    const posterBox = size === "hero" && poster ? poster : shaped;
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
             posterBox,
-            "relative overflow-hidden border border-border bg-surface-muted"
+            "relative overflow-hidden border border-border/60 bg-surface-muted",
+            innerAccent(premium, posterBox)
           )}
         >
           <Image
@@ -77,17 +68,18 @@ export function AssetIdentity({
             className="h-full w-full object-cover"
           />
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   if (showImage && isLogo) {
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
-            box,
-            "relative flex items-center justify-center overflow-hidden border border-border bg-surface p-1.5"
+            shaped,
+            "relative flex items-center justify-center overflow-hidden border border-border/60 bg-surface-muted/60",
+            innerAccent(premium, shaped)
           )}
         >
           <Image
@@ -95,20 +87,21 @@ export function AssetIdentity({
             alt=""
             width={img}
             height={img}
-            className="h-full w-full object-contain"
+            className="h-[85%] w-[85%] object-contain"
           />
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   if (showImage) {
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
-            box,
-            "relative overflow-hidden border border-border bg-surface-muted"
+            shaped,
+            "relative overflow-hidden border border-border/60 bg-surface-muted",
+            innerAccent(premium, shaped)
           )}
         >
           <Image
@@ -119,19 +112,20 @@ export function AssetIdentity({
             className="h-full w-full object-cover"
           />
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   if (isPersonCategory(category)) {
     const hue = getAvatarHue(name);
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
-            box,
-            "flex items-center justify-center border border-border/60 font-bold",
-            text
+            shaped,
+            "flex items-center justify-center border border-border/50 font-bold",
+            text,
+            innerAccent(premium, shaped)
           )}
           style={{
             background: `linear-gradient(145deg, hsl(${hue} 48% 94%) 0%, hsl(${hue} 38% 86%) 100%)`,
@@ -140,20 +134,21 @@ export function AssetIdentity({
         >
           {initials}
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   if (isPoster) {
     const hue = getAvatarHue(name);
-    const posterBox = size === "hero" && poster ? poster : box;
+    const posterBox = size === "hero" && poster ? poster : shaped;
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
             posterBox,
             "flex flex-col items-center justify-center border border-border/60 p-2 font-bold",
-            text
+            text,
+            innerAccent(premium, posterBox)
           )}
           style={{
             background: `linear-gradient(165deg, hsl(${hue} 32% 16%) 0%, hsl(${hue} 48% 30%) 100%)`,
@@ -165,19 +160,20 @@ export function AssetIdentity({
           </span>
           <span className="mt-1 leading-none">{initials}</span>
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   if (isLogo) {
     const hue = getAvatarHue(name);
     return (
-      <IdentityFrame className={className} premium={premium}>
+      <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
           className={cn(
-            box,
+            shaped,
             "flex items-center justify-center border border-border/60 font-bold",
-            text
+            text,
+            innerAccent(premium, shaped)
           )}
           style={{
             background: `linear-gradient(145deg, hsl(${hue} 30% 96%) 0%, hsl(${hue} 25% 88%) 100%)`,
@@ -186,23 +182,24 @@ export function AssetIdentity({
         >
           {initials}
         </div>
-      </IdentityFrame>
+      </div>
     );
   }
 
   return (
-    <IdentityFrame className={className} premium={premium}>
+    <div className={cn("relative shrink-0 inline-flex", className)}>
       <div
         className={cn(
-          box,
+          shaped,
           "flex items-center justify-center border font-bold",
           CATEGORY_COLORS[category],
-          text
+          text,
+          innerAccent(premium, shaped)
         )}
       >
         {initials}
       </div>
-    </IdentityFrame>
+    </div>
   );
 }
 

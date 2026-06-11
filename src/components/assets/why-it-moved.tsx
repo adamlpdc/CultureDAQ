@@ -1,5 +1,5 @@
 import { MessageCircle, TrendingDown, TrendingUp } from "lucide-react";
-import type { Asset, PriceEvent } from "@/types/database";
+import type { Asset, AssetRankMovement, MarketEvent, PriceEvent } from "@/types/database";
 import type { CultureMoment } from "@/lib/culture-context";
 import {
   generateMovementSummary,
@@ -13,7 +13,9 @@ import { EmptyState } from "@/components/ui/empty-state";
 interface WhyItMovedProps {
   asset: Asset;
   events: PriceEvent[];
+  marketEvents?: MarketEvent[];
   cultureMoment?: CultureMoment | null;
+  rankMovement?: AssetRankMovement | null;
 }
 
 function formatEventTime(date: string): string {
@@ -25,8 +27,19 @@ function formatEventTime(date: string): string {
   });
 }
 
-export function WhyItMoved({ asset, events, cultureMoment }: WhyItMovedProps) {
-  const summaryBullets = generateMovementSummary(asset, cultureMoment);
+export function WhyItMoved({
+  asset,
+  events,
+  marketEvents,
+  cultureMoment,
+  rankMovement,
+}: WhyItMovedProps) {
+  const summaryBullets = generateMovementSummary(
+    asset,
+    cultureMoment,
+    rankMovement,
+    marketEvents
+  );
   const headline = getMovementHeadline(asset);
   const change = events[0]?.change_percent ?? 0;
   const isRising = change >= 0;

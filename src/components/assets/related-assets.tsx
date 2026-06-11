@@ -34,7 +34,7 @@ export function RelatedAssets({ entries }: RelatedAssetsProps) {
         </Link>
       </CardHeader>
       <p className="mb-3.5 text-xs leading-relaxed text-muted">
-        Assets connected by category, cultural moment, or shared market momentum.
+        Same Category · Shared Culture Moment · Trending Together
       </p>
       <div className="grid gap-2.5 sm:grid-cols-2">
         {entries.map(({ asset, reason }) => (

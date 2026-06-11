@@ -13,6 +13,11 @@ import type {
   TradeWithAsset,
 } from "@/types/database";
 import { getPriceChange } from "@/lib/utils";
+import {
+  computeHoldingsValue,
+  computePortfolioChangePercent,
+  computeTotalPortfolioValue,
+} from "@/lib/portfolio-value";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
 import {
   buildAchievementHighlights,
@@ -197,6 +202,12 @@ export async function getPriceEvents(
   return data ?? [];
 }
 
+export async function getActiveMarketEventsForAsset(assetId: string) {
+  const supabase = await createClient();
+  const { getActiveAssetEvents } = await import("@/lib/market-events");
+  return getActiveAssetEvents(supabase, assetId);
+}
+
 export async function getUserHoldings(
   userId: string
 ): Promise<HoldingWithAsset[]> {
@@ -245,31 +256,32 @@ export async function getPortfolioSummary(
   if (!profile) return null;
 
   const holdings = await getUserHoldings(userId);
-  const holdingsValue = holdings.reduce(
-    (sum, h) => sum + h.shares * h.asset.current_price,
-    0
-  );
+  const holdingsValue = computeHoldingsValue(holdings);
+  const totalValue = computeTotalPortfolioValue(profile.daq_balance, holdingsValue);
 
   const { data: snapshots } = await supabase
     .from("portfolio_snapshots")
-    .select("total_value")
+    .select("total_value, recorded_at")
     .eq("user_id", userId)
     .order("recorded_at", { ascending: false })
-    .limit(2);
+    .limit(48);
 
   let dayChangePercent: number | null = null;
   if (snapshots && snapshots.length >= 2) {
-    const current = profile.daq_balance + holdingsValue;
-    const previous = snapshots[1].total_value;
-    if (previous > 0) {
-      dayChangePercent = ((current - previous) / previous) * 100;
-    }
+    const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    const baseline =
+      snapshots.find((s) => new Date(s.recorded_at).getTime() <= dayAgo) ??
+      snapshots[snapshots.length - 1];
+    dayChangePercent = computePortfolioChangePercent(
+      totalValue,
+      baseline?.total_value
+    );
   }
 
   return {
     daq_balance: profile.daq_balance,
     holdings_value: holdingsValue,
-    total_value: profile.daq_balance + holdingsValue,
+    total_value: totalValue,
     holdings_count: holdings.length,
     day_change_percent: dayChangePercent,
   };
@@ -335,16 +347,18 @@ async function computeAllLiveLeaderboardEntries(): Promise<LeaderboardEntry[]> {
         .select("shares, asset:assets(current_price)")
         .eq("user_id", profile.user_id);
 
-      const holdingsValue = (holdings ?? []).reduce((sum, h) => {
-        const asset = h.asset as unknown as { current_price: number } | null;
-        return sum + h.shares * (asset?.current_price ?? 0);
-      }, 0);
+      const holdingsValue = computeHoldingsValue(
+        (holdings ?? []).map((h) => ({
+          shares: h.shares,
+          asset: h.asset as unknown as { current_price: number },
+        }))
+      );
 
       return {
         id: profile.id,
         user_id: profile.user_id,
         username: profile.username,
-        total_value: profile.daq_balance + holdingsValue,
+        total_value: computeTotalPortfolioValue(profile.daq_balance, holdingsValue),
         rank: 0,
         recorded_at: new Date().toISOString(),
       };
@@ -546,6 +560,37 @@ export async function getLeaderboardPageData(
 }
 
 export async function getUserPortfolioRank(userId: string): Promise<number | null> {
+  if (hasSupabaseAdminCredentials()) {
+    const admin = createAdminClient();
+    const { data: profiles } = await admin.from("profiles").select("user_id, daq_balance");
+    if (!profiles?.length) return null;
+
+    const totals = await Promise.all(
+      profiles.map(async (profile) => {
+        const { data: holdings } = await admin
+          .from("holdings")
+          .select("shares, asset:assets(current_price)")
+          .eq("user_id", profile.user_id);
+
+        const holdingsValue = computeHoldingsValue(
+          (holdings ?? []).map((h) => ({
+            shares: h.shares,
+            asset: h.asset as unknown as { current_price: number },
+          }))
+        );
+
+        return {
+          user_id: profile.user_id,
+          total_value: computeTotalPortfolioValue(profile.daq_balance, holdingsValue),
+        };
+      })
+    );
+
+    totals.sort((a, b) => b.total_value - a.total_value);
+    const index = totals.findIndex((t) => t.user_id === userId);
+    if (index >= 0) return index + 1;
+  }
+
   const supabase = await createClient();
 
   const { data: latestSnapshot } = await supabase
@@ -565,34 +610,7 @@ export async function getUserPortfolioRank(userId: string): Promise<number | nul
     if (entry) return entry.rank;
   }
 
-  if (!hasSupabaseAdminCredentials()) return null;
-
-  const admin = createAdminClient();
-  const { data: profiles } = await admin.from("profiles").select("user_id, daq_balance");
-  if (!profiles?.length) return null;
-
-  const totals = await Promise.all(
-    profiles.map(async (profile) => {
-      const { data: holdings } = await admin
-        .from("holdings")
-        .select("shares, asset:assets(current_price)")
-        .eq("user_id", profile.user_id);
-
-      const holdingsValue = (holdings ?? []).reduce((sum, h) => {
-        const asset = h.asset as unknown as { current_price: number } | null;
-        return sum + h.shares * (asset?.current_price ?? 0);
-      }, 0);
-
-      return {
-        user_id: profile.user_id,
-        total_value: profile.daq_balance + holdingsValue,
-      };
-    })
-  );
-
-  totals.sort((a, b) => b.total_value - a.total_value);
-  const index = totals.findIndex((t) => t.user_id === userId);
-  return index >= 0 ? index + 1 : null;
+  return null;
 }
 
 export async function getMarketStats() {
@@ -660,17 +678,20 @@ export async function getAssetMarketRank(
   assetId: string
 ): Promise<{ rank: number; total: number }> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("assets")
-    .select("id")
-    .order("trade_volume_24h", { ascending: false });
+  const { getAssetRank } = await import("@/lib/asset-ranking");
+  return getAssetRank(supabase, assetId);
+}
 
-  const assets = data ?? [];
-  const index = assets.findIndex((a) => a.id === assetId);
-  return {
-    rank: index >= 0 ? index + 1 : assets.length,
-    total: assets.length,
-  };
+export async function getAssetRankMovementForPage(assetId: string) {
+  const supabase = await createClient();
+  const { getAssetRankMovement } = await import("@/lib/asset-ranking");
+  return getAssetRankMovement(supabase, assetId);
+}
+
+export async function getMarketRankMovementsMap() {
+  const supabase = await createClient();
+  const { getAssetRankMovementsMap } = await import("@/lib/asset-ranking");
+  return getAssetRankMovementsMap(supabase);
 }
 
 export async function getRelatedAssets(
@@ -719,12 +740,13 @@ export async function getRelatedAssets(
   }
 
   for (const peer of peers) {
-    const reason: RelatedAssetReason =
-      cultureSlugSet.has(peer.slug) && trendingSlugs.has(peer.slug)
+    const inCultureMoment = cultureSlugSet.has(peer.slug);
+    const isTrending = trendingSlugs.has(peer.slug);
+    const reason: RelatedAssetReason = inCultureMoment
+      ? "culture_moment"
+      : isTrending
         ? "trending_together"
-        : trendingSlugs.has(peer.slug) && peer.category === asset.category
-          ? "trending_together"
-          : "same_category";
+        : "same_category";
     add(peer, reason);
     if (merged.length >= limit) return merged;
   }
@@ -756,13 +778,11 @@ export async function getCategoryCounts(): Promise<Record<AssetCategory, number>
 }
 
 export async function getMarketRankMap(): Promise<Map<string, number>> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("assets")
-    .select("id")
-    .order("trade_volume_24h", { ascending: false });
+  const movements = await getMarketRankMovementsMap();
   const map = new Map<string, number>();
-  (data ?? []).forEach((row, i) => map.set(row.id, i + 1));
+  for (const [assetId, movement] of movements) {
+    map.set(assetId, movement.rank);
+  }
   return map;
 }
 

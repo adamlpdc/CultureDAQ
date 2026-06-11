@@ -34,7 +34,7 @@ export function CultureContext({ moment }: CultureContextProps) {
             {moment.description}
           </p>
           <p className="mt-2 text-xs text-muted-light">
-            This asset is part of a broader cultural moment shaping market attention.
+            This asset is part of a live cultural moment shaping market attention.
           </p>
         </div>
       </div>

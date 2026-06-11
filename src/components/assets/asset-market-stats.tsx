@@ -1,5 +1,6 @@
 import { Activity, BarChart3, Flame, Hash, TrendingUp, Zap } from "lucide-react";
-import type { Asset } from "@/types/database";
+import type { Asset, AssetRankMovement } from "@/types/database";
+import { RankMovement } from "@/components/assets/rank-movement";
 import { getMomentumLabel, getVolatilityLabel } from "@/lib/price-event-labels";
 import { cn, formatDaq, formatPercent, getPriceChange } from "@/lib/utils";
 
@@ -7,6 +8,7 @@ interface AssetMarketStatsProps {
   asset: Asset;
   marketRank: number;
   totalAssets: number;
+  rankMovement?: AssetRankMovement | null;
 }
 
 function StatCard({
@@ -43,6 +45,7 @@ export function AssetMarketStats({
   asset,
   marketRank,
   totalAssets,
+  rankMovement,
 }: AssetMarketStatsProps) {
   const change = getPriceChange(asset.current_price, asset.previous_price);
   const buyPressure = Number(asset.buy_pressure);
@@ -53,7 +56,7 @@ export function AssetMarketStats({
   return (
     <div className="rounded-2xl border border-border bg-surface p-4 shadow-card">
       <h2 className="mb-3 text-sm font-bold text-foreground">Market Stats</h2>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         <StatCard
           icon={<TrendingUp className="h-3.5 w-3.5" />}
           label="Last Move"
@@ -71,6 +74,16 @@ export function AssetMarketStats({
           label="Market Rank"
           value={`#${marketRank}`}
           sub={`of ${totalAssets.toLocaleString()} assets`}
+        />
+        <StatCard
+          icon={<TrendingUp className="h-3.5 w-3.5" />}
+          label="Rank Change"
+          value={<RankMovement movement={rankMovement} size="sm" />}
+          sub={
+            rankMovement?.previousRank != null && !rankMovement.isNewlyRanked
+              ? `Previously #${rankMovement.previousRank}`
+              : undefined
+          }
         />
         <StatCard
           icon={<Activity className="h-3.5 w-3.5" />}
