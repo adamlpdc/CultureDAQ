@@ -6,11 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 
 interface LoginPageProps {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; error?: string }>;
 }
+
+const loginErrors: Record<string, string> = {
+  email_confirmation_failed:
+    "We couldn't verify your email link. It may have expired — try signing up again or request a new link.",
+};
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
+  const authError = params.error ? loginErrors[params.error] : undefined;
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center">
@@ -22,6 +28,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <p className="mt-1 text-sm text-muted">Sign in to your CultureDAQ account</p>
 
         <div className="mt-6">
+          {authError ? (
+            <p className="mb-4 rounded-xl border border-loss-muted bg-loss-light px-4 py-3 text-sm text-loss">
+              {authError}
+            </p>
+          ) : null}
           <AuthForm action={signIn} submitLabel="Sign In">
             <input type="hidden" name="redirect" value={params.redirect ?? "/"} />
             <div>

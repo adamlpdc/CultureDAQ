@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { signUp } from "@/actions/auth";
-import { AuthForm } from "@/components/auth/auth-form";
+import { SignUpForm } from "@/components/auth/sign-up-form";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
@@ -20,7 +19,7 @@ export default function SignUpPage() {
         </p>
 
         <div className="mt-6">
-          <AuthForm action={signUp} submitLabel={`Create Account · ${formatDaq(STARTING_DAQ)}`}>
+          <SignUpForm submitLabel={`Create Account · ${formatDaq(STARTING_DAQ)}`}>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">
                 Username
@@ -51,7 +50,7 @@ export default function SignUpPage() {
                 placeholder="••••••••"
               />
             </div>
-          </AuthForm>
+          </SignUpForm>
         </div>
 
         <p className="mt-6 text-center text-sm text-muted">
