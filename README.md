@@ -147,43 +147,46 @@ curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
 
 | Environment | URL | Vercel target | Branch |
 |-------------|-----|---------------|--------|
-| **Production** | https://culturedaq.com | Production domain | `main` |
-| **Staging** | https://culture-daq.vercel.app | Git branch domain | `staging` (recommended) |
-| **Local** | http://localhost:3002 | — | — |
+| **Production** | https://culturedaq.com, https://www.culturedaq.com | Production domain | `main` |
+| **Production fallback** | https://culture-daq.vercel.app | Production (default `*.vercel.app`) | `main` |
+| **Staging / preview** | Vercel Preview URL (e.g. `https://culture-daq-git-staging-….vercel.app`) | Preview deployment | `staging` |
+| **Local** | http://localhost:3000 or http://localhost:3002 | — | — |
 
-Use **one Supabase project** for all three. Auth redirect URLs are configured in Supabase → Authentication → URL Configuration.
+Use **one Supabase project** for all environments. Auth redirect URLs are configured in Supabase → Authentication → URL Configuration.
 
 ### 1. Vercel domains
 
 1. **Project → Settings → Domains**
-2. Add `culturedaq.com` (+ `www.culturedaq.com`) → assign to **Production** (`main`)
-3. Add `culture-daq.vercel.app` → assign to **Preview** branch `staging` (create a `staging` branch and push to it)
+2. Add `culturedaq.com` and `www.culturedaq.com` → assign to **Production** (`main`)
+3. Leave `culture-daq.vercel.app` on **Production** as a fallback URL (do not assign it to `staging`)
 4. At your domain registrar, point `culturedaq.com` DNS to Vercel (A/CNAME as shown in Vercel)
 
-> By default `*.vercel.app` serves Production. Assigning it to the `staging` branch keeps production on the custom domain only.
+Preview deployments from the `staging` branch get auto-generated `*.vercel.app` URLs. Supabase allows these via `https://*-culture-daq*.vercel.app/**`.
 
 ### 2. Environment variables (Vercel → Settings → Environment Variables)
 
 Set these **per environment** (Production / Preview / Development):
 
-| Variable | Production | Preview (staging) | Development (local) |
-|----------|------------|-----------------|---------------------|
+| Variable | Production | Preview (staging branch) | Development (local) |
+|----------|------------|--------------------------|---------------------|
 | `NEXT_PUBLIC_SUPABASE_URL` | same | same | same |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | same | same | same |
 | `SUPABASE_SERVICE_ROLE_KEY` | same | same | same |
 | `CRON_SECRET` | prod secret | staging secret (optional) | local secret |
-| `NEXT_PUBLIC_APP_URL` | `https://culturedaq.com` | `https://culture-daq.vercel.app` | `http://localhost:3002` |
+| `NEXT_PUBLIC_APP_URL` | `https://culturedaq.com` | leave unset (uses `VERCEL_URL`) | `http://localhost:3002` |
 | `NEXT_PUBLIC_APP_ENV` | `production` | `staging` | `development` |
 
 Copy `.env.example` to `.env.local` for local dev.
 
-### 3. Supabase Auth (already configured)
+### 3. Supabase Auth
 
 - **Site URL:** `https://culturedaq.com`
 - **Redirect URLs:**
   - `https://culturedaq.com/**`
   - `https://www.culturedaq.com/**`
   - `https://culture-daq.vercel.app/**`
+  - `https://*-culture-daq*.vercel.app/**`
+  - `http://localhost:3000/**`
   - `http://localhost:3002/**`
 
 ### 4. Cron Jobs
@@ -201,7 +204,7 @@ npm run seed
 
 ### 6. Deploy
 
-Push to `main` → deploys to **culturedaq.com**. Push to `staging` → deploys to **culture-daq.vercel.app**.
+Push to `main` → deploys to **culturedaq.com** (+ `culture-daq.vercel.app` fallback). Push to `staging` → creates a **Vercel Preview** deployment with its own URL.
 
 ## Project Structure
 
