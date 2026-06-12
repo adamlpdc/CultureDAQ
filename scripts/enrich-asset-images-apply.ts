@@ -15,6 +15,7 @@ import {
   type EnrichableCategory,
   type ImageCoverageStats,
 } from "../src/lib/image-enrichment/types";
+import { verifyImageUrl } from "../src/lib/image-enrichment/verify";
 
 function loadEnvLocal() {
   const path = resolve(process.cwd(), ".env.local");
@@ -125,6 +126,7 @@ async function main() {
       enriched: 0,
       skippedManualReview: 0,
       skippedUnmatched: 0,
+      skippedUnverified: 0,
       skippedUnchanged: 0,
       errors: 0,
     },
@@ -143,6 +145,17 @@ async function main() {
     if (!result.proposedImageUrl) {
       report.summary.skippedUnmatched++;
       report.manualReview.push(result);
+      continue;
+    }
+
+    const verified = await verifyImageUrl(result.proposedImageUrl);
+    if (!verified.ok) {
+      report.summary.skippedUnverified++;
+      report.manualReview.push({
+        ...result,
+        manualReview: true,
+        reviewReason: `unverified_url (${verified.error ?? verified.status})`,
+      });
       continue;
     }
 
@@ -193,6 +206,7 @@ async function main() {
   console.log("\n=== Apply summary ===");
   console.log(`Updated:              ${report.summary.enriched}`);
   console.log(`Skipped (unchanged):  ${report.summary.skippedUnchanged}`);
+  console.log(`Skipped (unverified): ${report.summary.skippedUnverified}`);
   console.log(`Skipped (review):     ${report.summary.skippedManualReview}`);
   console.log(`Skipped (unmatched):  ${report.summary.skippedUnmatched}`);
   console.log(`Errors:               ${report.summary.errors}`);

@@ -2,8 +2,9 @@
   "marvel-cinematic-universe": {
     "provider": "tmdb_collection",
     "external_id": "86311",
-    "poster_path": "/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
-    "label": "Marvel Cinematic Universe Collection"
+    "poster_path": "/yFSIUVTCvgYrpalUktulvk3Gi5Y.jpg",
+    "label": "Marvel Cinematic Universe Collection",
+    "image_url": "https://image.tmdb.org/t/p/w500/yFSIUVTCvgYrpalUktulvk3Gi5Y.jpg"
   },
   "star-wars": {
     "provider": "tmdb_collection",
@@ -14,8 +15,9 @@
   "avatar-film-franchise": {
     "provider": "tmdb_movie",
     "external_id": "19995",
-    "poster_path": "/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
-    "label": "Avatar (2009)"
+    "poster_path": "/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg",
+    "label": "Avatar (2009)",
+    "image_url": "https://image.tmdb.org/t/p/w500/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg"
   },
   "dune": {
     "provider": "tmdb_movie",
@@ -41,23 +43,26 @@
   "inside-out-2": {
     "provider": "tmdb_movie",
     "external_id": "1022789",
-    "poster_path": "/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+    "poster_path": "/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
     "year": 2024,
-    "label": "Inside Out 2 (2024)"
+    "label": "Inside Out 2 (2024)",
+    "image_url": "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"
   },
   "deadpool-wolverine": {
     "provider": "tmdb_movie",
     "external_id": "533535",
-    "poster_path": "/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+    "poster_path": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
     "year": 2024,
-    "label": "Deadpool & Wolverine (2024)"
+    "label": "Deadpool & Wolverine (2024)",
+    "image_url": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"
   },
   "wicked": {
     "provider": "tmdb_movie",
     "external_id": "402431",
-    "poster_path": "/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+    "poster_path": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
     "year": 2024,
-    "label": "Wicked (2024)"
+    "label": "Wicked (2024)",
+    "image_url": "https://image.tmdb.org/t/p/w500/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg"
   },
   "oppenheimer": {
     "provider": "tmdb_movie",
@@ -68,44 +73,51 @@
   "shogun-2024": {
     "provider": "tmdb_tv",
     "external_id": "126308",
-    "poster_path": "/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
-    "label": "Shōgun (2024)"
+    "poster_path": "/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+    "label": "Shōgun (2024)",
+    "image_url": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg"
   },
   "fallout-tv-series": {
     "provider": "tmdb_tv",
     "external_id": "106379",
-    "poster_path": "/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
-    "label": "Fallout (2024)"
+    "poster_path": "/c15BtJxCXMrISLVmysdsnZUPQft.jpg",
+    "label": "Fallout (2024)",
+    "image_url": "https://image.tmdb.org/t/p/w500/c15BtJxCXMrISLVmysdsnZUPQft.jpg"
   },
   "stranger-things": {
     "provider": "tmdb_tv",
     "external_id": "66732",
-    "poster_path": "/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
-    "label": "Stranger Things"
+    "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+    "label": "Stranger Things",
+    "image_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg"
   },
   "squid-game": {
     "provider": "tmdb_tv",
     "external_id": "93405",
-    "poster_path": "/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
-    "label": "Squid Game"
+    "poster_path": "/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
+    "label": "Squid Game",
+    "image_url": "https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg"
   },
   "the-last-of-us": {
     "provider": "tmdb_tv",
     "external_id": "100088",
-    "poster_path": "/xuKai19I4XecjdllzdTXO8MVrk.jpg",
-    "label": "The Last of Us"
+    "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+    "label": "The Last of Us",
+    "image_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg"
   },
   "wednesday": {
     "provider": "tmdb_tv",
     "external_id": "119051",
-    "poster_path": "/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
-    "label": "Wednesday"
+    "poster_path": "/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg",
+    "label": "Wednesday",
+    "image_url": "https://image.tmdb.org/t/p/w500/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg"
   },
   "the-bear": {
     "provider": "tmdb_tv",
     "external_id": "136315",
-    "poster_path": "/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
-    "label": "The Bear"
+    "poster_path": "/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg",
+    "label": "The Bear",
+    "image_url": "https://image.tmdb.org/t/p/w500/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg"
   },
   "euphoria": {
     "provider": "tmdb_tv",
@@ -116,28 +128,95 @@
   "house-of-the-dragon": {
     "provider": "tmdb_tv",
     "external_id": "94997",
-    "poster_path": "/z2yahlito7dkgl6p1648t0r09nc.jpg",
-    "label": "House of the Dragon"
+    "poster_path": "/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+    "label": "House of the Dragon",
+    "image_url": "https://image.tmdb.org/t/p/w500/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg"
   },
   "the-white-lotus": {
     "provider": "tmdb_tv",
     "external_id": "111803",
-    "poster_path": "/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
-    "label": "The White Lotus"
+    "poster_path": "/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg",
+    "label": "The White Lotus",
+    "image_url": "https://image.tmdb.org/t/p/w500/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg"
   },
-  "nike": { "provider": "clearbit", "domain": "nike.com" },
-  "apple": { "provider": "clearbit", "domain": "apple.com" },
-  "netflix": { "provider": "clearbit", "domain": "netflix.com" },
-  "tesla": { "provider": "clearbit", "domain": "tesla.com" },
-  "spotify": { "provider": "clearbit", "domain": "spotify.com" },
-  "disney": { "provider": "clearbit", "domain": "disney.com" },
-  "google": { "provider": "clearbit", "domain": "google.com" },
-  "amazon": { "provider": "clearbit", "domain": "amazon.com" },
-  "adidas": { "provider": "clearbit", "domain": "adidas.com" },
-  "prime-hydration": { "provider": "clearbit", "domain": "drinkprime.com" },
-  "liverpool-fc": { "provider": "thesportsdb", "search": "Liverpool" },
-  "fc-barcelona": { "provider": "thesportsdb", "search": "Barcelona" },
-  "manchester-city": { "provider": "thesportsdb", "search": "Manchester City" },
-  "red-bull-racing": { "provider": "thesportsdb", "search": "Red Bull Racing" },
-  "scuderia-ferrari": { "provider": "thesportsdb", "search": "Ferrari" }
+  "nike": {
+    "provider": "supabase",
+    "storage_path": "brands/nike.svg",
+    "source_url": "https://cdn.simpleicons.org/nike/111111",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/nike.svg"
+  },
+  "apple": {
+    "provider": "supabase",
+    "storage_path": "brands/apple.svg",
+    "source_url": "https://cdn.simpleicons.org/apple/000000",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/apple.svg"
+  },
+  "netflix": {
+    "provider": "supabase",
+    "storage_path": "brands/netflix.svg",
+    "source_url": "https://cdn.simpleicons.org/netflix/E50914",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/netflix.svg"
+  },
+  "tesla": {
+    "provider": "supabase",
+    "storage_path": "brands/tesla.svg",
+    "source_url": "https://cdn.simpleicons.org/tesla/CC0000",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/tesla.svg"
+  },
+  "spotify": {
+    "provider": "supabase",
+    "storage_path": "brands/spotify.svg",
+    "source_url": "https://cdn.simpleicons.org/spotify/1DB954",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/spotify.svg"
+  },
+  "disney": {
+    "provider": "supabase",
+    "storage_path": "brands/disney.png",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/1280px-Disney%2B_logo.svg.png",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/disney.png"
+  },
+  "google": {
+    "provider": "supabase",
+    "storage_path": "brands/google.svg",
+    "source_url": "https://cdn.simpleicons.org/google/4285F4",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/google.svg"
+  },
+  "amazon": {
+    "provider": "supabase",
+    "storage_path": "brands/amazon.png",
+    "source_url": "https://1000logos.net/wp-content/uploads/2016/10/Amazon-Logo.png",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/amazon.png"
+  },
+  "adidas": {
+    "provider": "supabase",
+    "storage_path": "brands/adidas.svg",
+    "source_url": "https://cdn.simpleicons.org/adidas/000000",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/adidas.svg"
+  },
+  "prime-hydration": {
+    "provider": "supabase",
+    "storage_path": "brands/prime-hydration.png",
+    "source_url": "https://drinkprime.com/cdn/shop/files/PRIME_Social_Sharing_Image_1200x.png?v=1734715820",
+    "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/prime-hydration.png"
+  },
+  "liverpool-fc": {
+    "provider": "thesportsdb",
+    "search": "Liverpool"
+  },
+  "fc-barcelona": {
+    "provider": "thesportsdb",
+    "search": "Barcelona"
+  },
+  "manchester-city": {
+    "provider": "thesportsdb",
+    "search": "Manchester City"
+  },
+  "red-bull-racing": {
+    "provider": "thesportsdb",
+    "search": "Red Bull Racing"
+  },
+  "scuderia-ferrari": {
+    "provider": "thesportsdb",
+    "search": "Ferrari"
+  }
 }

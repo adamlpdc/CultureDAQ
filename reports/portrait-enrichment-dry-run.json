@@ -1,0 +1,1023 @@
+{
+  "generatedAt": "2026-06-12T12:04:23.118Z",
+  "dryRun": true,
+  "providers": {
+    "tmdb": true,
+    "thesportsdb": true,
+    "wikipedia": true
+  },
+  "summary": {
+    "total": 36,
+    "verified": 36,
+    "manualReview": 2,
+    "unverified": 0,
+    "byCategory": {
+      "actors": {
+        "total": 10,
+        "verified": 10,
+        "manualReview": 1
+      },
+      "athletes": {
+        "total": 10,
+        "verified": 10,
+        "manualReview": 0
+      },
+      "musicians": {
+        "total": 10,
+        "verified": 10,
+        "manualReview": 1
+      },
+      "tv_personalities": {
+        "total": 6,
+        "verified": 6,
+        "manualReview": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "assetId": "4a361222-6dd4-4f42-bfa8-939277b1fceb",
+      "slug": "austin-butler",
+      "name": "Austin Butler",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": true,
+      "reviewReason": "ambiguous (Austin Butler &#8212; The Movie Database (TMDB) vs Austin Butler &#8212; The Movie Database (TMDB))",
+      "matchLabel": "Austin Butler &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Austin Butler &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "86654",
+          "note": "scraped"
+        },
+        {
+          "title": "Austin Butler &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/zr1aoQnweX0bG2SzZUU5lIXztnk.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "3273578",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "a73c216f-b660-4fba-8d97-1a917add8cde",
+      "slug": "cillian-murphy",
+      "name": "Cillian Murphy",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Cillian Murphy &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Cillian Murphy &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "2037",
+          "note": "scraped"
+        },
+        {
+          "title": "William Murphy &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/kurCSilwCWheDxLxUvxjpIVYNpY.jpg",
+          "confidence": 0.143,
+          "source": "tmdb",
+          "externalId": "104628",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "2f3dcff7-4301-4115-9b78-7a4f050aa01b",
+      "slug": "florence-pugh",
+      "name": "Florence Pugh",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Florence Pugh &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Florence Pugh &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1373737",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "6cf0555c-781c-4492-b350-8f543c64edfb",
+      "slug": "jenna-ortega",
+      "name": "Jenna Ortega",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/q1NRzyZQlYkxLY07GO9NVPkQnu8.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Jenna Ortega &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Jenna Ortega &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/q1NRzyZQlYkxLY07GO9NVPkQnu8.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "974169",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "863c4168-e91c-4314-afd2-7fe861b18490",
+      "slug": "margot-robbie",
+      "name": "Margot Robbie",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/euDPyqLnuwaWMHajcU3oZ9uZezR.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Margot Robbie &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Margot Robbie &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/euDPyqLnuwaWMHajcU3oZ9uZezR.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "234352",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "402214bd-214f-483a-ab8d-ee9a19f1efe3",
+      "slug": "pedro-pascal",
+      "name": "Pedro Pascal",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Pedro Pascal &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Pedro Pascal &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1253360",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "cf9b63b1-a0e7-42c0-a8a5-346fde5a6fe2",
+      "slug": "ryan-gosling",
+      "name": "Ryan Gosling",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Ryan Gosling &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Ryan Gosling &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "30614",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "319e0d15-f9cb-4611-b14e-532c6c62f9ee",
+      "slug": "timothee-chalamet",
+      "name": "Timothée Chalamet",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/axENiFIrSz5B7UuWkMT7PDe7CaO.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Timothée Chalamet &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Timothée Chalamet &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/axENiFIrSz5B7UuWkMT7PDe7CaO.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1190668",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "4021db8c-06c6-4fe7-a4fc-a9915fa7e4a1",
+      "slug": "tom-holland",
+      "name": "Tom Holland",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Tom Holland &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Tom Holland &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1136406",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "72d3f383-9e36-49aa-bdab-f140658a6055",
+      "slug": "zendaya",
+      "name": "Zendaya",
+      "category": "actors",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Zendaya &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Zendaya &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "505710",
+          "note": "scraped"
+        },
+        {
+          "title": "Hendeya &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/kvpQKVdZTn7uMZoINNWai1bGWpR.jpg",
+          "confidence": 0,
+          "source": "tmdb",
+          "externalId": "3984116",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "89bbb683-94d5-43aa-9d58-3b89d05de390",
+      "slug": "bad-bunny",
+      "name": "Bad Bunny",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Bad_Bunny_2019_by_Glenn_Francis_%28cropped%29.jpg/330px-Bad_Bunny_2019_by_Glenn_Francis_%28cropped%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Bad Bunny",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Bad Bunny",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Bad_Bunny_2019_by_Glenn_Francis_%28cropped%29.jpg/330px-Bad_Bunny_2019_by_Glenn_Francis_%28cropped%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Bad_Bunny",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Bad Bunny &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/6DABuEahOaJ95VrpKhrk7XeFfJY.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "2550161",
+          "note": "scraped"
+        },
+        {
+          "title": "Lady Bunny &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/7QgW2MRoEcMsgEmiXlidH2SRLTy.jpg",
+          "confidence": 0.143,
+          "source": "tmdb",
+          "externalId": "1020601",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "168ab112-d206-4860-bf60-727d98b28024",
+      "slug": "beyonce",
+      "name": "Beyoncé",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2810_of_118%29_%2852946364598%29_%28best_crop%29.jpg/330px-Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2810_of_118%29_%2852946364598%29_%28best_crop%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Beyoncé",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Beyoncé",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2810_of_118%29_%2852946364598%29_%28best_crop%29.jpg/330px-Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2810_of_118%29_%2852946364598%29_%28best_crop%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Beyoncé",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Beyoncé &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/2HbjNtiCtmbArEnELuDFU7knaVK.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "14386",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "c8ebb507-a840-4f5c-8ef5-cf1837ef2133",
+      "slug": "billie-eilish",
+      "name": "Billie Eilish",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg/330px-BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Billie Eilish",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Billie Eilish",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg/330px-BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Billie_Eilish",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Billie Eilish &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/4K69OtW6PVQ8gDozNB9Ja4j5iQS.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "2413513",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "50068b1b-310f-4c56-85f7-b8ef7962d55f",
+      "slug": "drake",
+      "name": "Drake",
+      "category": "musicians",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/tE0ZkWBP2rLj8u0NJqmMi1h1kb1.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": true,
+      "reviewReason": "ambiguous (Drake &#8212; The Movie Database (TMDB) vs Drake Bell &#8212; The Movie Database (TMDB))",
+      "matchLabel": "Drake &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Drake &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/tE0ZkWBP2rLj8u0NJqmMi1h1kb1.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "197315",
+          "note": "scraped"
+        },
+        {
+          "title": "Drake Bell &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/6KxFiHrqiniS3oxV4NCz0sYNTuo.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "3272",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "633ed499-8dba-41f6-8de6-3b23ccaaf106",
+      "slug": "dua-lipa",
+      "name": "Dua Lipa",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dua_Lipa-69798_%28cropped%29.jpg/330px-Dua_Lipa-69798_%28cropped%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Dua Lipa",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Dua Lipa",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dua_Lipa-69798_%28cropped%29.jpg/330px-Dua_Lipa-69798_%28cropped%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Dua_Lipa",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Dua Lipa &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/aCZmliGT5oDGiF8aKvxFbct5JQm.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1959397",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "dc800108-429b-4337-bd56-810e75c9e6d5",
+      "slug": "kendrick-lamar",
+      "name": "Kendrick Lamar",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/KendrickSZASPurs230725-144_%28cropped%29_desaturated.jpg/330px-KendrickSZASPurs230725-144_%28cropped%29_desaturated.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Kendrick Lamar",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Kendrick Lamar",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/KendrickSZASPurs230725-144_%28cropped%29_desaturated.jpg/330px-KendrickSZASPurs230725-144_%28cropped%29_desaturated.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Kendrick_Lamar",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Kendrick Lamar &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/wc8e0NRsknvVerfMAwiDlxWIdnS.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1008292",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "3fde2f6a-459b-47fd-97b6-51ce768758e1",
+      "slug": "olivia-rodrigo",
+      "name": "Olivia Rodrigo",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Glasto2025-546_%28cropped%29_%282%29.jpg/330px-Glasto2025-546_%28cropped%29_%282%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Olivia Rodrigo",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Olivia Rodrigo",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Glasto2025-546_%28cropped%29_%282%29.jpg/330px-Glasto2025-546_%28cropped%29_%282%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Olivia_Rodrigo",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Olivia Rodrigo &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/dLtOE7LHFl5LxDUx5RAz07KqQPX.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1713725",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "14b348f4-8eef-4b58-8a2e-a21ea0e71bc2",
+      "slug": "sabrina-carpenter",
+      "name": "Sabrina Carpenter",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg/330px-Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Sabrina Carpenter",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Sabrina Carpenter",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg/330px-Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Sabrina_Carpenter",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Sabrina Carpenter &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/h2JcSqZ220VXDqb6xKBVcRquGGN.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1152083",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "684b7892-12ba-4d93-8ae3-ddfd134fd5a6",
+      "slug": "taylor-swift",
+      "name": "Taylor Swift",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png/330px-Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Taylor Swift",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Taylor Swift",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png/330px-Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "Taylor_Swift",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "Taylor Swift &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/rixYX4rVlWUhg0BWvclkFUNVYht.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "212208",
+          "note": "scraped"
+        },
+        {
+          "title": "Taylor Clift &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/cPAExesBKXEM2C4m68KY3Xj5e32.jpg",
+          "confidence": 0.143,
+          "source": "tmdb",
+          "externalId": "1341411",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "f7e81ecc-c88d-4821-93fd-aafedac5d249",
+      "slug": "the-weeknd",
+      "name": "The Weeknd",
+      "category": "musicians",
+      "proposedImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/The_Weeknd_Portrait_by_Brian_Ziff.jpg/330px-The_Weeknd_Portrait_by_Brian_Ziff.jpg",
+      "source": "wikipedia",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "The Weeknd",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "The Weeknd",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/The_Weeknd_Portrait_by_Brian_Ziff.jpg/330px-The_Weeknd_Portrait_by_Brian_Ziff.jpg",
+          "confidence": 1,
+          "source": "wikipedia",
+          "externalId": "The_Weeknd",
+          "note": "wikipedia thumbnail"
+        },
+        {
+          "title": "The Weeknd &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/jCbBUnI1zJMPr6Hl9naNbzQd7LN.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1549008",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "4f0d894d-e0a1-4993-ac65-12b9ff5f5e9f",
+      "slug": "cristiano-ronaldo",
+      "name": "Cristiano Ronaldo",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/a19jje1761592498.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Cristiano Ronaldo",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Cristiano Ronaldo",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/a19jje1761592498.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34146304",
+          "note": "Soccer · Al-Nassr"
+        }
+      ]
+    },
+    {
+      "assetId": "4fd5dee9-dca3-4c73-82a2-b5679305e0bd",
+      "slug": "erling-haaland",
+      "name": "Erling Haaland",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/un3jr11769182465.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Erling Haaland",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Erling Haaland",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/un3jr11769182465.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34169116",
+          "note": "Soccer · Manchester City"
+        }
+      ]
+    },
+    {
+      "assetId": "df2cc971-e7d6-451f-adf5-b133e6dd8ad9",
+      "slug": "kylian-mbappe",
+      "name": "Kylian Mbappé",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/h9u9vz1733653583.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Kylian Mbappé",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Kylian Mbappé",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/h9u9vz1733653583.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34162098",
+          "note": "Soccer · Real Madrid"
+        }
+      ]
+    },
+    {
+      "assetId": "b1bb8865-210d-4de6-8183-656b1b41fe3c",
+      "slug": "lebron-james",
+      "name": "LeBron James",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/tx6wea1702374040.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "LeBron James",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "LeBron James",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/tx6wea1702374040.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34153733",
+          "note": "Basketball · Los Angeles Lakers"
+        }
+      ]
+    },
+    {
+      "assetId": "0da1b36e-f1e4-4195-a97d-21f7fa3c02b3",
+      "slug": "lionel-messi",
+      "name": "Lionel Messi",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/e0i2051750317027.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Lionel Messi",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Lionel Messi",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/e0i2051750317027.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34146370",
+          "note": "Soccer · Inter Miami"
+        }
+      ]
+    },
+    {
+      "assetId": "e554bf4f-7d45-4ac0-9ffe-b6f8d55713a7",
+      "slug": "max-verstappen",
+      "name": "Max Verstappen",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/fiyui61769371945.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Max Verstappen",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Max Verstappen",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/fiyui61769371945.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34157146",
+          "note": "Motorsport · Red Bull"
+        }
+      ]
+    },
+    {
+      "assetId": "7471e6c4-62b6-408a-9b56-5ffff38a6e42",
+      "slug": "naomi-osaka",
+      "name": "Naomi Osaka",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/4njchy1716751197.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Naomi Osaka",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Naomi Osaka",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/4njchy1716751197.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34163984",
+          "note": "Tennis · WTA Tour Womens"
+        }
+      ]
+    },
+    {
+      "assetId": "cba76d02-360c-4a6c-9294-dd36b7101bbb",
+      "slug": "patrick-mahomes",
+      "name": "Patrick Mahomes",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/y8fbc81580739124.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Patrick Mahomes",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Patrick Mahomes",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/y8fbc81580739124.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34165220",
+          "note": "American Football · Kansas City Chiefs"
+        }
+      ]
+    },
+    {
+      "assetId": "b2d54c21-40d9-4512-b611-2707d434a534",
+      "slug": "simone-biles",
+      "name": "Simone Biles",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/nv57fh1630758769.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Simone Biles",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Simone Biles",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/nv57fh1630758769.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34193230",
+          "note": "Gymnastics · USA Artistic Gymnastics Women"
+        }
+      ]
+    },
+    {
+      "assetId": "a3ec857e-f559-43b8-bb61-c04300c7afc5",
+      "slug": "stephen-curry",
+      "name": "Stephen Curry",
+      "category": "athletes",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/ljgyln1711802711.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Stephen Curry",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Stephen Curry",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/ljgyln1711802711.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "34160611",
+          "note": "Basketball · Golden State Warriors"
+        }
+      ]
+    },
+    {
+      "assetId": "1c39b420-490c-4609-84a8-b03556dcfa28",
+      "slug": "david-letterman",
+      "name": "David Letterman",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/nk1rMabb84e52G2oax6yO9FBiAd.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "David Letterman &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "David Letterman &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/nk1rMabb84e52G2oax6yO9FBiAd.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "136487",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "9e9a2b9c-6f79-4bb8-8723-227e7977a608",
+      "slug": "gordon-ramsay",
+      "name": "Gordon Ramsay",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/72LCF6OLi95odUlqtDi8vAcW3zw.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Gordon Ramsay &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Gordon Ramsay &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/72LCF6OLi95odUlqtDi8vAcW3zw.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "208630",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "f540a3e8-6beb-415b-86f8-8ed0866be8a1",
+      "slug": "oprah-winfrey",
+      "name": "Oprah Winfrey",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/nNpYieaDLxKZWw2FY9wsDkjwURu.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Oprah Winfrey &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Oprah Winfrey &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/nNpYieaDLxKZWw2FY9wsDkjwURu.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "13309",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "34abf457-510f-4b88-9e3f-181d04836b14",
+      "slug": "rupert-murdoch",
+      "name": "Rupert Murdoch",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/5Ysbvoasjtp1gioafrhGudg4lcF.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Rupert Murdoch &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Rupert Murdoch &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/5Ysbvoasjtp1gioafrhGudg4lcF.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "1223630",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "43e94d35-13f5-4f87-896e-e5216eab5413",
+      "slug": "ryan-seacrest",
+      "name": "Ryan Seacrest",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/crjHM1N6RKMOOxwWXf070B4NDy3.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Ryan Seacrest &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Ryan Seacrest &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/crjHM1N6RKMOOxwWXf070B4NDy3.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "167662",
+          "note": "scraped"
+        }
+      ]
+    },
+    {
+      "assetId": "c09da48c-d8c4-4402-a692-4e32a7b15d1f",
+      "slug": "simon-cowell",
+      "name": "Simon Cowell",
+      "category": "tv_personalities",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/pKllSRO03fLD6z0dMMQAuooKXhF.jpg",
+      "source": "tmdb",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Simon Cowell &#8212; The Movie Database (TMDB)",
+      "verified": true,
+      "httpStatus": 200,
+      "candidates": [
+        {
+          "title": "Simon Cowell &#8212; The Movie Database (TMDB)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/pKllSRO03fLD6z0dMMQAuooKXhF.jpg",
+          "confidence": 0.92,
+          "source": "tmdb",
+          "externalId": "165899",
+          "note": "scraped"
+        }
+      ]
+    }
+  ]
+}

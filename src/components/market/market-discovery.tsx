@@ -107,10 +107,12 @@ function MoverLeaderboard({
 }) {
   if (assets.length === 0) return null;
 
+  const isGain = variant === "gain";
+
   return (
     <section className="rounded-xl border border-border/80 bg-surface-muted/20 p-3 md:p-4">
       <SectionHeader title={title} description={description} href={href} />
-      <div className="divide-y divide-border/60">
+      <div className="flex flex-col gap-2">
         {assets.slice(0, 5).map((asset, index) => {
           const change = getPriceChange(asset.current_price, asset.previous_price);
           const isPositive = change >= 0;
@@ -118,34 +120,55 @@ function MoverLeaderboard({
             <Link
               key={asset.id}
               href={`/asset/${asset.slug}`}
-              className="flex items-center gap-2.5 py-2.5 transition-colors hover:bg-surface-muted/40"
+              className="group flex flex-col rounded-lg border border-border/80 bg-surface p-2.5 transition-all hover:border-border-tint hover:shadow-card"
             >
-              <span
-                className={cn(
-                  "text-stat w-4 shrink-0 text-center text-xs font-bold",
-                  variant === "gain" ? "text-gain" : "text-loss"
-                )}
-              >
-                {index + 1}
-              </span>
-              <AssetIdentityFromAsset asset={asset} size="xs" />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-foreground">{asset.name}</p>
-                <CategoryBadge size="xs" className="mt-0.5 w-fit" category={asset.category} />
+              <div className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    "text-stat flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[11px] font-bold",
+                    isGain
+                      ? "bg-gain-light text-gain"
+                      : "bg-loss-light text-loss"
+                  )}
+                >
+                  {index + 1}
+                </span>
+                <AssetIdentityFromAsset asset={asset} size="sm" className="shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-semibold text-foreground group-hover:text-primary">
+                    {asset.name}
+                  </p>
+                  <CategoryBadge size="xs" className="mt-0.5 w-fit" category={asset.category} />
+                </div>
               </div>
-              <p
-                className={cn(
-                  "flex shrink-0 items-center gap-0.5 text-xs font-bold",
-                  isPositive ? "text-gain" : "text-loss"
-                )}
-              >
-                {isPositive ? (
-                  <TrendingUp className="h-3 w-3" />
-                ) : (
-                  <TrendingDown className="h-3 w-3" />
-                )}
-                {formatPercent(change)}
-              </p>
+              <div className="mt-2 flex items-end justify-between gap-2 border-t border-border/50 pt-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-muted">
+                    Price
+                  </p>
+                  <p className="text-stat daq-price text-[11px] font-bold text-foreground">
+                    {formatDaq(asset.current_price)}
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-muted">
+                    24H
+                  </p>
+                  <p
+                    className={cn(
+                      "flex items-center justify-end gap-0.5 text-[11px] font-bold",
+                      isPositive ? "text-gain" : "text-loss"
+                    )}
+                  >
+                    {isPositive ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    {formatPercent(change)}
+                  </p>
+                </div>
+              </div>
             </Link>
           );
         })}

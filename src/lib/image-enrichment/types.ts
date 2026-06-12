@@ -98,6 +98,7 @@ export interface ApplyReport {
     enriched: number;
     skippedManualReview: number;
     skippedUnmatched: number;
+    skippedUnverified: number;
     skippedUnchanged: number;
     errors: number;
   };

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { Asset, AssetCategory } from "@/types/database";
+import { AssetIdentityImage } from "@/components/assets/asset-identity-image";
 import { CATEGORY_COLORS } from "@/lib/constants";
 import {
   getAssetInitials,
@@ -48,6 +48,7 @@ export function AssetIdentity({
 
   if (mode === "poster-image") {
     const posterBox = size === "hero" && poster ? poster : shaped;
+    const hue = getAvatarHue(name);
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
@@ -57,12 +58,29 @@ export function AssetIdentity({
             innerAccent(premium, posterBox)
           )}
         >
-          <Image
+          <AssetIdentityImage
             src={imageUrl!}
             alt=""
             width={img}
             height={Math.round(img * 1.4)}
             className="h-full w-full object-cover"
+            fallback={
+              <div
+                className={cn(
+                  "flex h-full w-full flex-col items-center justify-center p-2 font-bold",
+                  text
+                )}
+                style={{
+                  background: `linear-gradient(165deg, hsl(${hue} 32% 16%) 0%, hsl(${hue} 48% 30%) 100%)`,
+                  color: "white",
+                }}
+              >
+                <span className="text-[0.65em] font-semibold uppercase tracking-widest opacity-70">
+                  {category === "movies" ? "Film" : "Series"}
+                </span>
+                <span className="mt-1 leading-none">{initials}</span>
+              </div>
+            }
           />
         </div>
       </div>
@@ -70,6 +88,7 @@ export function AssetIdentity({
   }
 
   if (mode === "logo-image") {
+    const hue = getAvatarHue(name);
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
@@ -79,12 +98,23 @@ export function AssetIdentity({
             innerAccent(premium, shaped)
           )}
         >
-          <Image
+          <AssetIdentityImage
             src={imageUrl!}
             alt=""
             width={img}
             height={img}
             className="h-[85%] w-[85%] object-contain"
+            fallback={
+              <div
+                className={cn("flex h-full w-full items-center justify-center font-bold", text)}
+                style={{
+                  background: `linear-gradient(145deg, hsl(${hue} 30% 96%) 0%, hsl(${hue} 25% 88%) 100%)`,
+                  color: `hsl(${hue} 45% 28%)`,
+                }}
+              >
+                {initials}
+              </div>
+            }
           />
         </div>
       </div>
@@ -92,6 +122,7 @@ export function AssetIdentity({
   }
 
   if (mode === "portrait-image") {
+    const hue = getAvatarHue(name);
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
@@ -101,12 +132,26 @@ export function AssetIdentity({
             innerAccent(premium, shaped)
           )}
         >
-          <Image
+          <AssetIdentityImage
             src={imageUrl!}
             alt={name}
             width={img}
             height={img}
             className="h-full w-full object-cover object-[center_25%]"
+            fallback={
+              <div
+                className={cn(
+                  "flex h-full w-full items-center justify-center font-bold",
+                  text
+                )}
+                style={{
+                  background: `linear-gradient(145deg, hsl(${hue} 48% 94%) 0%, hsl(${hue} 38% 86%) 100%)`,
+                  color: `hsl(${hue} 42% 30%)`,
+                }}
+              >
+                {initials}
+              </div>
+            }
           />
         </div>
       </div>

@@ -1,0 +1,595 @@
+{
+  "generatedAt": "2026-06-12T11:01:56.943Z",
+  "before": {
+    "totalWithImageUrl": 40,
+    "working": 16,
+    "broken": 24
+  },
+  "after": {
+    "totalWithImageUrl": 40,
+    "working": 40,
+    "broken": 0
+  },
+  "fixed": [
+    {
+      "name": "Adidas",
+      "slug": "adidas",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/adidas.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/adidas.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Amazon",
+      "slug": "amazon",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/amazon.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/amazon.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Apple",
+      "slug": "apple",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/apple.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/apple.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Disney",
+      "slug": "disney",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/disney.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/disney.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Google",
+      "slug": "google",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/google.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/google.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Netflix",
+      "slug": "netflix",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/netflix.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/netflix.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Nike",
+      "slug": "nike",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/nike.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/nike.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Prime Hydration",
+      "slug": "prime-hydration",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/drinkprime.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/prime-hydration.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Spotify",
+      "slug": "spotify",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/spotify.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/spotify.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Tesla",
+      "slug": "tesla",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/tesla.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/tesla.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Avatar (Film Franchise)",
+      "slug": "avatar-film-franchise",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Deadpool & Wolverine",
+      "slug": "deadpool-wolverine",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Inside Out 2",
+      "slug": "inside-out-2",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Marvel Cinematic Universe",
+      "slug": "marvel-cinematic-universe",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/yFSIUVTCvgYrpalUktulvk3Gi5Y.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Wicked",
+      "slug": "wicked",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Fallout (TV Series)",
+      "slug": "fallout-tv-series",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/c15BtJxCXMrISLVmysdsnZUPQft.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "House of the Dragon",
+      "slug": "house-of-the-dragon",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/z2yahlito7dkgl6p1648t0r09nc.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Shōgun (2024)",
+      "slug": "shogun-2024",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Squid Game",
+      "slug": "squid-game",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Stranger Things",
+      "slug": "stranger-things",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The Bear",
+      "slug": "the-bear",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The Last of Us",
+      "slug": "the-last-of-us",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/xuKai19I4XecjdllzdTXO8MVrk.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The White Lotus",
+      "slug": "the-white-lotus",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Wednesday",
+      "slug": "wednesday",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    }
+  ],
+  "failed": [],
+  "remainingFailures": [],
+  "all": [
+    {
+      "name": "Adidas",
+      "slug": "adidas",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/adidas.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/adidas.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Amazon",
+      "slug": "amazon",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/amazon.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/amazon.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Apple",
+      "slug": "apple",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/apple.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/apple.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Disney",
+      "slug": "disney",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/disney.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/disney.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Google",
+      "slug": "google",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/google.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/google.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Netflix",
+      "slug": "netflix",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/netflix.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/netflix.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Nike",
+      "slug": "nike",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/nike.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/nike.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Prime Hydration",
+      "slug": "prime-hydration",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/drinkprime.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/prime-hydration.png",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Spotify",
+      "slug": "spotify",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/spotify.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/spotify.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Tesla",
+      "slug": "tesla",
+      "category": "brands",
+      "previousImageUrl": "https://logo.clearbit.com/tesla.com",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/tesla.svg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Avatar (Film Franchise)",
+      "slug": "avatar-film-franchise",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Barbie (2023)",
+      "slug": "barbie-2023",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Deadpool & Wolverine",
+      "slug": "deadpool-wolverine",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Dune",
+      "slug": "dune",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Gladiator II",
+      "slug": "gladiator-2",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Inside Out 2",
+      "slug": "inside-out-2",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Marvel Cinematic Universe",
+      "slug": "marvel-cinematic-universe",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/yFSIUVTCvgYrpalUktulvk3Gi5Y.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Oppenheimer",
+      "slug": "oppenheimer",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Star Wars",
+      "slug": "star-wars",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/22dj38IckjzEEUZwN1tPU5VJ1qq.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/22dj38IckjzEEUZwN1tPU5VJ1qq.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Wicked",
+      "slug": "wicked",
+      "category": "movies",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Euphoria",
+      "slug": "euphoria",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Fallout (TV Series)",
+      "slug": "fallout-tv-series",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/c15BtJxCXMrISLVmysdsnZUPQft.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "House of the Dragon",
+      "slug": "house-of-the-dragon",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/z2yahlito7dkgl6p1648t0r09nc.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Shōgun (2024)",
+      "slug": "shogun-2024",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Squid Game",
+      "slug": "squid-game",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Stranger Things",
+      "slug": "stranger-things",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The Bear",
+      "slug": "the-bear",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The Last of Us",
+      "slug": "the-last-of-us",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/xuKai19I4XecjdllzdTXO8MVrk.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "The White Lotus",
+      "slug": "the-white-lotus",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Wednesday",
+      "slug": "wednesday",
+      "category": "tv_shows",
+      "previousImageUrl": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
+      "newImageUrl": "https://image.tmdb.org/t/p/w500/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg",
+      "action": "fixed",
+      "httpStatus": 200
+    },
+    {
+      "name": "Dallas Cowboys",
+      "slug": "dallas-cowboys",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wrxssu1450018209.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wrxssu1450018209.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "FC Barcelona",
+      "slug": "fc-barcelona",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Golden State Warriors",
+      "slug": "golden-state-warriors",
+      "category": "sports_teams",
+      "previousImageUrl": "https://www.thesportsdb.com/images/media/team/badge/xokycb1778197905.png",
+      "newImageUrl": "https://www.thesportsdb.com/images/media/team/badge/xokycb1778197905.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Liverpool FC",
+      "slug": "liverpool-fc",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Los Angeles Lakers",
+      "slug": "los-angeles-lakers",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/d8uoxw1714254511.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/d8uoxw1714254511.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Manchester City",
+      "slug": "manchester-city",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "New York Yankees",
+      "slug": "new-york-yankees",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wqwwxx1423478766.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wqwwxx1423478766.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Real Madrid",
+      "slug": "real-madrid",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwvwrw1473502969.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwvwrw1473502969.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Red Bull Racing",
+      "slug": "red-bull-racing",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/nhlev81679826274.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/nhlev81679826274.png",
+      "action": "already_working",
+      "httpStatus": 200
+    },
+    {
+      "name": "Scuderia Ferrari",
+      "slug": "scuderia-ferrari",
+      "category": "sports_teams",
+      "previousImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/rxwsqv1420417429.png",
+      "newImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/rxwsqv1420417429.png",
+      "action": "already_working",
+      "httpStatus": 200
+    }
+  ]
+}

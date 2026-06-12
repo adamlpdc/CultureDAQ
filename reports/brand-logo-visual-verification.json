@@ -1,0 +1,313 @@
+{
+  "generatedAt": "2026-06-12T12:32:12.949Z",
+  "devServer": "http://localhost:3002",
+  "summary": {
+    "totalBrands": 10,
+    "svgBrands": 7,
+    "pngBrandsViaOptimizer": 3,
+    "visuallyBrokenInBrowser": 0,
+    "auditScriptFalsePositives": 7,
+    "recommendation": "No urgent fix required — logos render in the UI. Optionally convert SVG→PNG for consistency with Amazon/Disney/Prime and to make audit-broken-images.ts pass; or update the audit to treat SVG optimizer 400 as expected when runtime uses unoptimized passthrough."
+  },
+  "diagnosis": {
+    "issue": "Next.js /_next/image rejects image/svg+xml unless dangerouslyAllowSVG is enabled",
+    "runtimeMitigation": "Next.js <Image> auto-sets unoptimized=true for .svg URLs (get-img-props.js), serving Supabase SVG directly — bypasses the optimizer",
+    "ruledOut": {
+      "contentTypeMismatch": false,
+      "supabaseStorageHeaders": "Correct image/svg+xml, HTTP 200",
+      "remotePatterns": "Configured (https/**)"
+    },
+    "pngControlGroup": [
+      "Amazon",
+      "Disney",
+      "Prime Hydration"
+    ],
+    "svgGroup": [
+      "Adidas",
+      "Apple",
+      "Google",
+      "Netflix",
+      "Nike",
+      "Spotify",
+      "Tesla"
+    ]
+  },
+  "visualVerification": {
+    "method": "Browser CDP + screenshots on /market?category=brands and /asset/nike",
+    "verifiedAt": "2026-06-12T12:32:12.950Z",
+    "marketPageAllTenBrandsRenderLogos": true,
+    "svgImgSrcPattern": "Direct Supabase URL (no /_next/image)",
+    "pngImgSrcPattern": "http://localhost:3002/_next/image?url=...",
+    "notes": [
+      "All 7 SVG brands show correct brand marks (Nike swoosh, Tesla T, Adidas stripes, etc.)",
+      "No initials fallback or broken-image glyph observed for brand logos",
+      "audit-broken-images.ts marks these as loads:false because it probes /_next/image directly"
+    ]
+  },
+  "svgOptimizerBlocked": [
+    {
+      "name": "Adidas",
+      "slug": "adidas",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/adidas.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Apple",
+      "slug": "apple",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/apple.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Google",
+      "slug": "google",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/google.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Netflix",
+      "slug": "netflix",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/netflix.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Nike",
+      "slug": "nike",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/nike.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Spotify",
+      "slug": "spotify",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/spotify.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Tesla",
+      "slug": "tesla",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/tesla.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    }
+  ],
+  "pngViaOptimizer": [
+    {
+      "name": "Amazon",
+      "slug": "amazon",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/amazon.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    },
+    {
+      "name": "Disney",
+      "slug": "disney",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/disney.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    },
+    {
+      "name": "Prime Hydration",
+      "slug": "prime-hydration",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/prime-hydration.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    }
+  ],
+  "all": [
+    {
+      "name": "Adidas",
+      "slug": "adidas",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/adidas.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Amazon",
+      "slug": "amazon",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/amazon.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    },
+    {
+      "name": "Apple",
+      "slug": "apple",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/apple.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Disney",
+      "slug": "disney",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/disney.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    },
+    {
+      "name": "Google",
+      "slug": "google",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/google.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Netflix",
+      "slug": "netflix",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/netflix.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Nike",
+      "slug": "nike",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/nike.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Prime Hydration",
+      "slug": "prime-hydration",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/prime-hydration.png",
+      "format": "png",
+      "directHttpStatus": 200,
+      "contentType": "image/png",
+      "nextOptimizerStatus": 200,
+      "nextOptimizerError": null,
+      "rootCause": "ok",
+      "runtimeBehavior": "logo_renders_via_optimizer",
+      "auditScriptFalsePositive": false
+    },
+    {
+      "name": "Spotify",
+      "slug": "spotify",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/spotify.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    },
+    {
+      "name": "Tesla",
+      "slug": "tesla",
+      "image_url": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/brands/tesla.svg",
+      "format": "svg",
+      "directHttpStatus": 200,
+      "contentType": "image/svg+xml",
+      "nextOptimizerStatus": 400,
+      "nextOptimizerError": "\"url\" parameter is valid but image type is not allowed",
+      "rootCause": "next_image_optimizer_rejects_svg_but_client_bypasses",
+      "runtimeBehavior": "logo_renders_unoptimized_direct_svg",
+      "auditScriptFalsePositive": true
+    }
+  ]
+}

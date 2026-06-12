@@ -35,6 +35,7 @@ type OverrideEntry =
       image_url?: string;
     }
   | { provider: "clearbit"; domain: string; image_url?: string }
+  | { provider: "supabase"; storage_path: string; image_url: string; source_url?: string }
   | { provider: "thesportsdb"; search: string; image_url?: string };
 
 function loadOverrides(): Record<string, OverrideEntry> {
@@ -50,6 +51,17 @@ async function resolveOverride(
 ): Promise<ImageCandidate | null> {
   const entry = overrides[slug];
   if (!entry) return null;
+
+  if (entry.provider === "supabase" && entry.image_url) {
+    return {
+      title: asset.name,
+      imageUrl: entry.image_url,
+      confidence: 1,
+      source: "override",
+      externalId: entry.storage_path,
+      note: "hosted override",
+    };
+  }
 
   if (entry.provider === "clearbit") {
     if (entry.image_url) {
@@ -87,29 +99,33 @@ async function resolveOverride(
     return candidates[0] ?? null;
   }
 
-  const staticUrl =
-    entry.image_url ??
-    (entry.poster_path ? `${TMDB_IMAGE_BASE}${entry.poster_path}` : null);
-  if (staticUrl) {
-    return {
-      title: entry.label ?? asset.name,
-      imageUrl: staticUrl,
-      confidence: 1,
-      source: "tmdb",
-      externalId: entry.external_id,
-      note: "curated override",
-    };
-  }
+  if (
+    entry.provider === "tmdb_collection" ||
+    entry.provider === "tmdb_movie" ||
+    entry.provider === "tmdb_tv"
+  ) {
+    const staticUrl =
+      entry.image_url ??
+      (entry.poster_path ? `${TMDB_IMAGE_BASE}${entry.poster_path}` : null);
+    if (staticUrl) {
+      return {
+        title: entry.label ?? asset.name,
+        imageUrl: staticUrl,
+        confidence: 1,
+        source: "tmdb",
+        externalId: entry.external_id,
+        note: "curated override",
+      };
+    }
 
-  if (!tmdbKey) return null;
+    if (!tmdbKey) return null;
 
-  if (entry.provider === "tmdb_collection") {
-    return fetchTmdbCollectionPoster(tmdbKey, entry.external_id, entry.label ?? asset.name);
-  }
-  if (entry.provider === "tmdb_movie") {
-    return fetchTmdbMoviePoster(tmdbKey, entry.external_id, entry.label ?? asset.name);
-  }
-  if (entry.provider === "tmdb_tv") {
+    if (entry.provider === "tmdb_collection") {
+      return fetchTmdbCollectionPoster(tmdbKey, entry.external_id, entry.label ?? asset.name);
+    }
+    if (entry.provider === "tmdb_movie") {
+      return fetchTmdbMoviePoster(tmdbKey, entry.external_id, entry.label ?? asset.name);
+    }
     return fetchTmdbTvPoster(tmdbKey, entry.external_id, entry.label ?? asset.name);
   }
 

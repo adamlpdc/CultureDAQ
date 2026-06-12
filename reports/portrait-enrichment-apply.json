@@ -1,0 +1,104 @@
+{
+  "generatedAt": "2026-06-12T12:15:53.710Z",
+  "sourceReport": "/Users/adam/Desktop/code projects/CultureDAQ/reports/portrait-enrichment-dry-run.json",
+  "excludedSlugs": [
+    "austin-butler",
+    "drake"
+  ],
+  "before": {
+    "totalAssetsWithImage": 69,
+    "personAssetsWithImage": 29,
+    "portraitCategoryWithImage": 29,
+    "brokenCount": 0
+  },
+  "after": {
+    "totalAssetsWithImage": 74,
+    "personAssetsWithImage": 34,
+    "portraitCategoryWithImage": 34,
+    "brokenCount": 0
+  },
+  "summary": {
+    "applied": 6,
+    "skipped": 2,
+    "errors": 0
+  },
+  "updated": [
+    {
+      "assetId": "89bbb683-94d5-43aa-9d58-3b89d05de390",
+      "slug": "bad-bunny",
+      "name": "Bad Bunny",
+      "category": "musicians",
+      "previousImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/bad-bunny.jpg",
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/bad-bunny.webp",
+      "source": "wikipedia",
+      "confidence": 1
+    },
+    {
+      "assetId": "dc800108-429b-4337-bd56-810e75c9e6d5",
+      "slug": "kendrick-lamar",
+      "name": "Kendrick Lamar",
+      "category": "musicians",
+      "previousImageUrl": null,
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/kendrick-lamar.jpg",
+      "source": "wikipedia",
+      "confidence": 1
+    },
+    {
+      "assetId": "3fde2f6a-459b-47fd-97b6-51ce768758e1",
+      "slug": "olivia-rodrigo",
+      "name": "Olivia Rodrigo",
+      "category": "musicians",
+      "previousImageUrl": null,
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/olivia-rodrigo.jpg",
+      "source": "wikipedia",
+      "confidence": 1
+    },
+    {
+      "assetId": "14b348f4-8eef-4b58-8a2e-a21ea0e71bc2",
+      "slug": "sabrina-carpenter",
+      "name": "Sabrina Carpenter",
+      "category": "musicians",
+      "previousImageUrl": null,
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/sabrina-carpenter.jpg",
+      "source": "wikipedia",
+      "confidence": 1
+    },
+    {
+      "assetId": "684b7892-12ba-4d93-8ae3-ddfd134fd5a6",
+      "slug": "taylor-swift",
+      "name": "Taylor Swift",
+      "category": "musicians",
+      "previousImageUrl": null,
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/taylor-swift.png",
+      "source": "wikipedia",
+      "confidence": 1
+    },
+    {
+      "assetId": "f7e81ecc-c88d-4821-93fd-aafedac5d249",
+      "slug": "the-weeknd",
+      "name": "The Weeknd",
+      "category": "musicians",
+      "previousImageUrl": null,
+      "newImageUrl": "https://asnhqsnjsioqwicweuaa.supabase.co/storage/v1/object/public/asset-images/portraits/the-weeknd.jpg",
+      "source": "wikipedia",
+      "confidence": 1
+    }
+  ],
+  "skipped": [
+    {
+      "slug": "austin-butler",
+      "name": "Austin Butler",
+      "category": "actors",
+      "reason": "excluded_pending_manual_confirmation",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg"
+    },
+    {
+      "slug": "drake",
+      "name": "Drake",
+      "category": "musicians",
+      "reason": "excluded_pending_manual_confirmation",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/tE0ZkWBP2rLj8u0NJqmMi1h1kb1.jpg"
+    }
+  ],
+  "errors": []
+}
