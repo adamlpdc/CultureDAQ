@@ -18,6 +18,7 @@ import {
   computePortfolioChangePercent,
   computeTotalPortfolioValue,
 } from "@/lib/portfolio-value";
+import { resolveAssetSlug } from "@/lib/asset-slugs";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
 import {
   buildAchievementHighlights,
@@ -97,7 +98,8 @@ export async function getAssets(options?: {
     if (matchedCategory && q.length >= 3) {
       query = query.eq("category", matchedCategory);
     } else {
-      query = query.ilike("name", `%${options.search}%`);
+      const term = options.search.trim();
+      query = query.or(`name.ilike.%${term}%,slug.ilike.%${term}%`);
     }
   }
 
@@ -169,7 +171,7 @@ export async function getAssetBySlug(slug: string): Promise<Asset | null> {
   const { data } = await supabase
     .from("assets")
     .select("*")
-    .eq("slug", slug)
+    .eq("slug", resolveAssetSlug(slug))
     .single();
   return data;
 }

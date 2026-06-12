@@ -1,0 +1,959 @@
+{
+  "generatedAt": "2026-06-12T10:14:47.799Z",
+  "dryRun": true,
+  "providers": {
+    "tmdb": false,
+    "clearbit": true,
+    "thesportsdb": true
+  },
+  "summary": {
+    "total": 40,
+    "matched": 40,
+    "manualReview": 0,
+    "unmatched": 0,
+    "byCategory": {
+      "movies": {
+        "total": 10,
+        "matched": 10,
+        "manualReview": 0
+      },
+      "tv_shows": {
+        "total": 10,
+        "matched": 10,
+        "manualReview": 0
+      },
+      "brands": {
+        "total": 10,
+        "matched": 10,
+        "manualReview": 0
+      },
+      "sports_teams": {
+        "total": 10,
+        "matched": 10,
+        "manualReview": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "assetId": "9f368650-8c86-4bb6-bf9e-2b579314fb48",
+      "slug": "adidas",
+      "name": "Adidas",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/adidas.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Adidas",
+      "candidates": [
+        {
+          "title": "Adidas",
+          "imageUrl": "https://logo.clearbit.com/adidas.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "adidas.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "0c6d8149-38c8-4e30-9d2a-25aeab563c36",
+      "slug": "amazon",
+      "name": "Amazon",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/amazon.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Amazon",
+      "candidates": [
+        {
+          "title": "Amazon",
+          "imageUrl": "https://logo.clearbit.com/amazon.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "amazon.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "7a567915-f8e3-40dd-b03e-e0717d6c5e30",
+      "slug": "apple",
+      "name": "Apple",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/apple.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Apple",
+      "candidates": [
+        {
+          "title": "Apple",
+          "imageUrl": "https://logo.clearbit.com/apple.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "apple.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "77c2c5aa-0e58-47a6-8ee9-0b5c6cccf771",
+      "slug": "disney",
+      "name": "Disney",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/disney.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Disney",
+      "candidates": [
+        {
+          "title": "Disney",
+          "imageUrl": "https://logo.clearbit.com/disney.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "disney.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "860fd8f5-17c5-460c-bb38-0b6ee52242ef",
+      "slug": "google",
+      "name": "Google",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/google.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Google",
+      "candidates": [
+        {
+          "title": "Google",
+          "imageUrl": "https://logo.clearbit.com/google.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "google.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "86e36440-073a-4501-b223-8b1fb0a9f508",
+      "slug": "netflix",
+      "name": "Netflix",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/netflix.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Netflix",
+      "candidates": [
+        {
+          "title": "Netflix",
+          "imageUrl": "https://logo.clearbit.com/netflix.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "netflix.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "f400fd80-7dd1-400a-a85d-b96e30f2bc96",
+      "slug": "nike",
+      "name": "Nike",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/nike.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Nike",
+      "candidates": [
+        {
+          "title": "Nike",
+          "imageUrl": "https://logo.clearbit.com/nike.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "nike.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "7ab403bb-e4c1-4b6a-ae54-9ff49b65e2d5",
+      "slug": "prime-hydration",
+      "name": "Prime Hydration",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/drinkprime.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Prime Hydration",
+      "candidates": [
+        {
+          "title": "Prime Hydration",
+          "imageUrl": "https://logo.clearbit.com/drinkprime.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "drinkprime.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "694600b6-76fd-477c-a48e-dd95a64a087d",
+      "slug": "spotify",
+      "name": "Spotify",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/spotify.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Spotify",
+      "candidates": [
+        {
+          "title": "Spotify",
+          "imageUrl": "https://logo.clearbit.com/spotify.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "spotify.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "65c0bb19-e543-4f16-a297-f231e58ac61f",
+      "slug": "tesla",
+      "name": "Tesla",
+      "category": "brands",
+      "proposedImageUrl": "https://logo.clearbit.com/tesla.com",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Tesla",
+      "candidates": [
+        {
+          "title": "Tesla",
+          "imageUrl": "https://logo.clearbit.com/tesla.com",
+          "confidence": 1,
+          "source": "clearbit",
+          "externalId": "tesla.com",
+          "note": "curated override (unverified)"
+        }
+      ]
+    },
+    {
+      "assetId": "12d51a78-9f03-4a23-a5d3-dac1d686c66e",
+      "slug": "avatar-film-franchise",
+      "name": "Avatar (Film Franchise)",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Avatar (2009)",
+      "candidates": [
+        {
+          "title": "Avatar (2009)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "19995",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "71b3d24a-7ac1-4d75-b02b-e45c1d1c5c61",
+      "slug": "barbie-2023",
+      "name": "Barbie (2023)",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Barbie (2023)",
+      "candidates": [
+        {
+          "title": "Barbie (2023)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "346698",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "4e51307d-94b5-4ad0-a71f-2e13dba7d039",
+      "slug": "deadpool-wolverine",
+      "name": "Deadpool & Wolverine",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Deadpool & Wolverine (2024)",
+      "candidates": [
+        {
+          "title": "Deadpool & Wolverine (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "533535",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "e11b076d-4649-41ea-b685-3738289790dc",
+      "slug": "dune",
+      "name": "Dune",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Dune (2021)",
+      "candidates": [
+        {
+          "title": "Dune (2021)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "438631",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "c8e0afab-534a-4961-85b1-040bad4449a1",
+      "slug": "gladiator-2",
+      "name": "Gladiator II",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Gladiator II (2024)",
+      "candidates": [
+        {
+          "title": "Gladiator II (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "558449",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "e338401e-a883-487d-93f9-34bc233a2b72",
+      "slug": "inside-out-2",
+      "name": "Inside Out 2",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Inside Out 2 (2024)",
+      "candidates": [
+        {
+          "title": "Inside Out 2 (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "1022789",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "e52c2603-acff-44cb-84d9-fac66b8fad67",
+      "slug": "marvel-cinematic-universe",
+      "name": "Marvel Cinematic Universe",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Marvel Cinematic Universe Collection",
+      "candidates": [
+        {
+          "title": "Marvel Cinematic Universe Collection",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "86311",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "19c4752f-a32d-4031-b92d-7da67857f278",
+      "slug": "oppenheimer",
+      "name": "Oppenheimer",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Oppenheimer (2023)",
+      "candidates": [
+        {
+          "title": "Oppenheimer (2023)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "872585",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "5f68b5e2-57b3-4418-8522-f5f104c5ac9d",
+      "slug": "star-wars",
+      "name": "Star Wars",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/22dj38IckjzEEUZwN1tPU5VJ1qq.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Star Wars Collection",
+      "candidates": [
+        {
+          "title": "Star Wars Collection",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/22dj38IckjzEEUZwN1tPU5VJ1qq.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "10",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "822e5fed-d7b0-436a-bf9d-786bb9a4735f",
+      "slug": "wicked",
+      "name": "Wicked",
+      "category": "movies",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Wicked (2024)",
+      "candidates": [
+        {
+          "title": "Wicked (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "402431",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "760c4e7e-3198-4cb0-b538-4db3c270e711",
+      "slug": "euphoria",
+      "name": "Euphoria",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Euphoria",
+      "candidates": [
+        {
+          "title": "Euphoria",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "85552",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "8198bce9-48a8-4843-a671-88133e399135",
+      "slug": "fallout-tv-series",
+      "name": "Fallout (TV Series)",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Fallout (2024)",
+      "candidates": [
+        {
+          "title": "Fallout (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "106379",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "89315a19-4467-46a7-9f5f-00c6a2a853eb",
+      "slug": "house-of-the-dragon",
+      "name": "House of the Dragon",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/z2yahlito7dkgl6p1648t0r09nc.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "House of the Dragon",
+      "candidates": [
+        {
+          "title": "House of the Dragon",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/z2yahlito7dkgl6p1648t0r09nc.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "94997",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "2ade5528-1efa-4d06-89b2-2a095654ec0d",
+      "slug": "shogun-2024",
+      "name": "Shōgun (2024)",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Shōgun (2024)",
+      "candidates": [
+        {
+          "title": "Shōgun (2024)",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "126308",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "c93b8e58-6dfa-4412-8852-9285deae9e97",
+      "slug": "squid-game",
+      "name": "Squid Game",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Squid Game",
+      "candidates": [
+        {
+          "title": "Squid Game",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "93405",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "a9128055-6162-4e67-964a-493ee30855f0",
+      "slug": "stranger-things",
+      "name": "Stranger Things",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Stranger Things",
+      "candidates": [
+        {
+          "title": "Stranger Things",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "66732",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "4deddccb-3920-40b2-9e79-9b6170e724a1",
+      "slug": "the-bear",
+      "name": "The Bear",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "The Bear",
+      "candidates": [
+        {
+          "title": "The Bear",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "136315",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "e6b7ffc0-fd40-42d5-bfd3-a34e2f577236",
+      "slug": "the-last-of-us",
+      "name": "The Last of Us",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/xuKai19I4XecjdllzdTXO8MVrk.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "The Last of Us",
+      "candidates": [
+        {
+          "title": "The Last of Us",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/xuKai19I4XecjdllzdTXO8MVrk.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "100088",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "227d17a2-fb1b-47b5-8055-9f943c90c71c",
+      "slug": "the-white-lotus",
+      "name": "The White Lotus",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "The White Lotus",
+      "candidates": [
+        {
+          "title": "The White Lotus",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "111803",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "d6d61ed5-b2f0-4043-bb7a-75f841618e3a",
+      "slug": "wednesday",
+      "name": "Wednesday",
+      "category": "tv_shows",
+      "proposedImageUrl": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Wednesday",
+      "candidates": [
+        {
+          "title": "Wednesday",
+          "imageUrl": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
+          "confidence": 1,
+          "source": "tmdb",
+          "externalId": "119051",
+          "note": "curated override"
+        }
+      ]
+    },
+    {
+      "assetId": "3223f33a-4df5-402d-8ba3-51bbe3b75960",
+      "slug": "dallas-cowboys",
+      "name": "Dallas Cowboys",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wrxssu1450018209.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Dallas Cowboys",
+      "candidates": [
+        {
+          "title": "Dallas Cowboys",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wrxssu1450018209.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "134934",
+          "note": "NFL"
+        }
+      ]
+    },
+    {
+      "assetId": "5a0fcc50-b388-4872-ac28-cf2de41db7d4",
+      "slug": "fc-barcelona",
+      "name": "FC Barcelona",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
+      "source": "override",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Barcelona",
+      "candidates": [
+        {
+          "title": "Barcelona",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "133739",
+          "note": "Spanish La Liga"
+        }
+      ]
+    },
+    {
+      "assetId": "4b218170-43ba-4719-9dbc-2bc1604ed2b8",
+      "slug": "golden-state-warriors",
+      "name": "Golden State Warriors",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://www.thesportsdb.com/images/media/team/badge/xokycb1778197905.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Golden State Warriors",
+      "candidates": [
+        {
+          "title": "Golden State Warriors",
+          "imageUrl": "https://www.thesportsdb.com/images/media/team/badge/xokycb1778197905.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "134865",
+          "note": "NBA"
+        }
+      ]
+    },
+    {
+      "assetId": "66fde7c1-0647-4727-bbc4-88bd8e8d9055",
+      "slug": "liverpool-fc",
+      "name": "Liverpool FC",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
+      "source": "override",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Liverpool",
+      "candidates": [
+        {
+          "title": "Liverpool",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "133602",
+          "note": "English Premier League"
+        }
+      ]
+    },
+    {
+      "assetId": "cdf485c6-f026-44ea-81e5-cb0109624156",
+      "slug": "los-angeles-lakers",
+      "name": "Los Angeles Lakers",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/d8uoxw1714254511.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Los Angeles Lakers",
+      "candidates": [
+        {
+          "title": "Los Angeles Lakers",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/d8uoxw1714254511.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "134867",
+          "note": "NBA"
+        },
+        {
+          "title": "Los Angeles D-Fenders",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/32pgg81586422595.png",
+          "confidence": 0.5,
+          "source": "thesportsdb",
+          "externalId": "134905",
+          "note": "_Defunct Basketball Teams"
+        }
+      ]
+    },
+    {
+      "assetId": "db1031da-4ad9-4d1d-9c72-498a03f8c8a7",
+      "slug": "manchester-city",
+      "name": "Manchester City",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+      "source": "override",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Manchester City",
+      "candidates": [
+        {
+          "title": "Manchester City",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "133613",
+          "note": "English Premier League"
+        }
+      ]
+    },
+    {
+      "assetId": "f76f4402-4a2d-422e-a626-59f59924bcf4",
+      "slug": "new-york-yankees",
+      "name": "New York Yankees",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wqwwxx1423478766.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "New York Yankees",
+      "candidates": [
+        {
+          "title": "New York Yankees",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/wqwwxx1423478766.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "135260",
+          "note": "MLB"
+        }
+      ]
+    },
+    {
+      "assetId": "90f5356f-bb69-4390-83eb-59eec23274f8",
+      "slug": "real-madrid",
+      "name": "Real Madrid",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwvwrw1473502969.png",
+      "source": "thesportsdb",
+      "confidence": 1,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Real Madrid",
+      "candidates": [
+        {
+          "title": "Real Madrid",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/vwvwrw1473502969.png",
+          "confidence": 1,
+          "source": "thesportsdb",
+          "externalId": "133738",
+          "note": "Spanish La Liga"
+        },
+        {
+          "title": "Real Madrid C",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/p12t7l1730650945.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "149462",
+          "note": "Spanish Segunda RFEF Group 5"
+        },
+        {
+          "title": "Real Madrid Juvenil",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/r8vzqa1684603581.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "147371",
+          "note": "UEFA Youth League"
+        },
+        {
+          "title": "Real Madrid Castilla",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/djtemm1639480207.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "134485",
+          "note": "Spanish Primera RFEF Group 1"
+        },
+        {
+          "title": "Real Madrid Femenino",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/buhef11664011241.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "143688",
+          "note": "Spanish Liga F"
+        }
+      ]
+    },
+    {
+      "assetId": "37e1713f-87b9-4bd9-8ee3-a89b27906884",
+      "slug": "red-bull-racing",
+      "name": "Red Bull Racing",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/nhlev81679826274.png",
+      "source": "override",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Oracle Red Bull Racing",
+      "candidates": [
+        {
+          "title": "Oracle Red Bull Racing",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/nhlev81679826274.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "134813",
+          "note": "Formula 1"
+        }
+      ]
+    },
+    {
+      "assetId": "2fb30188-0923-45c6-88ec-0a93a7b1a582",
+      "slug": "scuderia-ferrari",
+      "name": "Scuderia Ferrari",
+      "category": "sports_teams",
+      "proposedImageUrl": "https://r2.thesportsdb.com/images/media/team/badge/rxwsqv1420417429.png",
+      "source": "override",
+      "confidence": 0.92,
+      "manualReview": false,
+      "reviewReason": null,
+      "matchLabel": "Scuderia Ferrari HP",
+      "candidates": [
+        {
+          "title": "Scuderia Ferrari HP",
+          "imageUrl": "https://r2.thesportsdb.com/images/media/team/badge/rxwsqv1420417429.png",
+          "confidence": 0.92,
+          "source": "thesportsdb",
+          "externalId": "134806",
+          "note": "Formula 1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "marvel-cinematic-universe": {
+    "provider": "tmdb_collection",
+    "external_id": "86311",
+    "poster_path": "/1M876Kp8YjdTcL4VsyLzxbRG317.jpg",
+    "label": "Marvel Cinematic Universe Collection"
+  },
+  "star-wars": {
+    "provider": "tmdb_collection",
+    "external_id": "10",
+    "poster_path": "/22dj38IckjzEEUZwN1tPU5VJ1qq.jpg",
+    "label": "Star Wars Collection"
+  },
+  "avatar-film-franchise": {
+    "provider": "tmdb_movie",
+    "external_id": "19995",
+    "poster_path": "/kyeqW0yFavItlkIq7NUMWTrxlns.jpg",
+    "label": "Avatar (2009)"
+  },
+  "dune": {
+    "provider": "tmdb_movie",
+    "external_id": "438631",
+    "poster_path": "/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    "year": 2021,
+    "label": "Dune (2021)"
+  },
+  "barbie-2023": {
+    "provider": "tmdb_movie",
+    "external_id": "346698",
+    "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+    "year": 2023,
+    "label": "Barbie (2023)"
+  },
+  "gladiator-2": {
+    "provider": "tmdb_movie",
+    "external_id": "558449",
+    "poster_path": "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+    "year": 2024,
+    "label": "Gladiator II (2024)"
+  },
+  "inside-out-2": {
+    "provider": "tmdb_movie",
+    "external_id": "1022789",
+    "poster_path": "/vpnjx9nJp9YgQ316QLgeH1c1gOp.jpg",
+    "year": 2024,
+    "label": "Inside Out 2 (2024)"
+  },
+  "deadpool-wolverine": {
+    "provider": "tmdb_movie",
+    "external_id": "533535",
+    "poster_path": "/8cdWjvZBLEns8bKd4v3BRhF94zf.jpg",
+    "year": 2024,
+    "label": "Deadpool & Wolverine (2024)"
+  },
+  "wicked": {
+    "provider": "tmdb_movie",
+    "external_id": "402431",
+    "poster_path": "/c5Tqxeo1UpBvnG3TRveU1uLFZnE.jpg",
+    "year": 2024,
+    "label": "Wicked (2024)"
+  },
+  "oppenheimer": {
+    "provider": "tmdb_movie",
+    "external_id": "872585",
+    "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+    "label": "Oppenheimer (2023)"
+  },
+  "shogun-2024": {
+    "provider": "tmdb_tv",
+    "external_id": "126308",
+    "poster_path": "/7O4iVfOMQmdCSqOgW5Gz3RXv1Le.jpg",
+    "label": "Shōgun (2024)"
+  },
+  "fallout-tv-series": {
+    "provider": "tmdb_tv",
+    "external_id": "106379",
+    "poster_path": "/AoaTQpSWtjJJP8wdGgmt5T8IPZR.jpg",
+    "label": "Fallout (2024)"
+  },
+  "stranger-things": {
+    "provider": "tmdb_tv",
+    "external_id": "66732",
+    "poster_path": "/49WJfeZ0bpOVxeB1QRCrVGL4Ym1.jpg",
+    "label": "Stranger Things"
+  },
+  "squid-game": {
+    "provider": "tmdb_tv",
+    "external_id": "93405",
+    "poster_path": "/7gkLpufNFj9yBbwB4syQwiJ8oj.jpg",
+    "label": "Squid Game"
+  },
+  "the-last-of-us": {
+    "provider": "tmdb_tv",
+    "external_id": "100088",
+    "poster_path": "/xuKai19I4XecjdllzdTXO8MVrk.jpg",
+    "label": "The Last of Us"
+  },
+  "wednesday": {
+    "provider": "tmdb_tv",
+    "external_id": "119051",
+    "poster_path": "/9PFonBhy4cQyXJ3ttYLo1Qvsho.jpg",
+    "label": "Wednesday"
+  },
+  "the-bear": {
+    "provider": "tmdb_tv",
+    "external_id": "136315",
+    "poster_path": "/yNLId1sxAFMBdj5PNwdwPhFPuiB.jpg",
+    "label": "The Bear"
+  },
+  "euphoria": {
+    "provider": "tmdb_tv",
+    "external_id": "85552",
+    "poster_path": "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+    "label": "Euphoria"
+  },
+  "house-of-the-dragon": {
+    "provider": "tmdb_tv",
+    "external_id": "94997",
+    "poster_path": "/z2yahlito7dkgl6p1648t0r09nc.jpg",
+    "label": "House of the Dragon"
+  },
+  "the-white-lotus": {
+    "provider": "tmdb_tv",
+    "external_id": "111803",
+    "poster_path": "/5kbADomtEezdmcCRb4teBiE1SMa.jpg",
+    "label": "The White Lotus"
+  },
+  "nike": { "provider": "clearbit", "domain": "nike.com" },
+  "apple": { "provider": "clearbit", "domain": "apple.com" },
+  "netflix": { "provider": "clearbit", "domain": "netflix.com" },
+  "tesla": { "provider": "clearbit", "domain": "tesla.com" },
+  "spotify": { "provider": "clearbit", "domain": "spotify.com" },
+  "disney": { "provider": "clearbit", "domain": "disney.com" },
+  "google": { "provider": "clearbit", "domain": "google.com" },
+  "amazon": { "provider": "clearbit", "domain": "amazon.com" },
+  "adidas": { "provider": "clearbit", "domain": "adidas.com" },
+  "prime-hydration": { "provider": "clearbit", "domain": "drinkprime.com" },
+  "liverpool-fc": { "provider": "thesportsdb", "search": "Liverpool" },
+  "fc-barcelona": { "provider": "thesportsdb", "search": "Barcelona" },
+  "manchester-city": { "provider": "thesportsdb", "search": "Manchester City" },
+  "red-bull-racing": { "provider": "thesportsdb", "search": "Red Bull Racing" },
+  "scuderia-ferrari": { "provider": "thesportsdb", "search": "Ferrari" }
+}

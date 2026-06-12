@@ -5,9 +5,8 @@ import {
   getAssetInitials,
   getAvatarHue,
   IDENTITY_SIZE_CLASSES,
-  isLogoCategory,
   isPersonCategory,
-  isPosterCategory,
+  resolveAssetIdentityRenderMode,
   type IdentitySize,
 } from "@/lib/asset-visual";
 import { cn } from "@/lib/utils";
@@ -44,12 +43,10 @@ export function AssetIdentity({
 }: AssetIdentityProps) {
   const { box, text, img, poster } = IDENTITY_SIZE_CLASSES[size];
   const initials = getAssetInitials(name);
-  const isPoster = isPosterCategory(category);
-  const isLogo = isLogoCategory(category);
-  const showImage = imageUrl && !isPersonCategory(category);
   const shaped = shapeClass(category, box);
+  const mode = resolveAssetIdentityRenderMode(category, imageUrl);
 
-  if (showImage && isPoster) {
+  if (mode === "poster-image") {
     const posterBox = size === "hero" && poster ? poster : shaped;
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
@@ -61,7 +58,7 @@ export function AssetIdentity({
           )}
         >
           <Image
-            src={imageUrl}
+            src={imageUrl!}
             alt=""
             width={img}
             height={Math.round(img * 1.4)}
@@ -72,7 +69,7 @@ export function AssetIdentity({
     );
   }
 
-  if (showImage && isLogo) {
+  if (mode === "logo-image") {
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
@@ -83,7 +80,7 @@ export function AssetIdentity({
           )}
         >
           <Image
-            src={imageUrl}
+            src={imageUrl!}
             alt=""
             width={img}
             height={img}
@@ -94,7 +91,7 @@ export function AssetIdentity({
     );
   }
 
-  if (showImage) {
+  if (mode === "portrait-image") {
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
         <div
@@ -105,18 +102,18 @@ export function AssetIdentity({
           )}
         >
           <Image
-            src={imageUrl}
-            alt=""
+            src={imageUrl!}
+            alt={name}
             width={img}
             height={img}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-[center_25%]"
           />
         </div>
       </div>
     );
   }
 
-  if (isPersonCategory(category)) {
+  if (mode === "portrait-fallback") {
     const hue = getAvatarHue(name);
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>
@@ -138,7 +135,7 @@ export function AssetIdentity({
     );
   }
 
-  if (isPoster) {
+  if (mode === "poster-fallback") {
     const hue = getAvatarHue(name);
     const posterBox = size === "hero" && poster ? poster : shaped;
     return (
@@ -164,7 +161,7 @@ export function AssetIdentity({
     );
   }
 
-  if (isLogo) {
+  if (mode === "logo-fallback") {
     const hue = getAvatarHue(name);
     return (
       <div className={cn("relative shrink-0 inline-flex", className)}>

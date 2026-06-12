@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-06-11T22:00:00Z",
+  "methodology": {
+    "visibility_rank": "Global ranking by current_price descending (CultureDAQ calculateAssetRanks logic)",
+    "market_cap": "current_price × total_shares_outstanding when shares > 0; otherwise null",
+    "note": "Database contains 84 assets total (fewer than 100 requested). All image_url values are currently null."
+  },
+  "total_assets": 84,
+  "assets_with_market_cap": 3,
+  "by_category": {
+    "actors": [
+      {"id": "319e0d15-f9cb-4611-b14e-532c6c62f9ee", "name": "Timothée Chalamet", "ranking_position": 19, "current_price": 430.662, "market_cap": null, "image_url": null},
+      {"id": "72d3f383-9e36-49aa-bdab-f140658a6055", "name": "Zendaya", "ranking_position": 26, "current_price": 410.0672, "market_cap": 410.07, "image_url": null},
+      {"id": "863c4168-e91c-4314-afd2-7fe861b18490", "name": "Margot Robbie", "ranking_position": 47, "current_price": 338.054, "market_cap": null, "image_url": null},
+      {"id": "402214bd-214f-483a-ab8d-ee9a19f1efe3", "name": "Pedro Pascal", "ranking_position": 57, "current_price": 296.8351, "market_cap": null, "image_url": null},
+      {"id": "4021db8c-06c6-4fe7-a4fc-a9915fa7e4a1", "name": "Tom Holland", "ranking_position": 58, "current_price": 294.447, "market_cap": null, "image_url": null},
+      {"id": "cf9b63b1-a0e7-42c0-a8a5-346fde5a6fe2", "name": "Ryan Gosling", "ranking_position": 69, "current_price": 256.9106, "market_cap": null, "image_url": null},
+      {"id": "2f3dcff7-4301-4115-9b78-7a4f050aa01b", "name": "Florence Pugh", "ranking_position": 76, "current_price": 227.8132, "market_cap": null, "image_url": null},
+      {"id": "a73c216f-b660-4fba-8d97-1a917add8cde", "name": "Cillian Murphy", "ranking_position": 77, "current_price": 227.4445, "market_cap": null, "image_url": null},
+      {"id": "6cf0555c-781c-4492-b350-8f543c64edfb", "name": "Jenna Ortega", "ranking_position": 82, "current_price": 174.6295, "market_cap": null, "image_url": null},
+      {"id": "4a361222-6dd4-4f42-bfa8-939277b1fceb", "name": "Austin Butler", "ranking_position": 84, "current_price": 158.7714, "market_cap": null, "image_url": null}
+    ],
+    "musicians": [
+      {"id": "684b7892-12ba-4d93-8ae3-ddfd134fd5a6", "name": "Taylor Swift", "ranking_position": 4, "current_price": 550.4322, "market_cap": null, "image_url": null},
+      {"id": "dc800108-429b-4337-bd56-810e75c9e6d5", "name": "Kendrick Lamar", "ranking_position": 10, "current_price": 496.6583, "market_cap": null, "image_url": null},
+      {"id": "168ab112-d206-4860-bf60-727d98b28024", "name": "Beyoncé", "ranking_position": 20, "current_price": 429.0765, "market_cap": null, "image_url": null},
+      {"id": "50068b1b-310f-4c56-85f7-b8ef7962d55f", "name": "Drake", "ranking_position": 21, "current_price": 425.9849, "market_cap": null, "image_url": null},
+      {"id": "89bbb683-94d5-43aa-9d58-3b89d05de390", "name": "Bad Bunny", "ranking_position": 24, "current_price": 413.1228, "market_cap": null, "image_url": null},
+      {"id": "f7e81ecc-c88d-4821-93fd-aafedac5d249", "name": "The Weeknd", "ranking_position": 36, "current_price": 375.6223, "market_cap": null, "image_url": null},
+      {"id": "c8ebb507-a840-4f5c-8ef5-cf1837ef2133", "name": "Billie Eilish", "ranking_position": 42, "current_price": 362.0263, "market_cap": null, "image_url": null},
+      {"id": "14b348f4-8eef-4b58-8a2e-a21ea0e71bc2", "name": "Sabrina Carpenter", "ranking_position": 55, "current_price": 304.0975, "market_cap": null, "image_url": null},
+      {"id": "633ed499-8dba-41f6-8de6-3b23ccaaf106", "name": "Dua Lipa", "ranking_position": 63, "current_price": 282.8463, "market_cap": null, "image_url": null},
+      {"id": "3fde2f6a-459b-47fd-97b6-51ce768758e1", "name": "Olivia Rodrigo", "ranking_position": 68, "current_price": 260.7362, "market_cap": null, "image_url": null}
+    ],
+    "athletes": [
+      {"id": "0da1b36e-f1e4-4195-a97d-21f7fa3c02b3", "name": "Lionel Messi", "ranking_position": 3, "current_price": 554.5902, "market_cap": null, "image_url": null},
+      {"id": "4f0d894d-e0a1-4993-ac65-12b9ff5f5e9f", "name": "Cristiano Ronaldo", "ranking_position": 12, "current_price": 454.9306, "market_cap": null, "image_url": null},
+      {"id": "a3ec857e-f559-43b8-bb61-c04300c7afc5", "name": "Stephen Curry", "ranking_position": 13, "current_price": 443.8677, "market_cap": null, "image_url": null},
+      {"id": "df2cc971-e7d6-451f-adf5-b133e6dd8ad9", "name": "Kylian Mbappé", "ranking_position": 14, "current_price": 440.3158, "market_cap": null, "image_url": null},
+      {"id": "b1bb8865-210d-4de6-8183-656b1b41fe3c", "name": "LeBron James", "ranking_position": 28, "current_price": 401.2815, "market_cap": null, "image_url": null},
+      {"id": "cba76d02-360c-4a6c-9294-dd36b7101bbb", "name": "Patrick Mahomes", "ranking_position": 34, "current_price": 384.1153, "market_cap": null, "image_url": null},
+      {"id": "4fd5dee9-dca3-4c73-82a2-b5679305e0bd", "name": "Erling Haaland", "ranking_position": 41, "current_price": 362.4172, "market_cap": 362.42, "image_url": null},
+      {"id": "e554bf4f-7d45-4ac0-9ffe-b6f8d55713a7", "name": "Max Verstappen", "ranking_position": 45, "current_price": 348.832, "market_cap": null, "image_url": null},
+      {"id": "b2d54c21-40d9-4512-b611-2707d434a534", "name": "Simone Biles", "ranking_position": 56, "current_price": 303.0663, "market_cap": null, "image_url": null},
+      {"id": "7471e6c4-62b6-408a-9b56-5ffff38a6e42", "name": "Naomi Osaka", "ranking_position": 65, "current_price": 265.552, "market_cap": null, "image_url": null}
+    ],
+    "influencers": [
+      {"id": "be881f65-777b-4962-b366-b204623c05dc", "name": "PewDiePie", "ranking_position": 25, "current_price": 410.3112, "market_cap": null, "image_url": null},
+      {"id": "f29c670b-6cfa-4c44-b380-1066392acd4e", "name": "MrBeast", "ranking_position": 31, "current_price": 388.6765, "market_cap": null, "image_url": null},
+      {"id": "9b3bc2f5-2a4b-48a1-85cd-4eff028b4720", "name": "Khaby Lame", "ranking_position": 46, "current_price": 342.8973, "market_cap": null, "image_url": null},
+      {"id": "f2d6e7c1-8947-452d-8bd2-159153a53db4", "name": "Logan Paul", "ranking_position": 61, "current_price": 286.6833, "market_cap": null, "image_url": null},
+      {"id": "017cc720-7986-4181-9100-9022cb8b8039", "name": "Emma Chamberlain", "ranking_position": 73, "current_price": 247.9341, "market_cap": null, "image_url": null},
+      {"id": "95228c79-ba41-4bcf-bfd4-fd38adfc24e1", "name": "Charli D'Amelio", "ranking_position": 78, "current_price": 210.0586, "market_cap": null, "image_url": null},
+      {"id": "f616299f-8fc1-41f2-8741-b7c2f52ee80d", "name": "KSI", "ranking_position": 80, "current_price": 201.1122, "market_cap": null, "image_url": null},
+      {"id": "ae403b16-c5ad-4cb9-bea4-5cf2458e95c4", "name": "Addison Rae", "ranking_position": 83, "current_price": 162.1374, "market_cap": null, "image_url": null}
+    ],
+    "tv_personalities": [
+      {"id": "f540a3e8-6beb-415b-86f8-8ed0866be8a1", "name": "Oprah Winfrey", "ranking_position": 23, "current_price": 414.172, "market_cap": null, "image_url": null},
+      {"id": "9e9a2b9c-6f79-4bb8-8723-227e7977a608", "name": "Gordon Ramsay", "ranking_position": 30, "current_price": 391.1458, "market_cap": null, "image_url": null},
+      {"id": "34abf457-510f-4b88-9e3f-181d04836b14", "name": "Rupert Murdoch", "ranking_position": 70, "current_price": 252.2988, "market_cap": null, "image_url": null},
+      {"id": "c09da48c-d8c4-4402-a692-4e32a7b15d1f", "name": "Simon Cowell", "ranking_position": 74, "current_price": 236.7323, "market_cap": null, "image_url": null},
+      {"id": "43e94d35-13f5-4f87-896e-e5216eab5413", "name": "Ryan Seacrest", "ranking_position": 75, "current_price": 231.526, "market_cap": null, "image_url": null},
+      {"id": "1c39b420-490c-4609-84a8-b03556dcfa28", "name": "David Letterman", "ranking_position": 81, "current_price": 192.3523, "market_cap": null, "image_url": null}
+    ],
+    "brands": [
+      {"id": "0c6d8149-38c8-4e30-9d2a-25aeab563c36", "name": "Amazon", "ranking_position": 1, "current_price": 610.0049, "market_cap": null, "image_url": null},
+      {"id": "f400fd80-7dd1-400a-a85d-b96e30f2bc96", "name": "Nike", "ranking_position": 2, "current_price": 597.3157, "market_cap": null, "image_url": null},
+      {"id": "7a567915-f8e3-40dd-b03e-e0717d6c5e30", "name": "Apple", "ranking_position": 5, "current_price": 550.1424, "market_cap": null, "image_url": null},
+      {"id": "77c2c5aa-0e58-47a6-8ee9-0b5c6cccf771", "name": "Disney", "ranking_position": 6, "current_price": 522.5106, "market_cap": null, "image_url": null},
+      {"id": "860fd8f5-17c5-460c-bb38-0b6ee52242ef", "name": "Google", "ranking_position": 8, "current_price": 508.1561, "market_cap": null, "image_url": null},
+      {"id": "86e36440-073a-4501-b223-8b1fb0a9f508", "name": "Netflix", "ranking_position": 17, "current_price": 433.8357, "market_cap": null, "image_url": null},
+      {"id": "7ab403bb-e4c1-4b6a-ae54-9ff49b65e2d5", "name": "Prime", "ranking_position": 32, "current_price": 388.5628, "market_cap": null, "image_url": null},
+      {"id": "65c0bb19-e543-4f16-a297-f231e58ac61f", "name": "Tesla", "ranking_position": 37, "current_price": 371.5378, "market_cap": null, "image_url": null},
+      {"id": "9f368650-8c86-4bb6-bf9e-2b579314fb48", "name": "Adidas", "ranking_position": 49, "current_price": 326.3508, "market_cap": null, "image_url": null},
+      {"id": "694600b6-76fd-477c-a48e-dd95a64a087d", "name": "Spotify", "ranking_position": 53, "current_price": 304.7529, "market_cap": null, "image_url": null}
+    ],
+    "movies": [
+      {"id": "5f68b5e2-57b3-4418-8522-f5f104c5ac9d", "name": "Star Wars", "ranking_position": 11, "current_price": 474.8333, "market_cap": 1899.33, "image_url": null},
+      {"id": "12d51a78-9f03-4a23-a5d3-dac1d686c66e", "name": "Avatar", "ranking_position": 15, "current_price": 435.5325, "market_cap": null, "image_url": null},
+      {"id": "e11b076d-4649-41ea-b685-3738289790dc", "name": "Dune", "ranking_position": 22, "current_price": 425.791, "market_cap": null, "image_url": null},
+      {"id": "e52c2603-acff-44cb-84d9-fac66b8fad67", "name": "Marvel Cinematic Universe", "ranking_position": 35, "current_price": 381.5439, "market_cap": null, "image_url": null},
+      {"id": "4e51307d-94b5-4ad0-a71f-2e13dba7d039", "name": "Deadpool & Wolverine", "ranking_position": 43, "current_price": 360.009, "market_cap": null, "image_url": null},
+      {"id": "c8e0afab-534a-4961-85b1-040bad4449a1", "name": "Gladiator II", "ranking_position": 44, "current_price": 354.919, "market_cap": null, "image_url": null},
+      {"id": "71b3d24a-7ac1-4d75-b02b-e45c1d1c5c61", "name": "Barbie", "ranking_position": 52, "current_price": 314.0012, "market_cap": null, "image_url": null},
+      {"id": "19c4752f-a32d-4031-b92d-7da67857f278", "name": "Oppenheimer", "ranking_position": 60, "current_price": 287.3075, "market_cap": null, "image_url": null},
+      {"id": "e338401e-a883-487d-93f9-34bc233a2b72", "name": "Inside Out 2", "ranking_position": 71, "current_price": 250.8727, "market_cap": null, "image_url": null},
+      {"id": "822e5fed-d7b0-436a-bf9d-786bb9a4735f", "name": "Wicked", "ranking_position": 72, "current_price": 248.3846, "market_cap": null, "image_url": null}
+    ],
+    "tv_shows": [
+      {"id": "4deddccb-3920-40b2-9e79-9b6170e724a1", "name": "The Bear", "ranking_position": 16, "current_price": 434.4701, "market_cap": null, "image_url": null},
+      {"id": "a9128055-6162-4e67-964a-493ee30855f0", "name": "Stranger Things", "ranking_position": 39, "current_price": 368.4782, "market_cap": null, "image_url": null},
+      {"id": "c93b8e58-6dfa-4412-8852-9285deae9e97", "name": "Squid Game", "ranking_position": 51, "current_price": 318.8359, "market_cap": null, "image_url": null},
+      {"id": "760c4e7e-3198-4cb0-b538-4db3c270e711", "name": "Euphoria", "ranking_position": 54, "current_price": 304.1203, "market_cap": null, "image_url": null},
+      {"id": "e6b7ffc0-fd40-42d5-bfd3-a34e2f577236", "name": "The Last of Us", "ranking_position": 59, "current_price": 288.124, "market_cap": null, "image_url": null},
+      {"id": "8198bce9-48a8-4843-a671-88133e399135", "name": "Fallout", "ranking_position": 62, "current_price": 284.7638, "market_cap": null, "image_url": null},
+      {"id": "2ade5528-1efa-4d06-89b2-2a095654ec0d", "name": "Shōgun", "ranking_position": 64, "current_price": 274.4634, "market_cap": null, "image_url": null},
+      {"id": "d6d61ed5-b2f0-4043-bb7a-75f841618e3a", "name": "Wednesday", "ranking_position": 66, "current_price": 262.1673, "market_cap": null, "image_url": null},
+      {"id": "89315a19-4467-46a7-9f5f-00c6a2a853eb", "name": "House of the Dragon", "ranking_position": 67, "current_price": 261.2498, "market_cap": null, "image_url": null},
+      {"id": "227d17a2-fb1b-47b5-8055-9f943c90c71c", "name": "The White Lotus", "ranking_position": 79, "current_price": 209.569, "market_cap": null, "image_url": null}
+    ],
+    "sports_teams": [
+      {"id": "cdf485c6-f026-44ea-81e5-cb0109624156", "name": "Los Angeles Lakers", "ranking_position": 7, "current_price": 508.4573, "market_cap": null, "image_url": null},
+      {"id": "66fde7c1-0647-4727-bbc4-88bd8e8d9055", "name": "Liverpool FC", "ranking_position": 9, "current_price": 497.0176, "market_cap": null, "image_url": null},
+      {"id": "90f5356f-bb69-4390-83eb-59eec23274f8", "name": "Real Madrid", "ranking_position": 18, "current_price": 432.8577, "market_cap": null, "image_url": null},
+      {"id": "db1031da-4ad9-4d1d-9c72-498a03f8c8a7", "name": "Manchester City", "ranking_position": 27, "current_price": 401.4919, "market_cap": null, "image_url": null},
+      {"id": "37e1713f-87b9-4bd9-8ee3-a89b27906884", "name": "Red Bull Racing", "ranking_position": 29, "current_price": 395.2623, "market_cap": null, "image_url": null},
+      {"id": "4b218170-43ba-4719-9dbc-2bc1604ed2b8", "name": "Golden State Warriors", "ranking_position": 33, "current_price": 385.5387, "market_cap": null, "image_url": null},
+      {"id": "5a0fcc50-b388-4872-ac28-cf2de41db7d4", "name": "FC Barcelona", "ranking_position": 38, "current_price": 370.538, "market_cap": null, "image_url": null},
+      {"id": "3223f33a-4df5-402d-8ba3-51bbe3b75960", "name": "Dallas Cowboys", "ranking_position": 40, "current_price": 366.0936, "market_cap": null, "image_url": null},
+      {"id": "2fb30188-0923-45c6-88ec-0a93a7b1a582", "name": "Ferrari F1", "ranking_position": 48, "current_price": 334.5976, "market_cap": null, "image_url": null},
+      {"id": "f76f4402-4a2d-422e-a626-59f59924bcf4", "name": "New York Yankees", "ranking_position": 50, "current_price": 320.5903, "market_cap": null, "image_url": null}
+    ]
+  }
+}

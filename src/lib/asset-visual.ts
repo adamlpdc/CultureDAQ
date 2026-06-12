@@ -60,8 +60,33 @@ export function isPosterCategory(category: AssetCategory): boolean {
   return POSTER_CATEGORIES.includes(category);
 }
 
-export function usesImageUrl(category: AssetCategory): boolean {
-  return !isPersonCategory(category);
+/** All categories may use image_url; fallbacks apply when null. */
+export function usesImageUrl(): boolean {
+  return true;
+}
+
+export type AssetIdentityRenderMode =
+  | "poster-image"
+  | "logo-image"
+  | "portrait-image"
+  | "portrait-fallback"
+  | "poster-fallback"
+  | "logo-fallback"
+  | "category-fallback";
+
+/** Branch selection for AssetIdentity — used by the component and verification scripts. */
+export function resolveAssetIdentityRenderMode(
+  category: AssetCategory,
+  imageUrl?: string | null
+): AssetIdentityRenderMode {
+  const hasImage = Boolean(imageUrl);
+  if (hasImage && isPosterCategory(category)) return "poster-image";
+  if (hasImage && isLogoCategory(category)) return "logo-image";
+  if (hasImage && isPersonCategory(category)) return "portrait-image";
+  if (isPersonCategory(category)) return "portrait-fallback";
+  if (isPosterCategory(category)) return "poster-fallback";
+  if (isLogoCategory(category)) return "logo-fallback";
+  return "category-fallback";
 }
 
 /** Derive 1–3 letter initials from an asset name. */

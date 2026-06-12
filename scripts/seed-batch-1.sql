@@ -5,7 +5,7 @@ INSERT INTO assets (slug, name, category, description, current_price, previous_p
 ('max-verstappen', 'Max Verstappen', 'athletes'::asset_category, 'F1 world champion with devoted fan army.', 312, 312, 1.3, 1, false, false, 0, 0, 0, 54),
 ('erling-haaland', 'Erling Haaland', 'athletes'::asset_category, 'Goal machine dominating European football.', 289.25, 289.25, 1.2, 1, false, false, 0, 0, 0, 160),
 ('simone-biles', 'Simone Biles', 'athletes'::asset_category, 'Gymnastics GOAT and mental health advocate.', 267.5, 267.5, 1, 1, false, false, 0, 0, 0, 65),
-('patrick-mahomes', 'Patrick Mahomes', 'athletes'::asset_category, 'NFL superstar quarterback.', 301, 301, 1.1, 1, false, false, 0, 0, 0, 110),
+('patrick-mahomes', 'Patrick Mahomes', 'athletes'::asset_category, 'Kansas City Chiefs quarterback and two-time Super Bowl MVP.', 301, 301, 1.1, 1, false, false, 0, 0, 0, 110),
 ('naomi-osaka', 'Naomi Osaka', 'athletes'::asset_category, 'Tennis champion and cultural voice.', 198.75, 198.75, 1.2, 1, false, false, 0, 0, 0, 169),
 ('kylian-mbappe', 'Kylian Mbappé', 'athletes'::asset_category, 'French football prodigy and global brand.', 356, 356, 1.2, 1, false, false, 0, 0, 0, 154),
 ('stephen-curry', 'Stephen Curry', 'athletes'::asset_category, 'NBA sharpshooter and global brand.', 278.5, 278.5, 1.1, 1, false, false, 0, 0, 0, 171),

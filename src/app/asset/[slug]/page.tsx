@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { isLegacyAssetSlug, resolveAssetSlug } from "@/lib/asset-slugs";
 import { AssetIdentityHeader } from "@/components/assets/asset-identity-header";
 import { AssetMarketStats } from "@/components/assets/asset-market-stats";
 import { CultureContext } from "@/components/assets/culture-context";
@@ -28,6 +29,11 @@ interface AssetPageProps {
 
 export default async function AssetPage({ params }: AssetPageProps) {
   const { slug } = await params;
+
+  if (isLegacyAssetSlug(slug)) {
+    redirect(`/asset/${resolveAssetSlug(slug)}`);
+  }
+
   const asset = await getAssetBySlug(slug);
 
   if (!asset) notFound();
