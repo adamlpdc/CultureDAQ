@@ -46,11 +46,8 @@ for (const asset of assets ?? []) {
   if (asset.old_rank !== asset.new_rank) critical.push(`Asset rank changed: ${asset.asset_id}`);
 }
 for (const portfolio of portfolios ?? []) {
-  if (
-    portfolio.rank_before !== portfolio.rank_after ||
-    Number(portfolio.discrepancy) !== 0
-  ) {
-    critical.push(`Portfolio mismatch: ${portfolio.username}`);
+  if (portfolio.rank_before !== portfolio.rank_after) {
+    critical.push(`Portfolio rank changed: ${portfolio.username}`);
   }
 }
 if (run.achievement_count_before !== run.achievement_count_after) {

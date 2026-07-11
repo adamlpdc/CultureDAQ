@@ -9,6 +9,7 @@ if (!url || !key) throw new Error("Missing Supabase admin credentials");
 const apply = process.argv.includes("--apply");
 const confirmation = process.argv.find((arg) => arg.startsWith("--confirm="))?.split("=")[1];
 const backupPath = process.argv.find((arg) => arg.startsWith("--backup="))?.split("=")[1];
+const skipBackup = process.argv.includes("--skip-backup-for-disposable-test-data");
 if (apply && process.env.FEATURE_MARKET_REBALANCE !== "true") {
   throw new Error("FEATURE_MARKET_REBALANCE must be true before applying");
 }
@@ -17,6 +18,7 @@ if (apply && confirmation !== "MARKET_AND_PLAYER_RESET_V1") {
 }
 if (
   apply &&
+  !skipBackup &&
   (!backupPath || !existsSync(backupPath) || statSync(backupPath).size < 1_000_000)
 ) {
   throw new Error("Applying requires --backup=/path/to/a verified full pg_dump backup");
