@@ -50,6 +50,7 @@ export interface CultureEvent {
   momentumScore: number | null;
   viralMultiplier: number | null;
   resolvedAt: string | null;
+  isVerified?: boolean;
   source: "mock" | "supabase";
   createdAt: string;
 }
@@ -72,6 +73,7 @@ export interface CultureEventRow {
   momentum_score: number | null;
   viral_multiplier: number | null;
   resolved_at: string | null;
+  is_verified?: boolean;
   created_at: string;
 }
 

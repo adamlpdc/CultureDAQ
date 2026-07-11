@@ -43,6 +43,7 @@ function fromRow(row: CultureEventRow): CultureEvent {
     momentumScore: row.momentum_score == null ? null : Number(row.momentum_score),
     viralMultiplier: row.viral_multiplier == null ? null : Number(row.viral_multiplier),
     resolvedAt: row.resolved_at,
+    isVerified: Boolean(row.is_verified),
     source: "supabase",
     createdAt: row.created_at,
   };

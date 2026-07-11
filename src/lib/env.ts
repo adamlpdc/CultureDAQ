@@ -38,6 +38,11 @@ export function isMarketRebalanceEnabled(): boolean {
   return process.env.FEATURE_MARKET_REBALANCE === "true";
 }
 
+/** Market Engine v2 is active by default; set false for emergency legacy rollback. */
+export function isMarketEngineV2Enabled(): boolean {
+  return process.env.MARKET_ENGINE_V2_ENABLED !== "false";
+}
+
 /** Reserved for public profile routes: /player/[slug] */
 export function getPublicProfilePath(username: string): string {
   return `/player/${username.toLowerCase()}`;

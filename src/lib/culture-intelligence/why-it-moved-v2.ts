@@ -20,6 +20,52 @@ export interface MovementExplanation {
   trace: MovementTraceEntry[];
 }
 
+export interface ActiveMarketMovementExplanationInput {
+  assetName: string;
+  material: boolean;
+  finalPercentageMove: number;
+  materialityThreshold: number;
+  expectationScore: number;
+  event: {
+    title: string;
+    expectedAttention: number;
+    actualAttention: number;
+    surpriseDelta: number;
+    confidence: number;
+    viralMultiplier: number;
+  } | null;
+  eventImpactPercent: number;
+  momentumImpactPercent: number;
+  tradingPressurePercent: number;
+  randomImpactPercent: number;
+}
+
+/** Why It Moved output used by the active production Market Engine v2. */
+export function generateActiveMarketMovementExplanation(
+  input: ActiveMarketMovementExplanationInput
+): Pick<MovementExplanation, "short" | "detailed"> {
+  const direction = input.finalPercentageMove > 0
+    ? "rose"
+    : input.finalPercentageMove < 0
+      ? "fell"
+      : "held steady";
+  const eventReason = input.event
+    ? `“${input.event.title}” produced ${input.event.surpriseDelta >= 0 ? "positive" : "negative"} signed attention surprise`
+    : "no verified cultural event contributed";
+  const short = input.material
+    ? `${input.assetName} ${direction} ${Math.abs(input.finalPercentageMove).toFixed(2)}% because ${eventReason}.`
+    : `${input.assetName} held steady because combined signed signals were below the ${input.materialityThreshold.toFixed(2)}% materiality threshold.`;
+  const detailed = [
+    `Expectation ${input.expectationScore.toFixed(2)}/100.`,
+    input.event
+      ? `Expected attention ${input.event.expectedAttention.toFixed(2)}/100, actual attention ${input.event.actualAttention.toFixed(2)}/5, surprise ${input.event.surpriseDelta.toFixed(2)}, confidence ${(input.event.confidence * 100).toFixed(1)}%, viral multiplier ${input.event.viralMultiplier.toFixed(2)}x.`
+      : "No resolved CultureEvent was eligible for this asset.",
+    `Event impact ${input.eventImpactPercent.toFixed(4)}%, signed momentum impact ${input.momentumImpactPercent.toFixed(4)}%, player trading pressure ${input.tradingPressurePercent.toFixed(4)}%, symmetric noise ${input.randomImpactPercent.toFixed(4)}%.`,
+    `Final move ${input.finalPercentageMove.toFixed(4)}% after tick, rolling 24-hour and materiality controls.`,
+  ].join(" ");
+  return { short, detailed };
+}
+
 const signed = (value: number, places = 1) =>
   `${value >= 0 ? "+" : ""}${value.toFixed(places)}`;
 

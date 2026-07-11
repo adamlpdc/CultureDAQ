@@ -21,6 +21,11 @@ import {
   computeTotalPortfolioValue,
 } from "@/lib/portfolio-value";
 import { MARKET_DRIFT_WARNING_PERCENT_PER_DAY } from "@/lib/constants";
+import { isMarketEngineV2Enabled } from "@/lib/env";
+import {
+  calculateMarketEngineV2,
+  type MarketEngineV2EventSignal,
+} from "@/lib/market-engine-v2";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -60,6 +65,7 @@ export async function GET(request: NextRequest) {
   }
 
   let updated = 0;
+  let skipped = 0;
   const errors: string[] = [];
   const { data: anchorRows, error: anchorError } = await supabase.rpc(
     "get_asset_prices_24h_anchor",
@@ -74,48 +80,149 @@ export async function GET(request: NextRequest) {
     )
   );
 
-  for (const asset of assets as Asset[]) {
-    try {
-      const result = calculateNewPrice(asset, now, {
-        price24hAgo: price24hAgo.get(asset.id) ?? null,
+  let engineRunId: string | null = null;
+  const useV2 = isMarketEngineV2Enabled();
+  if (useV2) {
+    const tickMs = 15 * 60 * 1000;
+    const tickKey = new Date(Math.floor(now.getTime() / tickMs) * tickMs).toISOString();
+    const { data: runRows, error: runError } = await supabase.rpc(
+      "begin_market_engine_v2_run",
+      { p_tick_key: tickKey }
+    );
+    if (runError) {
+      return NextResponse.json({ error: runError.message }, { status: 500 });
+    }
+    const run = (runRows as Array<{ run_id: string; run_status: string; created: boolean }> | null)?.[0];
+    if (!run) return NextResponse.json({ error: "Unable to acquire v2 cron run" }, { status: 500 });
+    if (!run.created) {
+      return NextResponse.json({
+        message: "Duplicate cron execution skipped",
+        engine: "v2",
+        runId: run.run_id,
+        status: run.run_status,
+        tickKey,
       });
+    }
+    engineRunId = run.run_id;
 
-      if (result.newPrice === result.oldPrice) continue;
+    const [
+      { data: expectationRows, error: expectationError },
+      { data: cultureRows, error: cultureError },
+      { data: consumedRows, error: consumedError },
+    ] = await Promise.all([
+      supabase.from("asset_expectations").select("asset_slug, expectation_score"),
+      supabase
+        .from("culture_events")
+        .select("id, title, affected_assets, confidence, expected_attention, actual_attention, surprise_delta, momentum_score, viral_multiplier, decay_rate, resolved_at, is_verified, status")
+        .not("resolved_at", "is", null)
+        .gte("resolved_at", new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
+        .neq("status", "archived")
+        .order("resolved_at", { ascending: false }),
+      supabase
+        .from("market_engine_v2_calculations")
+        .select("asset_id, culture_event_id")
+        .not("culture_event_id", "is", null)
+        .gte("calculated_at", new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString()),
+    ]);
+    if (expectationError) errors.push(`asset_expectations: ${expectationError.message}`);
+    if (cultureError) errors.push(`culture_events: ${cultureError.message}`);
+    if (consumedError) errors.push(`event_consumptions: ${consumedError.message}`);
 
-      const newMomentum = calculateMomentumUpdate(asset, result.changePercent);
+    const expectationBySlug = new Map<string, number>(
+      (expectationRows ?? []).map((row) => [row.asset_slug, Number(row.expectation_score)])
+    );
+    const eventsBySlug = new Map<string, MarketEngineV2EventSignal[]>();
+    for (const row of cultureRows ?? []) {
+      if (row.actual_attention == null || row.surprise_delta == null || row.momentum_score == null || row.viral_multiplier == null) continue;
+      const event: MarketEngineV2EventSignal = {
+        id: row.id,
+        title: row.title,
+        verified: Boolean(row.is_verified),
+        confidence: Number(row.confidence),
+        expectedAttention: Number(row.expected_attention),
+        actualAttention: Number(row.actual_attention),
+        surpriseDelta: Number(row.surprise_delta),
+        momentumScore: Number(row.momentum_score),
+        viralMultiplier: Number(row.viral_multiplier),
+        decayMultiplier: Math.exp(
+          -Math.max(0, now.getTime() - new Date(row.resolved_at!).getTime()) /
+            (60 * 60 * 1000) * Number(row.decay_rate)
+        ),
+      };
+      for (const affected of (row.affected_assets ?? []) as Array<{ slug?: string }>) {
+        if (!affected.slug) continue;
+        const events = eventsBySlug.get(affected.slug) ?? [];
+        events.push(event);
+        eventsBySlug.set(affected.slug, events);
+      }
+    }
+    const consumedEvents = new Set(
+      (consumedRows ?? []).map((row) => `${row.asset_id}:${row.culture_event_id}`)
+    );
 
-      await supabase
-        .from("assets")
-        .update({
+    for (const asset of assets as Asset[]) {
+      try {
+        const input = {
+          assetId: asset.id,
+          assetSlug: asset.slug,
+          assetName: asset.name,
+          oldPrice: Number(asset.current_price),
+          price24hAgo: price24hAgo.get(asset.id) ?? null,
+          expectationScore: expectationBySlug.get(asset.slug) ?? 0,
+          signedMomentum: Number(asset.momentum_score),
+          buyPressure: Number(asset.buy_pressure),
+          sellPressure: Number(asset.sell_pressure),
+          tradeVolume24h: Number(asset.trade_volume_24h),
+          event: (eventsBySlug.get(asset.slug) ?? []).find(
+            (event) => !consumedEvents.has(`${asset.id}:${event.id}`)
+          ) ?? null,
+          calculatedAt: now.toISOString(),
+        };
+        const result = calculateMarketEngineV2(input);
+        const { data: applied, error: applyError } = await supabase.rpc(
+          "apply_market_engine_v2_calculation",
+          {
+            p_run_id: engineRunId,
+            p_asset_id: asset.id,
+            p_event_id: input.event?.id ?? null,
+            p_input: input,
+            p_output: result,
+          }
+        );
+        if (applyError) throw applyError;
+        if (applied && result.material) updated++;
+        else skipped++;
+      } catch (e) {
+        errors.push(`${asset.slug}: ${e instanceof Error ? e.message : "Unknown error"}`);
+      }
+    }
+  } else {
+    for (const asset of assets as Asset[]) {
+      try {
+        const result = calculateNewPrice(asset, now, {
+          price24hAgo: price24hAgo.get(asset.id) ?? null,
+        });
+        if (result.newPrice === result.oldPrice) { skipped++; continue; }
+        const newMomentum = calculateMomentumUpdate(asset, result.changePercent);
+        await supabase.from("assets").update({
           previous_price: result.oldPrice,
           current_price: result.newPrice,
           momentum_score: newMomentum,
           buy_pressure: decayPressure(Number(asset.buy_pressure)),
           sell_pressure: decayPressure(Number(asset.sell_pressure)),
-        })
-        .eq("id", asset.id);
-
-      await supabase.from("asset_prices").insert({
-        asset_id: asset.id,
-        price: result.newPrice,
-        recorded_at: now.toISOString(),
-      });
-
-      if (Math.abs(result.changePercent) >= 0.1) {
-        await supabase.from("price_events").insert({
-          asset_id: asset.id,
-          old_price: result.oldPrice,
-          new_price: result.newPrice,
-          change_percent: result.changePercent,
-          reason: result.reason,
-          source: result.source,
-          metadata: result.metadata,
+        }).eq("id", asset.id);
+        await supabase.from("asset_prices").insert({
+          asset_id: asset.id, price: result.newPrice, recorded_at: now.toISOString(),
         });
+        await supabase.from("price_events").insert({
+          asset_id: asset.id, old_price: result.oldPrice, new_price: result.newPrice,
+          change_percent: result.changePercent, reason: result.reason,
+          source: result.source, metadata: { ...result.metadata, engine_version: "legacy_rollback" },
+        });
+        updated++;
+      } catch (e) {
+        errors.push(`${asset.slug}: ${e instanceof Error ? e.message : "Unknown error"}`);
       }
-
-      updated++;
-    } catch (e) {
-      errors.push(`${asset.slug}: ${e instanceof Error ? e.message : "Unknown error"}`);
     }
   }
 
@@ -161,6 +268,28 @@ export async function GET(request: NextRequest) {
       driftWarning = `Market-wide median 24h drift ${medianDailyDrift.toFixed(3)}% exceeds ±${MARKET_DRIFT_WARNING_PERCENT_PER_DAY}%`;
       errors.push(`market_drift_warning: ${driftWarning}`);
     }
+  }
+
+  if (useV2 && engineRunId) {
+    const { data: driftValue, error: driftError } = await supabase.rpc(
+      "get_market_engine_v2_seven_day_drift"
+    );
+    const sevenDayDrift = Number(driftValue ?? 0);
+    if (driftError) errors.push(`seven_day_drift: ${driftError.message}`);
+    if (Math.abs(sevenDayDrift) > MARKET_DRIFT_WARNING_PERCENT_PER_DAY) {
+      driftWarning = `Market Engine v2 seven-day unconditional drift ${sevenDayDrift.toFixed(3)}% per day exceeds ±${MARKET_DRIFT_WARNING_PERCENT_PER_DAY}%`;
+      errors.push(`market_drift_warning: ${driftWarning}`);
+    }
+    const { error: finishError } = await supabase.rpc("finish_market_engine_v2_run", {
+      p_run_id: engineRunId,
+      p_asset_count: assets.length,
+      p_updated_count: updated,
+      p_skipped_count: skipped,
+      p_error_count: errors.length,
+      p_drift: sevenDayDrift,
+      p_warning: driftWarning ?? null,
+    });
+    if (finishError) errors.push(`finish_v2_run: ${finishError.message}`);
   }
 
   try {
@@ -315,7 +444,10 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     message: "Price update complete",
+    engine: useV2 ? "v2" : "legacy_rollback",
+    runId: engineRunId,
     updated,
+    skipped,
     ranksRecorded,
     eventsGenerated,
     notificationsCreated,
