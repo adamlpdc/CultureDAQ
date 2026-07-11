@@ -8,17 +8,17 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { UserAccountMenu, UserAccountMenuMobile } from "@/components/layout/user-account-menu";
 import { WalletSummaryCompact } from "@/components/layout/wallet-summary";
 import type { UserWalletSummary } from "@/lib/portfolio-value";
-import type { Notification } from "@/types/database";
+import type { NotificationDisplay } from "@/lib/notifications";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 
 interface HeaderProps {
   user: { email: string } | null;
-  profile: { username: string; is_admin: boolean } | null;
+  profile: { username: string; is_admin: boolean; avatar_style: string } | null;
   wallet: UserWalletSummary | null;
   unreadNotificationCount?: number;
-  recentNotifications?: Notification[];
+  recentNotifications?: NotificationDisplay[];
 }
 
 const navLinks = [
@@ -79,6 +79,7 @@ export function Header({
               />
               <UserAccountMenu
                 username={profile.username}
+                avatarStyle={profile.avatar_style}
                 isAdmin={profile.is_admin}
                 wallet={wallet}
               />
@@ -136,6 +137,7 @@ export function Header({
             {user && profile && wallet ? (
               <UserAccountMenuMobile
                 username={profile.username}
+                avatarStyle={profile.avatar_style}
                 isAdmin={profile.is_admin}
                 wallet={wallet}
                 onNavigate={() => setMobileOpen(false)}

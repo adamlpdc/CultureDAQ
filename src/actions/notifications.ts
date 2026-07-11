@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import type { Notification } from "@/types/database";
 import {
   clearAllRead,
   deleteNotification,
@@ -12,6 +11,7 @@ import {
   markAllRead,
   markRead,
   notificationMatchesTab,
+  type NotificationDisplay,
   type NotificationTab,
 } from "@/lib/notifications";
 
@@ -43,7 +43,7 @@ export async function fetchUnreadCount(): Promise<number> {
 export async function fetchNotifications(options?: {
   limit?: number;
   tab?: NotificationTab;
-}): Promise<Notification[]> {
+}): Promise<NotificationDisplay[]> {
   const { supabase, user } = await requireUser();
   if (!user) return [];
 

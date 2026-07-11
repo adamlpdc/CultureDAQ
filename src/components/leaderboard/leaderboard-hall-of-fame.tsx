@@ -1,5 +1,6 @@
 import type { HallOfFameEntry } from "@/lib/leaderboard-analytics";
 import { Card } from "@/components/ui/card";
+import { displayUsername } from "@/lib/utils";
 
 interface LeaderboardHallOfFameProps {
   entries: HallOfFameEntry[];
@@ -26,7 +27,7 @@ export function LeaderboardHallOfFame({ entries }: LeaderboardHallOfFameProps) {
               {entry.emoji} {entry.label}
             </p>
             <p className="mt-1.5 truncate text-sm font-bold text-foreground">
-              {entry.username === "—" ? entry.value : `@${entry.username}`}
+              {entry.username === "—" ? entry.value : displayUsername(entry.username)}
             </p>
             {entry.username !== "—" && (
               <p className="text-stat mt-0.5 text-xs font-bold text-gold">{entry.value}</p>

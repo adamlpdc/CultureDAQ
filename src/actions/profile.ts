@@ -33,6 +33,7 @@ async function requireUser() {
 
 function revalidateProfile() {
   revalidatePath("/profile");
+  revalidatePath("/leaderboard");
   revalidatePath("/", "layout");
 }
 

@@ -7,7 +7,7 @@ import {
   RankMovement,
 } from "@/components/leaderboard/leaderboard-badges";
 import { Button } from "@/components/ui/button";
-import { cn, formatDaq, formatPercent } from "@/lib/utils";
+import { cn, displayUsername, formatDaq, formatPercent } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
 interface LeaderboardUserPositionProps {
@@ -58,14 +58,18 @@ export function LeaderboardUserPosition({
         Your Position
       </p>
       <div className="flex flex-wrap items-center gap-4">
-        <TraderAvatar username={position.username} size="lg" />
+        <TraderAvatar
+          username={position.username}
+          avatarStyle={position.avatar_style}
+          size="lg"
+        />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-stat text-2xl font-bold text-foreground">#{position.rank}</p>
             <RankMovement change={position.rankChange} />
           </div>
           <p className="truncate text-sm font-semibold text-foreground">
-            @{position.username}
+            {displayUsername(position.username)}
           </p>
           <LeaderboardBadgeGroup badges={position.badges} className="mt-1.5" />
         </div>

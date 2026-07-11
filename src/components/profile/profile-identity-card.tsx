@@ -4,7 +4,7 @@ import { getAchievementLevelTitle } from "@/lib/achievement-level";
 import { TraderAvatar } from "@/components/leaderboard/trader-avatar";
 import { Card } from "@/components/ui/card";
 import type { ProfilePageData } from "@/lib/profile";
-import { cn } from "@/lib/utils";
+import { cn, displayUsername } from "@/lib/utils";
 
 const QUICK_LINKS = [
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
@@ -35,7 +35,7 @@ export function ProfileIdentityCard({ data }: { data: ProfilePageData }) {
 
         <div className="min-w-0 flex-1">
           <h2 className="text-xl font-bold tracking-tight text-foreground md:text-2xl">
-            @{profile.username}
+            {displayUsername(profile.username)}
           </h2>
 
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">

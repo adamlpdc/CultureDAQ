@@ -7,7 +7,7 @@ import {
   RankMovement,
 } from "@/components/leaderboard/leaderboard-badges";
 import { Button } from "@/components/ui/button";
-import { cn, formatDaq, formatPercent } from "@/lib/utils";
+import { cn, displayUsername, formatDaq, formatPercent } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
 function rankStyle(rank: number) {
@@ -46,10 +46,14 @@ function RankingRow({
         {entry.rank}
       </div>
       <RankMovement change={entry.rankChange} className="hidden w-8 shrink-0 sm:inline-flex" />
-      <TraderAvatar username={entry.username} size="sm" />
+      <TraderAvatar
+        username={entry.username}
+        avatarStyle={entry.avatar_style}
+        size="sm"
+      />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-foreground">
-          @{entry.username}
+          {displayUsername(entry.username)}
           {isCurrentUser && (
             <span className="ml-1.5 text-[10px] font-bold uppercase text-primary">
               You

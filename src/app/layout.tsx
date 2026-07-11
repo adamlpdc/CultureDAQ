@@ -57,6 +57,7 @@ export default async function RootLayout({
                 ? {
                     username: profile.username,
                     is_admin: profile.is_admin,
+                    avatar_style: profile.avatar_style,
                   }
                 : null
             }

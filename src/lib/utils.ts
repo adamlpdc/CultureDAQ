@@ -37,6 +37,11 @@ export function slugify(name: string): string {
     .replace(/^-|-$/g, "");
 }
 
+/** Plain username for UI display (no @ prefix). */
+export function displayUsername(username: string): string {
+  return username.replace(/^@/, "").trim();
+}
+
 export function formatRelativeTime(iso: string): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (ms < 60_000) return "Just now";

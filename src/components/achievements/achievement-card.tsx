@@ -1,7 +1,7 @@
 import type { AchievementHighlight } from "@/lib/achievements";
 import { ACHIEVEMENT_BY_ID } from "@/lib/achievements";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, displayUsername } from "@/lib/utils";
 
 interface AchievementCardProps {
   highlight: AchievementHighlight;
@@ -36,7 +36,7 @@ export function AchievementCard({ highlight, className }: AchievementCardProps) 
           {highlight.label}
         </p>
         <p className="mt-1.5 truncate text-sm font-bold text-foreground">
-          @{highlight.username}
+          {displayUsername(highlight.username)}
         </p>
         <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
           {highlight.detail}

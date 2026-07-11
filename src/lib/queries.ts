@@ -18,6 +18,7 @@ import {
   computePortfolioChangePercent,
   computeTotalPortfolioValue,
 } from "@/lib/portfolio-value";
+import { normalizeAvatarStyle } from "@/lib/avatars";
 import { resolveAssetSlug } from "@/lib/asset-slugs";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
 import {
@@ -289,6 +290,34 @@ export async function getPortfolioSummary(
   };
 }
 
+type LeaderboardEntryInput = Omit<LeaderboardEntry, "avatar_style"> & {
+  avatar_style?: string;
+};
+
+async function enrichLeaderboardEntriesWithAvatars(
+  entries: LeaderboardEntryInput[]
+): Promise<LeaderboardEntry[]> {
+  if (entries.length === 0) return [];
+
+  const userIds = entries.map((e) => e.user_id);
+  const supabase = await createClient();
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("user_id, avatar_style")
+    .in("user_id", userIds);
+
+  const avatarByUser = new Map(
+    (profiles ?? []).map((p) => [p.user_id, normalizeAvatarStyle(p.avatar_style)])
+  );
+
+  return entries.map((entry) => ({
+    ...entry,
+    avatar_style: normalizeAvatarStyle(
+      entry.avatar_style ?? avatarByUser.get(entry.user_id)
+    ),
+  }));
+}
+
 async function getLatestLeaderboardSnapshotEntries(
   limit?: number
 ): Promise<LeaderboardEntry[]> {
@@ -314,7 +343,7 @@ async function getLatestLeaderboardSnapshotEntries(
   }
 
   const { data } = await query;
-  return data ?? [];
+  return enrichLeaderboardEntriesWithAvatars(data ?? []);
 }
 
 export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
@@ -360,6 +389,7 @@ async function computeAllLiveLeaderboardEntries(): Promise<LeaderboardEntry[]> {
         id: profile.id,
         user_id: profile.user_id,
         username: profile.username,
+        avatar_style: normalizeAvatarStyle(profile.avatar_style),
         total_value: computeTotalPortfolioValue(profile.daq_balance, holdingsValue),
         rank: 0,
         recorded_at: new Date().toISOString(),
@@ -534,6 +564,7 @@ export async function getLeaderboardPageData(
       totalReturnPercent: userEntry.totalReturnPercent,
       changeTodayPercent: todayChanges.get(userEntry.user_id) ?? null,
       username: userEntry.username,
+      avatar_style: userEntry.avatar_style,
       rankChange: userEntry.rankChange,
       badges: userEntry.badges,
       achievementsEarned: stats.earnedCount,

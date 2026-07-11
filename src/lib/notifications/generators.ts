@@ -121,7 +121,7 @@ export function evaluateMarketEventNotification(
     userId,
     assetId: asset.id,
     assetName: asset.name,
-    title: event.headline,
+    title: `${asset.name}: ${event.headline}`,
     message: event.description,
     dedupeKey: `watchlist:${userId}:${asset.id}:market_event:${event.id}`,
     notificationType: "market_event",

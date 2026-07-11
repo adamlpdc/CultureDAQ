@@ -11,16 +11,16 @@ import {
   removeNotification,
 } from "@/actions/notifications";
 import {
-  getNotificationIcon,
-  getNotificationTypeLabel,
   notificationMatchesTab,
+  type NotificationDisplay,
   type NotificationTab,
 } from "@/lib/notifications";
-import type { Notification } from "@/types/database";
+import { NotificationPageRow } from "@/components/notifications/notification-page-row";
+import { useNotificationNavigation } from "@/components/notifications/use-notification-navigation";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Button } from "@/components/ui/button";
-import { cn, formatRelativeTime } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const TABS: { id: NotificationTab; label: string }[] = [
   { id: "all", label: "All" },
@@ -32,7 +32,7 @@ const TABS: { id: NotificationTab; label: string }[] = [
 ];
 
 interface NotificationsPageContentProps {
-  notifications: Notification[];
+  notifications: NotificationDisplay[];
 }
 
 export function NotificationsPageContent({
@@ -42,6 +42,9 @@ export function NotificationsPageContent({
   const [tab, setTab] = useState<NotificationTab>("all");
   const [notifications, setNotifications] = useState(initialNotifications);
   const [isPending, startTransition] = useTransition();
+  const { activateNotification, isPending: isNavigatePending } =
+    useNotificationNavigation();
+  const busy = isPending || isNavigatePending;
 
   const filtered = useMemo(
     () => notifications.filter((n) => notificationMatchesTab(n, tab)),
@@ -164,54 +167,20 @@ export function NotificationsPageContent({
         ) : (
           <div className="divide-y divide-border">
             {filtered.map((notification) => (
-              <div
+              <NotificationPageRow
                 key={notification.id}
-                className={cn(
-                  "flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-start sm:justify-between",
-                  !notification.is_read && "bg-primary-light/20"
-                )}
-              >
-                <div className="flex min-w-0 flex-1 gap-3">
-                  <span className="mt-0.5 shrink-0 text-lg" aria-hidden>
-                    {getNotificationIcon(notification.type)}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-foreground">
-                      {notification.title}
-                    </p>
-                    <p className="mt-1 text-xs leading-relaxed text-muted">
-                      {notification.message}
-                    </p>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-semibold text-muted-light">
-                      <span>{getNotificationTypeLabel(notification.type)}</span>
-                      <span>·</span>
-                      <span>{formatRelativeTime(notification.created_at)}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex shrink-0 gap-2 sm:flex-col">
-                  {!notification.is_read && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleMarkRead(notification.id)}
-                      disabled={isPending}
-                      className="text-xs"
-                    >
-                      Mark read
-                    </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(notification.id)}
-                    disabled={isPending}
-                    className="text-xs text-muted"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
+                notification={notification}
+                disabled={busy}
+                onActivate={(item) =>
+                  activateNotification(item, (id) => {
+                    setNotifications((prev) =>
+                      prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
+                    );
+                  })
+                }
+                onMarkRead={handleMarkRead}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         )}

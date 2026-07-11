@@ -7,59 +7,17 @@ import { ArrowRight, Bell } from "lucide-react";
 import {
   fetchNotifications,
   markAllNotificationsRead,
-  markNotificationRead,
 } from "@/actions/notifications";
-import {
-  getNotificationIcon,
-  getNotificationTypeLabel,
-} from "@/lib/notifications";
-import type { Notification } from "@/types/database";
-import { cn, formatRelativeTime } from "@/lib/utils";
+import type { NotificationDisplay } from "@/lib/notifications";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { NotificationBellRow } from "@/components/notifications/notification-bell-row";
+import { useNotificationNavigation } from "@/components/notifications/use-notification-navigation";
 
 interface NotificationBellProps {
   initialUnreadCount: number;
-  initialNotifications: Notification[];
+  initialNotifications: NotificationDisplay[];
   className?: string;
-}
-
-function NotificationRow({
-  notification,
-  onRead,
-}: {
-  notification: Notification;
-  onRead: (id: string) => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        if (!notification.is_read) onRead(notification.id);
-      }}
-      className={cn(
-        "flex w-full gap-3 px-3.5 py-3 text-left transition-colors hover:bg-surface-muted",
-        !notification.is_read && "bg-primary-light/30"
-      )}
-    >
-      <span className="mt-0.5 shrink-0 text-base" aria-hidden>
-        {getNotificationIcon(notification.type)}
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-foreground">
-          {notification.title}
-        </p>
-        <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-muted">
-          {getNotificationTypeLabel(notification.type)}
-        </p>
-        <p className="mt-1 text-[10px] font-medium text-muted-light">
-          {formatRelativeTime(notification.created_at)}
-        </p>
-      </div>
-      {!notification.is_read && (
-        <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
-      )}
-    </button>
-  );
 }
 
 function NotificationDropdownPanel({
@@ -67,14 +25,14 @@ function NotificationDropdownPanel({
   unreadCount,
   isPending,
   onClose,
-  onMarkRead,
+  onActivate,
   onMarkAllRead,
 }: {
-  notifications: Notification[];
+  notifications: NotificationDisplay[];
   unreadCount: number;
   isPending: boolean;
   onClose: () => void;
-  onMarkRead: (id: string) => void;
+  onActivate: (notification: NotificationDisplay) => void;
   onMarkAllRead: () => void;
 }) {
   const hasNotifications = notifications.length > 0;
@@ -98,10 +56,11 @@ function NotificationDropdownPanel({
       <div className="max-h-72 overflow-y-auto sm:max-h-80">
         {hasNotifications ? (
           notifications.map((notification) => (
-            <NotificationRow
+            <NotificationBellRow
               key={notification.id}
               notification={notification}
-              onRead={onMarkRead}
+              onActivate={onActivate}
+              disabled={isPending}
             />
           ))
         ) : (
@@ -144,6 +103,10 @@ export function NotificationBell({
   const [notifications, setNotifications] = useState(initialNotifications);
   const [isPending, startTransition] = useTransition();
   const rootRef = useRef<HTMLDivElement>(null);
+  const { activateNotification, isPending: isNavigatePending } =
+    useNotificationNavigation(() => setOpen(false));
+
+  const busy = isPending || isNavigatePending;
 
   useEffect(() => {
     setUnreadCount(initialUnreadCount);
@@ -189,15 +152,12 @@ export function NotificationBell({
     setOpen(false);
   }
 
-  function handleMarkRead(id: string) {
-    startTransition(async () => {
-      const result = await markNotificationRead(id);
-      if (result.success) {
-        setNotifications((prev) =>
-          prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
-        );
-        setUnreadCount((c) => Math.max(0, c - 1));
-      }
+  function handleActivate(notification: NotificationDisplay) {
+    activateNotification(notification, (id) => {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
+      );
+      setUnreadCount((c) => Math.max(0, c - 1));
     });
   }
 
@@ -245,9 +205,9 @@ export function NotificationBell({
           <NotificationDropdownPanel
             notifications={notifications}
             unreadCount={unreadCount}
-            isPending={isPending}
+            isPending={busy}
             onClose={handleClose}
-            onMarkRead={handleMarkRead}
+            onActivate={handleActivate}
             onMarkAllRead={handleMarkAllRead}
           />
         </div>

@@ -1,7 +1,7 @@
 import type { EnrichedLeaderboardEntry } from "@/lib/leaderboard-analytics";
 import { TraderAvatar } from "@/components/leaderboard/trader-avatar";
 import { LeaderboardBadgeGroup } from "@/components/leaderboard/leaderboard-badges";
-import { cn, formatDaq, formatPercent } from "@/lib/utils";
+import { cn, displayUsername, formatDaq, formatPercent } from "@/lib/utils";
 
 interface LeaderboardPodiumProps {
   entries: EnrichedLeaderboardEntry[];
@@ -56,8 +56,15 @@ function PodiumSlot({
         {medals[place]}
       </span>
       <p className="text-stat mt-1 text-xl font-bold text-foreground">#{place}</p>
-      <TraderAvatar username={entry.username} size={sizes[place]} className="mt-2" />
-      <p className="mt-2 truncate text-sm font-bold text-foreground">@{entry.username}</p>
+      <TraderAvatar
+        username={entry.username}
+        avatarStyle={entry.avatar_style}
+        size={sizes[place]}
+        className="mt-2"
+      />
+      <p className="mt-2 truncate text-sm font-bold text-foreground">
+        {displayUsername(entry.username)}
+      </p>
       <p className="text-stat daq-price mt-1 text-base font-bold text-gold">
         {formatDaq(entry.total_value)}
       </p>

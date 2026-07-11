@@ -5,6 +5,19 @@ import type {
   NotificationPreferences,
   NotificationType,
 } from "@/types/database";
+import {
+  mapNotificationRow,
+  type NotificationDisplay,
+} from "@/lib/notifications/routing";
+
+export type { NotificationDisplay } from "@/lib/notifications/routing";
+export { getNotificationHref } from "@/lib/notifications/routing";
+
+export function getNotificationMessagePreview(notification: Notification): string {
+  const message = notification.message?.trim();
+  if (message) return message;
+  return getNotificationTypeLabel(notification.type);
+}
 
 export type NotificationTab =
   | "all"
@@ -218,10 +231,24 @@ export async function getUserNotifications(
   supabase: SupabaseClient,
   userId: string,
   options?: { limit?: number; unreadOnly?: boolean }
-): Promise<Notification[]> {
+): Promise<NotificationDisplay[]> {
   let query = supabase
     .from("notifications")
-    .select("*")
+    .select(
+      `
+      id,
+      user_id,
+      type,
+      title,
+      message,
+      asset_id,
+      achievement_id,
+      is_read,
+      dedupe_key,
+      created_at,
+      asset:assets(slug)
+    `
+    )
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
 
@@ -235,7 +262,7 @@ export async function getUserNotifications(
 
   const { data, error } = await query;
   if (error) throw new Error(error.message);
-  return (data ?? []) as Notification[];
+  return (data ?? []).map((row) => mapNotificationRow(row as Parameters<typeof mapNotificationRow>[0]));
 }
 
 export async function markRead(

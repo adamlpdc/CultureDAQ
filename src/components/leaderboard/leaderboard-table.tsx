@@ -1,6 +1,6 @@
 import { Trophy } from "lucide-react";
 import type { LeaderboardEntry } from "@/types/database";
-import { formatDaq } from "@/lib/utils";
+import { displayUsername, formatDaq } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { cn } from "@/lib/utils";
@@ -44,7 +44,9 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
               {entry.rank}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-foreground">@{entry.username}</p>
+              <p className="truncate font-semibold text-foreground">
+                {displayUsername(entry.username)}
+              </p>
             </div>
             <div className="text-right">
               <p className="font-semibold text-gold">{formatDaq(entry.total_value)}</p>

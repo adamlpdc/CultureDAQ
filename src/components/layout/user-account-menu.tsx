@@ -13,13 +13,15 @@ import {
   Wallet,
 } from "lucide-react";
 import { signOut } from "@/actions/auth";
+import { TraderAvatar } from "@/components/leaderboard/trader-avatar";
 import { WalletSummaryDropdown } from "@/components/layout/wallet-summary";
 import type { UserWalletSummary } from "@/lib/portfolio-value";
-import { cn } from "@/lib/utils";
+import { cn, displayUsername } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 interface UserAccountMenuProps {
   username: string;
+  avatarStyle?: string | null;
   isAdmin: boolean;
   wallet: UserWalletSummary;
   className?: string;
@@ -34,6 +36,7 @@ const menuLinks = [
 
 export function UserAccountMenu({
   username,
+  avatarStyle,
   isAdmin,
   wallet,
   className,
@@ -66,11 +69,12 @@ export function UserAccountMenu({
         aria-expanded={open}
         aria-haspopup="menu"
         className={cn(
-          "inline-flex items-center gap-1 rounded-xl border border-border bg-surface-muted px-3 py-2 text-sm font-semibold text-foreground-secondary shadow-card transition-colors hover:bg-surface hover:text-foreground",
+          "inline-flex items-center gap-2 rounded-xl border border-border bg-surface-muted px-2.5 py-1.5 text-sm font-semibold text-foreground-secondary shadow-card transition-colors hover:bg-surface hover:text-foreground",
           open && "border-border-tint bg-surface text-foreground"
         )}
       >
-        @{username}
+        <TraderAvatar username={username} avatarStyle={avatarStyle} size="sm" />
+        <span className="max-w-[8rem] truncate">{displayUsername(username)}</span>
         <ChevronDown
           className={cn("h-4 w-4 text-muted transition-transform", open && "rotate-180")}
         />
@@ -144,11 +148,13 @@ export function UserAccountMenu({
 /** Mobile-friendly account links (no dropdown) */
 export function UserAccountMenuMobile({
   username,
+  avatarStyle,
   isAdmin,
   wallet,
   onNavigate,
 }: {
   username: string;
+  avatarStyle?: string | null;
   isAdmin: boolean;
   wallet: UserWalletSummary;
   onNavigate?: () => void;
@@ -161,7 +167,12 @@ export function UserAccountMenuMobile({
       <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-muted">
         Account
       </p>
-      <p className="mb-2 px-3 text-sm font-semibold text-foreground">@{username}</p>
+      <div className="mb-2 flex items-center gap-2.5 px-3">
+        <TraderAvatar username={username} avatarStyle={avatarStyle} size="md" />
+        <p className="truncate text-sm font-semibold text-foreground">
+          {displayUsername(username)}
+        </p>
+      </div>
       <div className="flex flex-col gap-0.5">
         {menuLinks.map((link) => (
           <Link

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, displayUsername } from "@/lib/utils";
 import { getAvatarPreset, resolveAvatarEmoji, resolveAvatarHue } from "@/lib/avatars";
 
 export function getTraderInitials(username: string): string {
@@ -52,7 +52,8 @@ export function TraderAvatar({
         boxShadow: `0 2px 8px hsl(${hue} 30% 40% / 0.12), inset 0 1px 0 hsl(${hue} 50% 100% / 0.5)`,
       }}
       title={preset.label}
-      aria-hidden
+      role="img"
+      aria-label={`${preset.label} avatar for ${displayUsername(username)}`}
     >
       <span className={cn("leading-none select-none", sizes.emoji)}>{emoji}</span>
     </div>

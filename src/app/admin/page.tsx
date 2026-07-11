@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminPanel } from "@/components/admin/admin-panel";
 import { PageHeader } from "@/components/ui/page-header";
@@ -18,6 +19,12 @@ export default async function AdminPage() {
         title="Admin"
         description="Manage featured assets, trading pauses, and price overrides."
       />
+
+      <p className="text-sm">
+        <Link href="/admin/simulation" className="font-medium text-primary hover:underline">
+          Open Attention Market Simulation →
+        </Link>
+      </p>
 
       <AdminPanel assets={assets} />
     </div>

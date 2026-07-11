@@ -28,6 +28,7 @@ export interface UserLeaderboardPosition {
   totalReturnPercent: number;
   changeTodayPercent: number | null;
   username: string;
+  avatar_style: string;
   rankChange: number | null;
   badges: LeaderboardBadge[];
   achievementsEarned: number;
