@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS market_engine_v2_runs (
   updated_count INTEGER NOT NULL DEFAULT 0,
   skipped_count INTEGER NOT NULL DEFAULT 0,
   error_count INTEGER NOT NULL DEFAULT 0,
+  errors JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(errors) = 'array'),
   seven_day_drift_percent NUMERIC(10,6),
   drift_warning TEXT,
   started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -46,6 +47,9 @@ CREATE TABLE IF NOT EXISTS market_engine_v2_calculations (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (run_id, asset_id)
 );
+
+ALTER TABLE market_engine_v2_runs
+  ADD COLUMN IF NOT EXISTS errors JSONB NOT NULL DEFAULT '[]'::jsonb;
 
 CREATE INDEX IF NOT EXISTS market_engine_v2_calculations_asset_time_idx
   ON market_engine_v2_calculations (asset_id, calculated_at DESC);
@@ -198,12 +202,15 @@ AS $$
   SELECT COALESCE(AVG(median_move), 0)::NUMERIC FROM daily_market;
 $$;
 
+DROP FUNCTION IF EXISTS finish_market_engine_v2_run(UUID, INTEGER, INTEGER, INTEGER, INTEGER, NUMERIC, TEXT);
+
 CREATE OR REPLACE FUNCTION finish_market_engine_v2_run(
   p_run_id UUID,
   p_asset_count INTEGER,
   p_updated_count INTEGER,
   p_skipped_count INTEGER,
   p_error_count INTEGER,
+  p_errors JSONB,
   p_drift NUMERIC,
   p_warning TEXT
 )
@@ -217,6 +224,7 @@ AS $$
       asset_count = p_asset_count,
       updated_count = p_updated_count, skipped_count = p_skipped_count,
       error_count = p_error_count,
+      errors = COALESCE(p_errors, '[]'::jsonb),
       seven_day_drift_percent = p_drift, drift_warning = p_warning,
       completed_at = NOW()
   WHERE id = p_run_id;
@@ -225,8 +233,8 @@ $$;
 REVOKE ALL ON FUNCTION begin_market_engine_v2_run(TEXT) FROM PUBLIC;
 REVOKE ALL ON FUNCTION apply_market_engine_v2_calculation(UUID, UUID, UUID, JSONB, JSONB) FROM PUBLIC;
 REVOKE ALL ON FUNCTION get_market_engine_v2_seven_day_drift() FROM PUBLIC;
-REVOKE ALL ON FUNCTION finish_market_engine_v2_run(UUID, INTEGER, INTEGER, INTEGER, INTEGER, NUMERIC, TEXT) FROM PUBLIC;
+REVOKE ALL ON FUNCTION finish_market_engine_v2_run(UUID, INTEGER, INTEGER, INTEGER, INTEGER, JSONB, NUMERIC, TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION begin_market_engine_v2_run(TEXT) TO service_role;
 GRANT EXECUTE ON FUNCTION apply_market_engine_v2_calculation(UUID, UUID, UUID, JSONB, JSONB) TO service_role;
 GRANT EXECUTE ON FUNCTION get_market_engine_v2_seven_day_drift() TO service_role;
-GRANT EXECUTE ON FUNCTION finish_market_engine_v2_run(UUID, INTEGER, INTEGER, INTEGER, INTEGER, NUMERIC, TEXT) TO service_role;
+GRANT EXECUTE ON FUNCTION finish_market_engine_v2_run(UUID, INTEGER, INTEGER, INTEGER, INTEGER, JSONB, NUMERIC, TEXT) TO service_role;

@@ -51,6 +51,9 @@ surprise repeatedly.
 - applied caps, complete input/output JSON and both explanations
 - whether the movement was materially applied
 
+The run ledger also stores the complete sanitized error list and marks any tick
+with an error as failed, including downstream event or notification failures.
+
 Applied changes also write `asset_prices` and a `price_events` row containing the
 engine version, run ID, calculation ID, CultureEvent ID, explanation and caps.
 

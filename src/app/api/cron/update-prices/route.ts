@@ -234,6 +234,7 @@ export async function GET(request: NextRequest) {
   let rankMovements = new Map<string, AssetRankMovement>();
   let recentMarketEvents: MarketEvent[] = [];
   let driftWarning: string | undefined;
+  let sevenDayDrift: number | null = null;
   try {
     const { data: rankedAssets } = await supabase
       .from("assets")
@@ -274,22 +275,12 @@ export async function GET(request: NextRequest) {
     const { data: driftValue, error: driftError } = await supabase.rpc(
       "get_market_engine_v2_seven_day_drift"
     );
-    const sevenDayDrift = Number(driftValue ?? 0);
+    sevenDayDrift = Number(driftValue ?? 0);
     if (driftError) errors.push(`seven_day_drift: ${driftError.message}`);
     if (Math.abs(sevenDayDrift) > MARKET_DRIFT_WARNING_PERCENT_PER_DAY) {
       driftWarning = `Market Engine v2 seven-day unconditional drift ${sevenDayDrift.toFixed(3)}% per day exceeds ±${MARKET_DRIFT_WARNING_PERCENT_PER_DAY}%`;
       errors.push(`market_drift_warning: ${driftWarning}`);
     }
-    const { error: finishError } = await supabase.rpc("finish_market_engine_v2_run", {
-      p_run_id: engineRunId,
-      p_asset_count: assets.length,
-      p_updated_count: updated,
-      p_skipped_count: skipped,
-      p_error_count: errors.length,
-      p_drift: sevenDayDrift,
-      p_warning: driftWarning ?? null,
-    });
-    if (finishError) errors.push(`finish_v2_run: ${finishError.message}`);
   }
 
   try {
@@ -440,6 +431,21 @@ export async function GET(request: NextRequest) {
 
       await supabase.from("leaderboard_snapshots").insert(ranked);
     }
+  }
+
+  if (useV2 && engineRunId) {
+    const runErrors = [...errors];
+    const { error: finishError } = await supabase.rpc("finish_market_engine_v2_run", {
+      p_run_id: engineRunId,
+      p_asset_count: assets.length,
+      p_updated_count: updated,
+      p_skipped_count: skipped,
+      p_error_count: runErrors.length,
+      p_errors: runErrors,
+      p_drift: sevenDayDrift ?? 0,
+      p_warning: driftWarning ?? null,
+    });
+    if (finishError) errors.push(`finish_v2_run: ${finishError.message}`);
   }
 
   return NextResponse.json({
