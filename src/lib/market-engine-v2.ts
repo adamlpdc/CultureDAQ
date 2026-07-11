@@ -129,7 +129,13 @@ export function calculateMarketEngineV2(input: MarketEngineV2Input): MarketEngin
     const minMove = (lowerPrice / input.oldPrice - 1) * 100;
     const maxMove = (upperPrice / input.oldPrice - 1) * 100;
     const beforeRollingCap = finalPercentageMove;
-    finalPercentageMove = clamp(finalPercentageMove, minMove, maxMove);
+    if (input.oldPrice > upperPrice) {
+      finalPercentageMove = clamp(finalPercentageMove, -tickLimit, 0);
+    } else if (input.oldPrice < lowerPrice) {
+      finalPercentageMove = clamp(finalPercentageMove, 0, tickLimit);
+    } else {
+      finalPercentageMove = clamp(finalPercentageMove, minMove, maxMove);
+    }
     rollingCapApplied = finalPercentageMove !== beforeRollingCap;
   }
 

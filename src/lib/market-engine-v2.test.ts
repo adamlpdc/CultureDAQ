@@ -68,6 +68,13 @@ test("rolling 24-hour movement is capped at five percent", () => {
   assert.ok(result.newPrice <= 10_500);
 });
 
+test("rolling cap never creates a corrective movement outside the band", () => {
+  const above = calculateMarketEngineV2(base({ oldPrice: 20_000, price24hAgo: 10_000 }));
+  const below = calculateMarketEngineV2(base({ oldPrice: 5_000, price24hAgo: 10_000 }));
+  assert.equal(above.finalPercentageMove, 0);
+  assert.equal(below.finalPercentageMove, 0);
+});
+
 test("sub-material signals are audited but not applied", () => {
   const result = calculateMarketEngineV2(base({ signedMomentum: 0.1 }));
   assert.equal(result.material, false);
