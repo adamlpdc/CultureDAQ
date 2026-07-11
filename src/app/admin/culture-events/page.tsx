@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { CultureEventsTable } from "@/components/admin/culture-events-table";
 import { PageHeader } from "@/components/ui/page-header";
-import { isCultureIntelligenceEnabled } from "@/lib/env";
+import { isCultureIntelligenceV1Enabled } from "@/lib/env";
 import { createCultureEventService } from "@/lib/culture-intelligence/service";
 import {
   calculateAssetExpectations,
@@ -12,7 +12,7 @@ import { getAssets } from "@/lib/queries";
 import { getPriceV2ConfigFromEnv, simulatePriceV2 } from "@/lib/culture-intelligence/price-v2";
 
 export default async function CultureEventsPage() {
-  if (!isCultureIntelligenceEnabled()) notFound();
+  if (!isCultureIntelligenceV1Enabled()) notFound();
 
   const user = await getCurrentUser();
   if (!user) redirect("/login?redirect=/admin/culture-events");
@@ -59,9 +59,9 @@ export default async function CultureEventsPage() {
     <div className="space-y-6">
       <PageHeader
         title="Culture Intelligence Events"
-        description="Sandbox event signals for the next-generation Expectation Engine. No production pricing connection."
+        description="Manual-first Culture Intelligence queue feeding verified events into Market Engine v2."
       />
-      <CultureEventsTable events={events} expectations={expectations} simulations={simulations} />
+      <CultureEventsTable events={events} expectations={expectations} simulations={simulations} assets={assets.map(({ id, slug, name }) => ({ id, slug, name }))} />
     </div>
   );
 }

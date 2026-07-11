@@ -91,6 +91,6 @@ export function withAttentionResolution(
     momentumScore: resolution.momentumScore,
     viralMultiplier: resolution.viralMultiplier,
     resolvedAt: resolution.resolvedAt,
-    status: "peaked",
+    status: "resolved",
   };
 }

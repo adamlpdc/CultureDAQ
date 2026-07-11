@@ -11,6 +11,7 @@ import type { CultureEvent } from "./types";
 const baseEvent: CultureEvent = {
   id: "11111111-1111-4111-8111-111111111111",
   title: "Test event",
+  description: "Test description", sourceName: "mock", sourceUrl: null, isVerified: true, createdBy: null,
   eventType: "viral_moment",
   affectedAssets: [{ slug: "test", name: "Test" }],
   confidence: 0.9,
@@ -20,7 +21,7 @@ const baseEvent: CultureEvent = {
   reach: 10_000_000,
   timeToPeakHours: 6,
   decayRate: 0.2,
-  status: "active",
+  status: "verified",
   actualAttention: null,
   surpriseDelta: null,
   momentumScore: null,

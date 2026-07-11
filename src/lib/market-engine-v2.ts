@@ -12,6 +12,8 @@ export interface MarketEngineV2EventSignal {
   id: string;
   title: string;
   verified: boolean;
+  sentiment: "positive" | "neutral" | "negative" | "mixed";
+  reach: number;
   confidence: number;
   expectedAttention: number;
   actualAttention: number;
@@ -80,15 +82,21 @@ function symmetricNoise(seed: string): number {
 export function calculateMarketEngineV2(input: MarketEngineV2Input): MarketEngineV2Result {
   if (input.oldPrice <= 0) throw new Error("Old price must be greater than zero");
 
-  const event = input.event;
+  const event = input.event?.verified ? input.event : null;
+  const sentimentDirection = event?.sentiment === "positive" ? 1 : event?.sentiment === "negative" ? -1 : 0;
+  const reachMultiplier = event ? clamp(Math.log10(Math.max(10, event.reach)) / 7, 0.25, 1.25) : 1;
   const eventMomentum = event ? ((event.momentumScore - 50) / 50) * 0.12 : 0;
   const surpriseImpact = event
     ? event.surpriseDelta * 0.55 * clamp(event.confidence, 0, 1) * clamp(event.viralMultiplier, 0.5, 3)
     : 0;
+  const expectedAttentionImpact = event
+    ? sentimentDirection * (event.expectedAttention / 100) * 0.3
+    : 0;
   const expectationDampener = event
     ? clamp(1 - input.expectationScore / 180, 0.45, 1)
     : 1;
-  const eventImpactPercent = (surpriseImpact + eventMomentum) * expectationDampener * (event?.decayMultiplier ?? 1);
+  const eventImpactPercent = (surpriseImpact + eventMomentum + expectedAttentionImpact) *
+    clamp(event?.confidence ?? 1, 0, 1) * reachMultiplier * expectationDampener * (event?.decayMultiplier ?? 1);
 
   const momentumImpactPercent = clamp(input.signedMomentum * 0.015, -0.12, 0.12);
   const grossPressure = Math.max(0, input.buyPressure) + Math.max(0, input.sellPressure);
@@ -172,3 +180,11 @@ export function calculateMarketEngineV2(input: MarketEngineV2Input): MarketEngin
 }
 
 export const MARKET_ENGINE_V2_DRIFT_WARNING_PERCENT = MARKET_DRIFT_WARNING_PERCENT_PER_DAY;
+
+export function selectUnconsumedCultureEvent(
+  events: MarketEngineV2EventSignal[],
+  assetId: string,
+  consumed: ReadonlySet<string>
+): MarketEngineV2EventSignal | null {
+  return events.find((event) => event.verified && !consumed.has(`${assetId}:${event.id}`)) ?? null;
+}

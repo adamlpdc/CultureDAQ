@@ -33,6 +33,10 @@ export function isCultureIntelligenceEnabled(): boolean {
   return process.env.FEATURE_CULTURE_INTELLIGENCE === "true";
 }
 
+export function isCultureIntelligenceV1Enabled(): boolean {
+  return process.env.FEATURE_CULTURE_INTELLIGENCE_V1 !== "false";
+}
+
 /** One-time administrative gate for the market redenomination workflow. */
 export function isMarketRebalanceEnabled(): boolean {
   return process.env.FEATURE_MARKET_REBALANCE === "true";

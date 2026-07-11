@@ -27,6 +27,7 @@
     "test:player-reset": "tsx --test src/lib/player-reset.test.ts",
     "test:market-rebalance": "tsx --test src/lib/market-rebalance.test.ts",
     "test:market-engine-v2": "tsx --test src/lib/market-engine-v2.test.ts",
+    "simulate:culture-intelligence-v1": "tsx scripts/simulate-culture-intelligence-v1.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

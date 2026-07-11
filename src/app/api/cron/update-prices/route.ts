@@ -21,9 +21,10 @@ import {
   computeTotalPortfolioValue,
 } from "@/lib/portfolio-value";
 import { MARKET_DRIFT_WARNING_PERCENT_PER_DAY } from "@/lib/constants";
-import { isMarketEngineV2Enabled } from "@/lib/env";
+import { isCultureIntelligenceV1Enabled, isMarketEngineV2Enabled } from "@/lib/env";
 import {
   calculateMarketEngineV2,
+  selectUnconsumedCultureEvent,
   type MarketEngineV2EventSignal,
 } from "@/lib/market-engine-v2";
 
@@ -82,6 +83,7 @@ export async function GET(request: NextRequest) {
 
   let engineRunId: string | null = null;
   const useV2 = isMarketEngineV2Enabled();
+  const useCultureV1 = isCultureIntelligenceV1Enabled();
   if (useV2) {
     const tickMs = 15 * 60 * 1000;
     const tickKey = new Date(Math.floor(now.getTime() / tickMs) * tickMs).toISOString();
@@ -113,11 +115,11 @@ export async function GET(request: NextRequest) {
       supabase.from("asset_expectations").select("asset_slug, expectation_score"),
       supabase
         .from("culture_events")
-        .select("id, title, affected_assets, confidence, expected_attention, actual_attention, surprise_delta, momentum_score, viral_multiplier, decay_rate, resolved_at, is_verified, status")
-        .not("resolved_at", "is", null)
-        .gte("resolved_at", new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
-        .neq("status", "archived")
-        .order("resolved_at", { ascending: false }),
+        .select("id, title, affected_assets, confidence, sentiment, reach, expected_attention, actual_attention, surprise_delta, momentum_score, viral_multiplier, decay_rate, created_at, resolved_at, is_verified, status")
+        .eq("is_verified", true)
+        .is("resolved_at", null)
+        .eq("status", "verified")
+        .order("verified_at", { ascending: true }),
       supabase
         .from("market_engine_v2_calculations")
         .select("asset_id, culture_event_id")
@@ -132,20 +134,22 @@ export async function GET(request: NextRequest) {
       (expectationRows ?? []).map((row) => [row.asset_slug, Number(row.expectation_score)])
     );
     const eventsBySlug = new Map<string, MarketEngineV2EventSignal[]>();
-    for (const row of cultureRows ?? []) {
-      if (row.actual_attention == null || row.surprise_delta == null || row.momentum_score == null || row.viral_multiplier == null) continue;
+    for (const row of useCultureV1 ? (cultureRows ?? []) : []) {
+      const actualAttention = row.actual_attention == null ? Number(row.expected_attention) / 20 : Number(row.actual_attention);
       const event: MarketEngineV2EventSignal = {
         id: row.id,
         title: row.title,
         verified: Boolean(row.is_verified),
+        sentiment: row.sentiment,
+        reach: Number(row.reach),
         confidence: Number(row.confidence),
         expectedAttention: Number(row.expected_attention),
-        actualAttention: Number(row.actual_attention),
-        surpriseDelta: Number(row.surprise_delta),
-        momentumScore: Number(row.momentum_score),
-        viralMultiplier: Number(row.viral_multiplier),
+        actualAttention,
+        surpriseDelta: row.surprise_delta == null ? actualAttention - Number(row.expected_attention) / 20 : Number(row.surprise_delta),
+        momentumScore: row.momentum_score == null ? 50 : Number(row.momentum_score),
+        viralMultiplier: row.viral_multiplier == null ? 1 : Number(row.viral_multiplier),
         decayMultiplier: Math.exp(
-          -Math.max(0, now.getTime() - new Date(row.resolved_at!).getTime()) /
+          -Math.max(0, now.getTime() - new Date(row.created_at).getTime()) /
             (60 * 60 * 1000) * Number(row.decay_rate)
         ),
       };
@@ -173,9 +177,7 @@ export async function GET(request: NextRequest) {
           buyPressure: Number(asset.buy_pressure),
           sellPressure: Number(asset.sell_pressure),
           tradeVolume24h: Number(asset.trade_volume_24h),
-          event: (eventsBySlug.get(asset.slug) ?? []).find(
-            (event) => !consumedEvents.has(`${asset.id}:${event.id}`)
-          ) ?? null,
+          event: selectUnconsumedCultureEvent(eventsBySlug.get(asset.slug) ?? [], asset.id, consumedEvents),
           calculatedAt: now.toISOString(),
         };
         const result = calculateMarketEngineV2(input);

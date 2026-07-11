@@ -13,6 +13,7 @@ function event(overrides: Partial<CultureEvent> = {}): CultureEvent {
   return {
     id: "11111111-1111-4111-8111-111111111111",
     title: "Test event",
+    description: "Test description", sourceName: "mock", sourceUrl: null, isVerified: true, createdBy: null,
     eventType: "announcement",
     affectedAssets: [{ slug: "test-asset", name: "Test Asset" }],
     confidence: 0.8,
@@ -22,7 +23,7 @@ function event(overrides: Partial<CultureEvent> = {}): CultureEvent {
     reach: 1_000_000,
     timeToPeakHours: 8,
     decayRate: 0.2,
-    status: "active",
+    status: "verified",
     actualAttention: null,
     surpriseDelta: null,
     momentumScore: null,

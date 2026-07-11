@@ -10,12 +10,7 @@ export const CULTURE_EVENT_TYPES = [
 ] as const;
 
 export const CULTURE_EVENT_STATUSES = [
-  "detected",
-  "assessing",
-  "active",
-  "peaked",
-  "decaying",
-  "archived",
+  "draft", "verified", "resolved", "cancelled",
 ] as const;
 
 export type CultureEventType = (typeof CULTURE_EVENT_TYPES)[number];
@@ -35,6 +30,9 @@ export interface CultureEventAsset {
 export interface CultureEvent {
   id: string;
   title: string;
+  description: string;
+  sourceName: string;
+  sourceUrl: string | null;
   eventType: CultureEventType;
   affectedAssets: CultureEventAsset[];
   confidence: number;
@@ -50,7 +48,8 @@ export interface CultureEvent {
   momentumScore: number | null;
   viralMultiplier: number | null;
   resolvedAt: string | null;
-  isVerified?: boolean;
+  isVerified: boolean;
+  createdBy: string | null;
   source: "mock" | "supabase";
   createdAt: string;
 }
@@ -58,6 +57,9 @@ export interface CultureEvent {
 export interface CultureEventRow {
   id: string;
   title: string;
+  description: string;
+  source: string;
+  source_url: string | null;
   event_type: CultureEventType;
   affected_assets: CultureEventAsset[];
   confidence: number;
@@ -74,6 +76,7 @@ export interface CultureEventRow {
   viral_multiplier: number | null;
   resolved_at: string | null;
   is_verified?: boolean;
+  created_by: string | null;
   created_at: string;
 }
 

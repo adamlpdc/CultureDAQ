@@ -5,6 +5,7 @@ import type {
   CultureEventFilters,
   CultureEventRow,
 } from "@/lib/culture-intelligence/types";
+import { isCultureIntelligenceV1Enabled } from "@/lib/env";
 
 export interface CultureEventRepository {
   list(filters?: CultureEventFilters): Promise<CultureEvent[]>;
@@ -28,6 +29,9 @@ function fromRow(row: CultureEventRow): CultureEvent {
   return {
     id: row.id,
     title: row.title,
+    description: row.description,
+    sourceName: row.source,
+    sourceUrl: row.source_url,
     eventType: row.event_type,
     affectedAssets: row.affected_assets,
     confidence: Number(row.confidence),
@@ -44,6 +48,7 @@ function fromRow(row: CultureEventRow): CultureEvent {
     viralMultiplier: row.viral_multiplier == null ? null : Number(row.viral_multiplier),
     resolvedAt: row.resolved_at,
     isVerified: Boolean(row.is_verified),
+    createdBy: row.created_by,
     source: "supabase",
     createdAt: row.created_at,
   };
@@ -72,7 +77,7 @@ export class CultureEventService {
 
 export function createCultureEventService(): CultureEventService {
   const repository =
-    process.env.CULTURE_EVENTS_SOURCE === "supabase"
+    isCultureIntelligenceV1Enabled() || process.env.CULTURE_EVENTS_SOURCE === "supabase"
       ? new SupabaseCultureEventRepository()
       : new MockCultureEventRepository();
   return new CultureEventService(repository);
