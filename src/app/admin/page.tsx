@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminPanel } from "@/components/admin/admin-panel";
 import { PageHeader } from "@/components/ui/page-header";
 import { getAssets, getCurrentUser, getProfile } from "@/lib/queries";
+import { isCultureIntelligenceEnabled, isMarketRebalanceEnabled } from "@/lib/env";
 
 export default async function AdminPage() {
   const user = await getCurrentUser();
@@ -25,6 +26,29 @@ export default async function AdminPage() {
           Open Attention Market Simulation →
         </Link>
       </p>
+
+      {isCultureIntelligenceEnabled() && (
+        <div className="space-y-2 text-sm">
+          <p>
+            <Link href="/admin/culture-events" className="font-medium text-primary hover:underline">
+              Open Culture Intelligence Events →
+            </Link>
+          </p>
+          <p>
+            <Link href="/admin/replay-lab" className="font-medium text-primary hover:underline">
+              Open Replay & Balancing Lab →
+            </Link>
+          </p>
+        </div>
+      )}
+
+      {isMarketRebalanceEnabled() && (
+        <p className="text-sm">
+          <Link href="/admin/market-rebalance" className="font-medium text-loss hover:underline">
+            Review one-time Market Rebalance →
+          </Link>
+        </p>
+      )}
 
       <AdminPanel assets={assets} />
     </div>

@@ -39,7 +39,12 @@ export const CATEGORY_COLORS: Record<AssetCategory, string> = {
 };
 
 export const MIN_ASSET_PRICE = 1.0;
-export const MAX_PRICE_CHANGE_PERCENT = 15;
+/** Normal, non-event movement limit for each 15-minute production tick. */
+export const MAX_PRICE_CHANGE_PERCENT = 0.35;
+export const VERIFIED_EVENT_MAX_PRICE_CHANGE_PERCENT = 15;
+export const MAX_ROLLING_24H_CHANGE_PERCENT = 5;
+export const PRICE_MATERIALITY_PERCENT = 0.02;
+export const MARKET_DRIFT_WARNING_PERCENT_PER_DAY = 0.15;
 export const PRICE_UPDATE_INTERVAL_MINUTES = 15;
 
 export const CULTURE_MOMENTS = [

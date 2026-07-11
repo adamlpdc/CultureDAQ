@@ -28,6 +28,16 @@ export function isProductionApp(): boolean {
   return getAppEnvironment() === "production";
 }
 
+/** Server-side gate for the isolated Culture Intelligence sandbox. */
+export function isCultureIntelligenceEnabled(): boolean {
+  return process.env.FEATURE_CULTURE_INTELLIGENCE === "true";
+}
+
+/** One-time administrative gate for the market redenomination workflow. */
+export function isMarketRebalanceEnabled(): boolean {
+  return process.env.FEATURE_MARKET_REBALANCE === "true";
+}
+
 /** Reserved for public profile routes: /player/[slug] */
 export function getPublicProfilePath(username: string): string {
   return `/player/${username.toLowerCase()}`;

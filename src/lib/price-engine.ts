@@ -1,5 +1,11 @@
 import type { Asset, AssetCategory, PriceEventSource } from "@/types/database";
-import { MAX_PRICE_CHANGE_PERCENT, MIN_ASSET_PRICE } from "@/lib/constants";
+import {
+  MAX_PRICE_CHANGE_PERCENT,
+  MAX_ROLLING_24H_CHANGE_PERCENT,
+  MIN_ASSET_PRICE,
+  PRICE_MATERIALITY_PERCENT,
+  VERIFIED_EVENT_MAX_PRICE_CHANGE_PERCENT,
+} from "@/lib/constants";
 
 export interface PriceUpdateResult {
   assetId: string;
@@ -9,6 +15,12 @@ export interface PriceUpdateResult {
   reason: string;
   source: PriceEventSource;
   metadata: Record<string, unknown>;
+}
+
+export interface PriceCalculationOptions {
+  price24hAgo?: number | null;
+  /** Reserved for verified CultureEvent integration; normal cron passes nothing. */
+  verifiedEventImpactPercent?: number | null;
 }
 
 const CATEGORY_BASE_TREND: Record<AssetCategory, number> = {
@@ -75,7 +87,8 @@ function generateReason(
 
 export function calculateNewPrice(
   asset: Asset,
-  timestamp: Date = new Date()
+  timestamp: Date = new Date(),
+  options: PriceCalculationOptions = {}
 ): PriceUpdateResult {
   const oldPrice = Number(asset.current_price);
   const timeSeed = `${asset.slug}-${timestamp.toISOString().slice(0, 16)}`;
@@ -98,8 +111,9 @@ export function calculateNewPrice(
 
   const randomWalk = (seededRandom(timeSeed + "r") - 0.5) * 0.02 * volatility;
 
-  const volumeBoost =
-    volume > 50 ? clamp((volume / 1000) * 0.01, 0, 0.02) : 0;
+  // Activity changes sensitivity, never direction. With no signed signal,
+  // volume contributes exactly zero expected return.
+  const activityMultiplier = 1 + clamp(volume / 1000, 0, 0.5);
 
   const factors: { label: string; impact: number; source: PriceEventSource }[] = [];
 
@@ -147,17 +161,45 @@ export function calculateNewPrice(
     });
   }
 
-  if (volumeBoost > 0.001) {
+  const signedBase = pressureImpact + momentumImpact + categoryTrend + randomWalk;
+  const activityImpact = signedBase * (activityMultiplier - 1);
+  if (Math.abs(activityImpact) > 0.001) {
     factors.push({
-      label: "High trading volume attracted more market attention.",
-      impact: volumeBoost,
+      label:
+        activityImpact > 0
+          ? "Trading activity amplified positive signed movement."
+          : "Trading activity amplified negative signed movement.",
+      impact: activityImpact,
       source: "market_engine",
     });
   }
 
-  let totalChange =
-    pressureImpact + momentumImpact + categoryTrend + randomWalk + volumeBoost;
-  totalChange = clamp(totalChange, -MAX_PRICE_CHANGE_PERCENT / 100, MAX_PRICE_CHANGE_PERCENT / 100);
+  const verifiedImpact = Number(options.verifiedEventImpactPercent ?? 0) / 100;
+  const hasVerifiedEvent = verifiedImpact !== 0;
+  let totalChange = signedBase * activityMultiplier + verifiedImpact;
+  const tickCap =
+    (hasVerifiedEvent
+      ? VERIFIED_EVENT_MAX_PRICE_CHANGE_PERCENT
+      : MAX_PRICE_CHANGE_PERCENT) / 100;
+  totalChange = clamp(totalChange, -tickCap, tickCap);
+
+  if (!hasVerifiedEvent && options.price24hAgo && options.price24hAgo > 0) {
+    const upper = options.price24hAgo * (1 + MAX_ROLLING_24H_CHANGE_PERCENT / 100);
+    const lower = options.price24hAgo * (1 - MAX_ROLLING_24H_CHANGE_PERCENT / 100);
+    if (oldPrice > upper) totalChange = clamp(totalChange, -tickCap, 0);
+    else if (oldPrice < lower) totalChange = clamp(totalChange, 0, tickCap);
+    else {
+      totalChange = clamp(
+        totalChange,
+        Math.max(-tickCap, lower / oldPrice - 1),
+        Math.min(tickCap, upper / oldPrice - 1)
+      );
+    }
+  }
+
+  if (Math.abs(totalChange * 100) < PRICE_MATERIALITY_PERCENT) {
+    totalChange = 0;
+  }
 
   let newPrice = oldPrice * (1 + totalChange);
   newPrice = Math.max(MIN_ASSET_PRICE, Math.round(newPrice * 10000) / 10000);
@@ -182,9 +224,10 @@ export function calculateMomentumUpdate(
   changePercent: number
 ): number {
   const current = Number(asset.momentum_score);
-  const decay = current * 0.7;
-  const impulse = changePercent * 0.1;
-  return clamp(decay + impulse, -10, 10);
+  const meanReverting = current * 0.6;
+  const signedImpulse = changePercent * 0.08;
+  const next = meanReverting + signedImpulse;
+  return Math.abs(next) < 0.001 ? 0 : clamp(next, -10, 10);
 }
 
 export function decayPressure(value: number): number {

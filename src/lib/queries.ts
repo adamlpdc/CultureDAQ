@@ -188,7 +188,22 @@ export async function getAssetPriceHistory(
     .eq("asset_id", assetId)
     .order("recorded_at", { ascending: true })
     .limit(limit);
-  return data ?? [];
+  const history = data ?? [];
+  const { data: actions } = await supabase
+    .from("market_corporate_actions")
+    .select("price_factor, effective_at")
+    .eq("asset_id", assetId)
+    .order("effective_at", { ascending: true });
+
+  if (!actions?.length) return history;
+  return history.map((point) => {
+    const adjustment = actions.reduce((factor, action) => {
+      return new Date(point.recorded_at).getTime() < new Date(action.effective_at).getTime()
+        ? factor * Number(action.price_factor)
+        : factor;
+    }, 1);
+    return { ...point, price: Number(point.price) * adjustment };
+  });
 }
 
 export async function getPriceEvents(
