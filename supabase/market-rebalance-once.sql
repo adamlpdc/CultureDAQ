@@ -560,7 +560,15 @@ RETURNS TABLE(asset_id UUID, anchor_price NUMERIC)
 LANGUAGE sql
 STABLE
 AS $$
-  SELECT DISTINCT ON (ap.asset_id) ap.asset_id, ap.price
+  SELECT DISTINCT ON (ap.asset_id)
+    ap.asset_id,
+    ap.price * COALESCE((
+      SELECT EXP(SUM(LN(ca.price_factor)))
+      FROM market_corporate_actions ca
+      WHERE ca.asset_id = ap.asset_id
+        AND ca.effective_at > ap.recorded_at
+        AND ca.effective_at <= p_as_of
+    ), 1) AS anchor_price
   FROM asset_prices ap
   WHERE ap.recorded_at <= p_as_of - INTERVAL '24 hours'
   ORDER BY ap.asset_id, ap.recorded_at DESC;
