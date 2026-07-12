@@ -18,7 +18,7 @@ export default async function AdminPage() {
   return <div className="space-y-6">
     <PageHeader title="Admin Overview" description="Culture Intelligence, Market Engine v2 controls and operational health."/>
     <Card className="border-primary/30 bg-primary-light">
-      <div className="flex flex-wrap items-center justify-between gap-4"><div><h2 className="text-lg font-bold">Culture Intelligence Engine v1</h2><p className="text-sm text-foreground-secondary">Create and verify manual events before they enter pricing.</p></div><Link href="/admin/culture-events#create-culture-event" className="rounded-lg bg-primary px-4 py-2 font-semibold text-white">Create Culture Event</Link></div>
+      <div className="flex flex-wrap items-center justify-between gap-4"><div><h2 className="text-lg font-bold">Culture Intelligence</h2><p className="text-sm text-foreground-secondary">Review AI suggestions or create manual events before verification and pricing.</p></div><div className="flex gap-2"><Link href="/admin/culture-events#suggested-events" className="rounded-lg border border-primary px-4 py-2 font-semibold text-primary">Review Suggested Events</Link><Link href="/admin/culture-events#create-culture-event" className="rounded-lg bg-primary px-4 py-2 font-semibold text-white">Create Culture Event</Link></div></div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{stats.map(([label,value])=><div key={label} className="rounded-lg bg-surface p-4"><p className="text-xs text-muted">{label}</p><p className="mt-1 text-2xl font-bold">{value}</p></div>)}</div>
       <Link href="/admin/culture-events" className="mt-4 inline-block font-semibold text-primary hover:underline">Open Culture Events →</Link>
     </Card>

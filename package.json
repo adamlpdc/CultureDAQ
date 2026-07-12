@@ -28,6 +28,7 @@
     "test:market-rebalance": "tsx --test src/lib/market-rebalance.test.ts",
     "test:market-engine-v2": "tsx --test src/lib/market-engine-v2.test.ts",
     "simulate:culture-intelligence-v1": "tsx scripts/simulate-culture-intelligence-v1.ts",
+    "test:culture-intelligence-v2": "tsx --test src/lib/culture-intelligence/discovery.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

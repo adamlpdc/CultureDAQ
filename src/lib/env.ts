@@ -37,6 +37,11 @@ export function isCultureIntelligenceV1Enabled(): boolean {
   return process.env.FEATURE_CULTURE_INTELLIGENCE_V1 !== "false";
 }
 
+/** AI discovery only creates suggestions; it never verifies events or touches prices. */
+export function isCultureIntelligenceV2Enabled(): boolean {
+  return process.env.FEATURE_CULTURE_INTELLIGENCE_V2 === "true";
+}
+
 /** One-time administrative gate for the market redenomination workflow. */
 export function isMarketRebalanceEnabled(): boolean {
   return process.env.FEATURE_MARKET_REBALANCE === "true";

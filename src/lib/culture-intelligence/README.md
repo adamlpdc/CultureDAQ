@@ -1,5 +1,15 @@
 # Culture Intelligence Engine
 
+## v2 AI Event Discovery
+
+AI discovery is an isolated suggestion pipeline: approved RSS/Atom sources → quality filtering and story grouping → structured AI prediction → `culture_event_suggestions` → admin review. It cannot verify a CultureEvent, update an asset, or write a price. Approval calls a database function that atomically creates an **unverified draft** CultureEvent; the existing v1 confirmation step remains mandatory before Market Engine v2 can consume it.
+
+Apply `supabase/culture-intelligence-v2.sql`, add approved HTTPS feeds to `culture_discovery_sources`, set `OPENAI_API_KEY`, and then enable `FEATURE_CULTURE_INTELLIGENCE_V2=true`. The Vercel cron calls `/api/cron/discover-culture-events` every 15 minutes using `CRON_SECRET`; `AI_DISCOVERY_INTERVAL_MINUTES` controls idempotent tick grouping and `AI_DISCOVERY_MIN_CONFIDENCE` controls the quality floor.
+
+Suggestions retain the complete AI prediction, administrator edits, review action, source links and reasoning. Database triggers later attach actual attention, surprise delta and applied Market Engine v2 impact for calibration. Every AI and admin action is recorded in `culture_suggestion_audit_log`.
+
+The admin queue supports editing, approval, rejection and merging. Approval is deliberately not verification. AI source access is allow-list only: the discovery service fetches only enabled URLs stored by an administrator in `culture_discovery_sources`; it does not perform open web search.
+
 This directory is a standalone sandbox foundation for turning cultural signals into stable `CultureEvent` objects. It has no dependency on `src/lib/price-engine.ts`, the price-update cron route, trades, holdings, or production price tables.
 
 ## Architecture
