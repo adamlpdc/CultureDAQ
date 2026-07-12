@@ -2,11 +2,8 @@
 
 import { useState, useTransition } from "react";
 import {
-  backfillCurrentAssetRanks,
-  generateCurrentMarketEvents,
   toggleAssetFeatured,
   toggleAssetTrading,
-  updateAssetPrice,
 } from "@/actions/admin";
 import type { Asset } from "@/types/database";
 import { CATEGORY_LABELS } from "@/lib/constants";
@@ -39,49 +36,10 @@ export function AdminPanel({ assets }: AdminPanelProps) {
   }
 
   function handleToggleTrading(assetId: string, current: boolean) {
+    if (!window.confirm(current ? "Resume trading for this asset?" : "Pause trading for this asset?")) return;
     startTransition(async () => {
       await toggleAssetTrading(assetId, !current);
       setMessage("Trading status updated");
-    });
-  }
-
-  function handleBackfillRanks() {
-    startTransition(async () => {
-      try {
-        const result = await backfillCurrentAssetRanks();
-        setMessage(`Rank backfill complete — ${result.recorded} snapshots recorded`);
-      } catch (e) {
-        setMessage(e instanceof Error ? e.message : "Rank backfill failed");
-      }
-    });
-  }
-
-  function handleGenerateMarketEvents() {
-    startTransition(async () => {
-      try {
-        const result = await generateCurrentMarketEvents();
-        setMessage(
-          `Market events generated — ${result.generated} created, ${result.skipped} skipped`
-        );
-      } catch (e) {
-        setMessage(e instanceof Error ? e.message : "Market event generation failed");
-      }
-    });
-  }
-
-  function handlePriceOverride(assetId: string, price: string) {
-    const num = parseFloat(price);
-    if (isNaN(num) || num <= 0) {
-      setMessage("Invalid price");
-      return;
-    }
-    startTransition(async () => {
-      try {
-        await updateAssetPrice(assetId, num);
-        setMessage("Price updated");
-      } catch (e) {
-        setMessage(e instanceof Error ? e.message : "Error updating price");
-      }
     });
   }
 
@@ -99,27 +57,7 @@ export function AdminPanel({ assets }: AdminPanelProps) {
         </div>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted">{filtered.length} assets</p>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={isPending}
-            onClick={handleBackfillRanks}
-          >
-            Backfill Asset Ranks
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={isPending}
-            onClick={handleGenerateMarketEvents}
-          >
-            Generate Market Events
-          </Button>
-        </div>
-      </div>
+      <p className="text-sm text-muted">{filtered.length} assets</p>
 
       <div className="space-y-3">
         {filtered.map((asset) => (
@@ -157,29 +95,6 @@ export function AdminPanel({ assets }: AdminPanelProps) {
                 >
                   {asset.trading_paused ? "Paused" : "Pause"}
                 </Button>
-                <form
-                  className="flex gap-2"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const form = e.target as HTMLFormElement;
-                    const input = form.elements.namedItem(
-                      `price-${asset.id}`
-                    ) as HTMLInputElement;
-                    handlePriceOverride(asset.id, input.value);
-                  }}
-                >
-                  <Input
-                    name={`price-${asset.id}`}
-                    type="number"
-                    step="0.01"
-                    min="1"
-                    placeholder="New price"
-                    className="w-28"
-                  />
-                  <Button type="submit" size="sm" variant="ghost" disabled={isPending}>
-                    Set
-                  </Button>
-                </form>
               </div>
             </div>
           </Card>

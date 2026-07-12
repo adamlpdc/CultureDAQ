@@ -1,0 +1,3 @@
+"use client";
+import { setMarketPaused } from "@/actions/market-controls";
+export function MarketControlButtons({paused}:{paused:boolean}) { return <form action={setMarketPaused} onSubmit={(event)=>{if(!window.confirm(paused?"Resume Market Engine v2 and the scheduled cron?":"Pause all market price updates and cron processing?"))event.preventDefault();}}><input type="hidden" name="paused" value={paused?"false":"true"}/><input type="hidden" name="confirmation" value={paused?"RESUME_MARKET_V2":"PAUSE_MARKET_V2"}/><button className={`rounded-lg px-4 py-2 font-semibold text-white ${paused?"bg-gain":"bg-loss"}`}>{paused?"Resume market and cron":"Pause market and cron"}</button></form>; }

@@ -90,8 +90,8 @@ export function CultureEventsTable({
         <ExpectationTable expectations={expectations} />
       ) : (
       <div className="space-y-4">
-      <Card>
-        <details>
+      <Card id="create-culture-event">
+        <details open>
           <summary className="cursor-pointer font-semibold text-primary">Create manual CultureEvent</summary>
           <form action={createCultureEvent} className="mt-4 grid gap-3 md:grid-cols-3">
             <input name="title" required placeholder="Event title" className="rounded-lg border border-border bg-surface px-3 py-2" />

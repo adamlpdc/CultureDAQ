@@ -1,0 +1,7 @@
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { MarketControlButtons } from "@/components/admin/market-control-buttons";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { isCultureIntelligenceV1Enabled, isMarketEngineV2Enabled } from "@/lib/env";
+
+export default async function MarketControlsPage(){ const {data}=await createAdminClient().from("market_engine_controls").select("paused,pause_reason,paused_at,resumed_at").eq("id","production").single(); const paused=Boolean(data?.paused); const rows=[["Market",paused?"Paused":"Active"],["15-minute cron",paused?"Paused by market control":"Active"],["Market Engine v2",isMarketEngineV2Enabled()?"Enabled":"Emergency rollback"],["Culture Intelligence v1",isCultureIntelligenceV1Enabled()?"Enabled":"Disabled"],["Emergency rollback",isMarketEngineV2Enabled()?"Inactive":"ACTIVE"]]; return <div className="space-y-6"><PageHeader title="Market Controls" description="Operational status and confirmation-gated pause controls."/><div className="grid gap-3 md:grid-cols-2">{rows.map(([label,value])=><Card key={label}><p className="text-xs text-muted">{label}</p><p className="mt-1 text-lg font-bold">{value}</p></Card>)}</div><Card><h2 className="font-bold">High-risk controls</h2><p className="my-3 text-sm text-muted">Pausing stops pricing cron processing. Resuming re-enables scheduled Market Engine v2 updates.</p><MarketControlButtons paused={paused}/></Card></div>;}
